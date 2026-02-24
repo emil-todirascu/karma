@@ -439,7 +439,9 @@ describe('FileList', () => {
         }
       }
 
-      clock = sinon.useFakeTimers()
+      clock = sinon.useFakeTimers({
+        toFake: ['Date', 'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval']
+      })
       // This hack is needed to ensure lodash is using the fake timers
       // from sinon
 
@@ -568,7 +570,9 @@ describe('FileList', () => {
         }
       }
 
-      clock = sinon.useFakeTimers()
+      clock = sinon.useFakeTimers({
+        toFake: ['Date', 'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval']
+      })
       // This hack is needed to ensure lodash is using the fake timers
       // from sinon
       List = proxyquire('../../lib/file-list', {
@@ -690,7 +694,9 @@ describe('FileList', () => {
         }
       }
 
-      clock = sinon.useFakeTimers()
+      clock = sinon.useFakeTimers({
+        toFake: ['Date', 'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval']
+      })
       // This hack is needed to ensure lodash is using the fake timers
       // from sinon
       List = proxyquire('../../lib/file-list', {
@@ -772,7 +778,9 @@ describe('FileList', () => {
       modified = sinon.stub()
       emitter.on('file_list_modified', modified)
 
-      clock = sinon.useFakeTimers()
+      clock = sinon.useFakeTimers({
+        toFake: ['Date', 'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval']
+      })
       // This hack is needed to ensure lodash is using the fake timers
       // from sinon
       List = proxyquire('../../lib/file-list', {

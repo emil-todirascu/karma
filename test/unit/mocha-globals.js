@@ -2,6 +2,7 @@ const sinon = require('sinon')
 const chai = require('chai')
 const logger = require('../../lib/logger')
 const recording = require('log4js/lib/appenders/recording')
+const resolvePlugin = (plugin) => (plugin && plugin.default) || plugin
 
 // publish globals that all specs can use
 global.expect = chai.expect
@@ -9,9 +10,9 @@ global.should = chai.should()
 global.sinon = sinon
 
 // chai plugins
-chai.use(require('chai-as-promised'))
-chai.use(require('sinon-chai'))
-chai.use(require('chai-subset'))
+chai.use(resolvePlugin(require('chai-as-promised')))
+chai.use(resolvePlugin(require('sinon-chai')))
+chai.use(resolvePlugin(require('chai-subset')))
 
 exports.mochaHooks = {
   beforeEach () {

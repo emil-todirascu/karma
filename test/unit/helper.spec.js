@@ -231,21 +231,56 @@ describe('helper', () => {
   describe('mkdirIfNotExists', () => {
     const loadFile = require('mocks').loadFile
 
-    const spy = sinon.spy()
+    it('should call callback-style mkdirp export', (done) => {
+      const spy = sinon.spy()
+      const m = loadFile(path.join(__dirname, '/../../lib/helper.js'), {
+        mkdirp: (directory, callback) => {
+          spy(directory)
+          callback()
+        }
+      })
 
-    // load file under test
-    const m = loadFile(path.join(__dirname, '/../../lib/helper.js'), {
-      mkdirp: (path, done) => {
-        spy(path)
+      m.exports.mkdirIfNotExists('/path/to/dir', (err) => {
+        expect(err).to.equal(undefined)
+        expect(spy).to.have.been.calledOnceWith('/path/to/dir')
         done()
-      }
+      })
     })
 
-    const mkdirIfNotExists = m.exports.mkdirIfNotExists
+    it('should use promise mkdirp API when exported as object', (done) => {
+      const mkdirp = {
+        mkdirp: sinon.stub().callsFake((directory) => Promise.resolve(directory))
+      }
+      const m = loadFile(path.join(__dirname, '/../../lib/helper.js'), { mkdirp })
 
-    it('should call mkdirp', (done) => {
-      mkdirIfNotExists('/path/to/dir', () => {
-        expect(spy).to.have.been.calledOnceWith('/path/to/dir')
+      m.exports.mkdirIfNotExists('/path/to/dir', (err) => {
+        expect(err).to.equal(undefined)
+        expect(mkdirp.mkdirp).to.have.been.calledOnceWith('/path/to/dir')
+        done()
+      })
+    })
+
+    it('should support promise-style mkdirp function export', (done) => {
+      const mkdirp = sinon.stub().callsFake((directory) => Promise.resolve(directory))
+      const m = loadFile(path.join(__dirname, '/../../lib/helper.js'), { mkdirp })
+
+      m.exports.mkdirIfNotExists('/path/to/dir', (err) => {
+        expect(err).to.equal(undefined)
+        expect(mkdirp).to.have.been.calledOnceWith('/path/to/dir')
+        done()
+      })
+    })
+
+    it('should pass promise mkdirp errors to callback', (done) => {
+      const expectedError = new Error('mkdir failed')
+      const m = loadFile(path.join(__dirname, '/../../lib/helper.js'), {
+        mkdirp: {
+          mkdirp: () => Promise.reject(expectedError)
+        }
+      })
+
+      m.exports.mkdirIfNotExists('/path/to/dir', (err) => {
+        expect(err).to.equal(expectedError)
         done()
       })
     })

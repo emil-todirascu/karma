@@ -1,6 +1,15 @@
 const { context } = require('esbuild')
 const { readFile } = require('fs').promises
 
+const punycodeAliasPlugin = {
+  name: 'punycode-alias',
+  setup (build) {
+    build.onResolve({ filter: /^punycode$/ }, () => ({
+      path: require.resolve('punycode/')
+    }))
+  }
+}
+
 const configs = [
   {
     inPath: 'client/main.js',
@@ -19,6 +28,7 @@ const createBuildOptions = ({ inPath, outPath }, write = true) => ({
   format: 'iife',
   target: 'es2018',
   logLevel: 'silent',
+  plugins: [punycodeAliasPlugin],
   write,
   outfile: outPath
 })

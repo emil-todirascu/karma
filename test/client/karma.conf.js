@@ -44,7 +44,7 @@ module.exports = function (config) {
     // base path, that will be used to resolve files and exclude
     basePath: '../..',
 
-    frameworks: ['browserify', 'mocha'],
+    frameworks: ['commonjs', 'mocha'],
 
     // list of files / patterns to load in the browser
     files: [
@@ -56,7 +56,7 @@ module.exports = function (config) {
     ],
 
     preprocessors: {
-      'test/client/*.js': ['browserify']
+      'test/client/*.js': ['commonjs']
     },
 
     // use dots reporter, as travis terminal does not support escaping sequences
@@ -117,10 +117,10 @@ module.exports = function (config) {
 
     plugins: [
       'karma-mocha',
+      'karma-commonjs',
       'karma-chrome-launcher',
       'karma-firefox-launcher',
       'karma-junit-reporter',
-      'karma-browserify',
       'karma-browserstack-launcher'
     ],
 

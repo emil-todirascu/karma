@@ -1,70 +1,81 @@
-const browserify = require('browserify')
-const watchify = require('watchify')
-const { createWriteStream } = require('fs')
+const { context } = require('esbuild')
 const { readFile } = require('fs').promises
 
-const bundleResourceToFile = (inPath, outPath) => {
-  return new Promise((resolve, reject) => {
-    browserify(inPath).bundle()
-      .once('error', (e) => reject(e))
-      .pipe(createWriteStream(outPath))
-      .once('finish', () => resolve())
-  })
-}
-
-const bundleResource = (inPath) => {
-  return new Promise((resolve, reject) => {
-    browserify(inPath).bundle((err, buffer) => {
-      if (err != null) {
-        reject(err)
-        return
-      }
-
-      resolve(buffer)
-    })
-  })
-}
-
-const watchResourceToFile = (inPath, outPath) => {
-  const b = browserify({
-    entries: [inPath],
-    cache: {},
-    packageCache: {},
-    plugin: [watchify]
-  })
-
-  const bundle = () => {
-    b.bundle()
-      .once('error', (e) => {
-        console.error(`Failed to bundle ${inPath} into ${outPath}.`)
-        console.error(e)
-      })
-      .pipe(createWriteStream(outPath))
-      .once('finish', () => console.log(`Bundled ${inPath} into ${outPath}.`))
+const configs = [
+  {
+    inPath: 'client/main.js',
+    outPath: 'static/karma.js'
+  },
+  {
+    inPath: 'context/main.js',
+    outPath: 'static/context.js'
   }
+]
 
-  b.on('update', bundle)
-  bundle()
+const createBuildOptions = ({ inPath, outPath }, write = true) => ({
+  entryPoints: [inPath],
+  bundle: true,
+  platform: 'browser',
+  format: 'iife',
+  target: 'es2018',
+  logLevel: 'silent',
+  write,
+  outfile: outPath
+})
+
+const buildResourceToFile = async (config) => {
+  const ctx = await context(createBuildOptions(config, true))
+  try {
+    await ctx.rebuild()
+  } finally {
+    await ctx.dispose()
+  }
+}
+
+const buildResourceBuffer = async (config) => {
+  const ctx = await context(createBuildOptions(config, false))
+  try {
+    const result = await ctx.rebuild()
+    return result.outputFiles[0].contents
+  } finally {
+    await ctx.dispose()
+  }
+}
+
+const watchResourceToFile = async (config) => {
+  const ctx = await context(createBuildOptions(config, true))
+  await ctx.watch()
+  console.log(`Watching ${config.inPath} -> ${config.outPath}`)
+}
+
+const runBuild = async () => {
+  await Promise.all(configs.map(buildResourceToFile))
+}
+
+const runCheck = async () => {
+  const [expectedClient, expectedContext] = await Promise.all(configs.map(buildResourceBuffer))
+  const [actualClient, actualContext] = await Promise.all([
+    readFile('static/karma.js'),
+    readFile('static/context.js')
+  ])
+
+  if (Buffer.compare(expectedClient, actualClient) !== 0 || Buffer.compare(expectedContext, actualContext) !== 0) {
+    // eslint-disable-next-line no-throw-literal
+    throw 'Bundled client assets are outdated. Forgot to run "npm run build"?'
+  }
+}
+
+const runWatch = async () => {
+  await Promise.all(configs.map(watchResourceToFile))
 }
 
 const main = async () => {
   if (process.argv[2] === 'build') {
-    await bundleResourceToFile('client/main.js', 'static/karma.js')
-    await bundleResourceToFile('context/main.js', 'static/context.js')
+    await runBuild()
   } else if (process.argv[2] === 'check') {
-    const expectedClient = await bundleResource('client/main.js')
-    const expectedContext = await bundleResource('context/main.js')
-
-    const actualClient = await readFile('static/karma.js')
-    const actualContext = await readFile('static/context.js')
-
-    if (Buffer.compare(expectedClient, actualClient) !== 0 || Buffer.compare(expectedContext, actualContext) !== 0) {
-      // eslint-disable-next-line no-throw-literal
-      throw 'Bundled client assets are outdated. Forgot to run "npm run build"?'
-    }
+    await runCheck()
   } else if (process.argv[2] === 'watch') {
-    watchResourceToFile('client/main.js', 'static/karma.js')
-    watchResourceToFile('context/main.js', 'static/context.js')
+    await runWatch()
   } else {
     // eslint-disable-next-line no-throw-literal
     throw `Unknown command: ${process.argv[2]}`

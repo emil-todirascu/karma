@@ -3,7 +3,7 @@ const request = require('supertest')
 const di = require('di')
 const mocks = require('mocks')
 const fs = require('fs')
-const mime = require('mime')
+const mime = require('../../lib/mime')
 const path = require('path')
 
 describe('web-server', () => {

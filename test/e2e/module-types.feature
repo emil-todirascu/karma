@@ -24,7 +24,7 @@ Feature: ES Modules
       frameworks = ['mocha', 'chai'];
       plugins = [
         'karma-mocha',
-        'karma-chai',
+        _resolve('chai/framework'),
         'karma-firefox-launcher'
       ];
       """

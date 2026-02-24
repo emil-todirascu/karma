@@ -6,10 +6,9 @@ module.exports = class Proxy {
   constructor () {
     this.running = false
     this.proxyPathRegExp = null
+    this.target = 'http://127.0.0.1:9876'
 
-    this.proxy = httpProxy.createProxyServer({
-      target: 'http://127.0.0.1:9876'
-    })
+    this.proxy = httpProxy.createProxyServer()
 
     this.proxy.on('error', (err) => {
       console.log('support/proxy onerror', err)
@@ -20,7 +19,7 @@ module.exports = class Proxy {
       const match = url.match(this.proxyPathRegExp)
       if (match) {
         req.url = '/' + match[1]
-        this.proxy.web(req, res)
+        this.proxy.web(req, res, { target: this.target })
       } else {
         res.statusCode = 404
         res.statusMessage = 'Not found'
@@ -33,8 +32,9 @@ module.exports = class Proxy {
     })
   }
 
-  async start (port, proxyPath) {
+  async start (port, proxyPath, targetPort = 9876) {
     this.proxyPathRegExp = new RegExp('^' + proxyPath + '(.*)')
+    this.target = `http://127.0.0.1:${targetPort}`
     await promisify(this.server.listen.bind(this.server))(port)
     this.running = true
   }

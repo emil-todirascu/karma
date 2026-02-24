@@ -1,5 +1,4 @@
 /* global io */
-/* eslint-disable no-new */
 
 var Karma = require('./karma')
 var StatusUpdater = require('./updater')

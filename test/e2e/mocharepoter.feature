@@ -15,7 +15,7 @@ Feature: Mocha reporter
         'karma-chrome-launcher',
         'karma-mocha-reporter',
         'karma-mocha',
-        'karma-chai'
+        _resolve('chai/framework')
       ];
       reporters = ['mocha'];
       """
@@ -37,7 +37,7 @@ Feature: Mocha reporter
         'karma-chrome-launcher',
         'karma-mocha-reporter',
         'karma-mocha',
-        'karma-chai'
+        _resolve('chai/framework')
       ];
       reporters = ['mocha'];
       """

@@ -1,6 +1,6 @@
 {
   "extends": "eslint:recommended",
-  "plugins": ["import", "n", "promise"],
+  "plugins": ["n"],
   "env": {
     "node": true,
     "es2021": true

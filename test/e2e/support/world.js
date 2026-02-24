@@ -7,6 +7,15 @@ const rimraf = require('rimraf')
 const { setWorldConstructor } = require('@cucumber/cucumber')
 const Proxy = require('./proxy')
 
+let nextPort = 10000 + Math.floor(Math.random() * 40000)
+const getNextPort = () => {
+  nextPort += 1
+  if (nextPort > 65000) {
+    nextPort = 10000
+  }
+  return nextPort
+}
+
 class World {
   constructor () {
     this.proxy = new Proxy()
@@ -40,6 +49,7 @@ class World {
       singleRun: true,
       reporters: ['dots'],
       frameworks: ['jasmine'],
+      port: getNextPort(),
       basePath: this.workDir,
       colors: false,
       logLevel: 'warn',

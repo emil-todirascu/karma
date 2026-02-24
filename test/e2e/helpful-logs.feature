@@ -11,7 +11,7 @@ Feature: Helpful warning and errors
       frameworks = ['mocha', 'chai'];
       plugins = [
         'karma-mocha',
-        'karma-chai',
+        _resolve('chai/framework'),
         'karma-chrome-launcher'
       ];
       """

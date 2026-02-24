@@ -14,7 +14,7 @@ Given('a configuration with:', function (fileContent) {
 })
 
 Given('a proxy on port {int} that prepends {string} to the base path', async function (proxyPort, proxyPath) {
-  return this.proxy.start(proxyPort, proxyPath)
+  return this.proxy.start(proxyPort, proxyPath, this.config.port)
 })
 
 When('I stop a server programmatically', function (callback) {
@@ -118,8 +118,12 @@ Then('it fails with like:', function (expectedOutput, callback) {
 })
 
 Then(/^the (stdout|stderr) (is exactly|contains|matches RegExp):$/, function (outputType, comparison, expectedOutput) {
-  const actualOutput = (outputType === 'stdout' ? this.lastRun.stdout : this.lastRun.stderr).trim()
-  expectedOutput = expectedOutput.trim()
+  const normalizeOutput = (text) => text
+    .trim()
+    .replace(/(Usage:|Installation:)\n[ \t]+karma/g, '$1\nkarma')
+
+  const actualOutput = normalizeOutput(outputType === 'stdout' ? this.lastRun.stdout : this.lastRun.stderr)
+  expectedOutput = normalizeOutput(expectedOutput)
 
   switch (comparison) {
     case 'is exactly':

@@ -14,3 +14,4 @@ test-results.xml
 test/unit/test.log
 test/unit/fixtures/bundled.js
 .DS_Store
+.npm-cache/

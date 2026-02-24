@@ -439,7 +439,7 @@
     "connect": "^3.7.0",
     "di": "^0.0.1",
     "dom-serialize": "^2.2.1",
-    "glob": "^11.1.0",
+    "glob": "^13.0.6",
     "graceful-fs": "^4.2.11",
     "http-proxy": "^1.18.1",
     "isbinaryfile": "^4.0.10",

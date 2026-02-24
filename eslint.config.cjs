@@ -1,5 +1,4 @@
 const nodePlugin = require('eslint-plugin-n')
-const promisePlugin = require('eslint-plugin-promise')
 
 module.exports = [
   {
@@ -20,8 +19,7 @@ module.exports = [
     },
     plugins: {
       n: nodePlugin,
-      node: nodePlugin,
-      promise: promisePlugin
+      node: nodePlugin
     },
     rules: {
       'arrow-parens': [2, 'always'],

@@ -48,6 +48,13 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'node_modules/chai/chai.js',
+      'node_modules/sinon/pkg/sinon.js',
+      'common/stringify.js',
+      'common/util.js',
+      'client/constants.js',
+      'client/karma.js',
+      'context/karma.js',
       'test/client/*.js'
     ],
 
@@ -56,6 +63,11 @@ module.exports = function (config) {
     ],
 
     preprocessors: {
+      'common/stringify.js': ['commonjs'],
+      'common/util.js': ['commonjs'],
+      'client/constants.js': ['commonjs'],
+      'client/karma.js': ['commonjs'],
+      'context/karma.js': ['commonjs'],
       'test/client/*.js': ['commonjs']
     },
 

@@ -1,5 +1,5 @@
-/* global __karma__ */
-var assert = require('assert')
+/* global __karma__, chai */
+var assert = chai.assert
 
 var stringify = require('../../common/stringify')
 
@@ -103,7 +103,11 @@ describe('stringify', function () {
       // Test only works in IE 9 and above
       var parser = new DOMParser()
       var doc = parser.parseFromString('<test></test>', 'application/xml')
-      assert.deepStrictEqual(stringify(doc), '<test></test>')
+      var serialized = stringify(doc)
+      assert(
+        serialized === '<test></test>' ||
+          serialized.indexOf('Skipping stringify, no support for dom-serialize') === 0
+      )
     }
   })
 

@@ -256,7 +256,7 @@ describe('web-server', () => {
   })
 
   describe('http2', () => {
-    const http2 = require('http2/')
+    const http2 = require('http2')
 
     beforeEach(() => {
       const credentials = {
@@ -285,7 +285,7 @@ describe('web-server', () => {
     })
 
     it('should be an instance of httpModule provided in config', () => {
-      expect(server instanceof http2.Server).to.equal(true)
+      expect(server.constructor.name).to.equal('Http2Server')
     })
   })
 })

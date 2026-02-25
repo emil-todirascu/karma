@@ -2049,7 +2049,9 @@
           return false;
         };
         function UNIMPLEMENTED_START() {
-          this.error("You need to include some adapter that implements __karma__.start method!");
+          this.error(
+            "You need to include some adapter that implements __karma__.start method!"
+          );
         }
         this.loaded = function() {
           if (!hasError && !isLoaded) {
@@ -2065,6 +2067,7 @@
         this.start = UNIMPLEMENTED_START;
         var proxyMethods = ["complete", "info", "result"];
         for (var i = 0; i < proxyMethods.length; i++) {
+          ;
           (function bindProxyMethod(methodName) {
             self[methodName] = function boundProxyMethod() {
               callParentKarmaMethod2(methodName, [].slice.call(arguments));
@@ -2137,7 +2140,9 @@
       ContextKarma2.getDirectCallParentKarmaMethod = function(parentWindow2) {
         return function directCallParentKarmaMethod(method, args) {
           if (!parentWindow2.karma[method]) {
-            parentWindow2.karma.error('Expected Karma method "' + method + `" to exist but it doesn't`);
+            parentWindow2.karma.error(
+              'Expected Karma method "' + method + `" to exist but it doesn't`
+            );
             return;
           }
           parentWindow2.karma[method].apply(parentWindow2.karma, args);
@@ -2145,7 +2150,10 @@
       };
       ContextKarma2.getPostMessageCallParentKarmaMethod = function(parentWindow2) {
         return function postMessageCallParentKarmaMethod(method, args) {
-          parentWindow2.postMessage({ __karmaMethod: method, __karmaArguments: args }, window.location.origin);
+          parentWindow2.postMessage(
+            { __karmaMethod: method, __karmaArguments: args },
+            window.location.origin
+          );
         };
       };
       module.exports = ContextKarma2;

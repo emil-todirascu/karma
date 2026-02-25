@@ -2078,20 +2078,26 @@
         this.config = {};
         this.socket = socket2;
         if (window.addEventListener) {
-          window.addEventListener("message", function handleMessage(evt) {
-            var origin = evt.origin || evt.originalEvent.origin;
-            if (origin !== window.location.origin) {
-              return;
-            }
-            var method = evt.data.__karmaMethod;
-            if (method) {
-              if (!self[method]) {
-                self.error('Received `postMessage` for "' + method + `" but the method doesn't exist`);
+          window.addEventListener(
+            "message",
+            function handleMessage(evt) {
+              var origin = evt.origin || evt.originalEvent.origin;
+              if (origin !== window.location.origin) {
                 return;
               }
-              self[method].apply(self, evt.data.__karmaArguments);
-            }
-          }, false);
+              var method = evt.data.__karmaMethod;
+              if (method) {
+                if (!self[method]) {
+                  self.error(
+                    'Received `postMessage` for "' + method + `" but the method doesn't exist`
+                  );
+                  return;
+                }
+                self[method].apply(self, evt.data.__karmaArguments);
+              }
+            },
+            false
+          );
         }
         var childWindow = null;
         function navigateContextTo(url) {
@@ -2103,7 +2109,9 @@
               }
               childWindow = opener(url);
               if (childWindow === null) {
-                self.error("Opening a new tab/window failed, probably because pop-ups are blocked.");
+                self.error(
+                  "Opening a new tab/window failed, probably because pop-ups are blocked."
+                );
               }
             } else if (url !== "about:blank") {
               var loadScript = function(idx) {
@@ -2215,7 +2223,9 @@
           if (returnUrl) {
             var isReturnUrlAllowed = false;
             for (var i = 0; i < this.config.allowedReturnUrlPatterns.length; i++) {
-              var allowedReturnUrlPattern = new RegExp(this.config.allowedReturnUrlPatterns[i]);
+              var allowedReturnUrlPattern = new RegExp(
+                this.config.allowedReturnUrlPatterns[i]
+              );
               if (allowedReturnUrlPattern.test(returnUrl)) {
                 isReturnUrlAllowed = true;
                 break;
@@ -2246,17 +2256,24 @@
           self.config = cfg;
           navigateContextTo(constant.CONTEXT_URL);
           if (self.config.clientDisplayNone) {
-            [].forEach.call(document2.querySelectorAll("#banner, #browsers"), function(el) {
-              el.style.display = "none";
-            });
+            ;
+            [].forEach.call(
+              document2.querySelectorAll("#banner, #browsers"),
+              function(el) {
+                el.style.display = "none";
+              }
+            );
           }
           if (window.console && window.console.clear) {
             window.console.clear();
           }
         });
-        socket2.on("stop", function() {
-          this.complete();
-        }.bind(this));
+        socket2.on(
+          "stop",
+          function() {
+            this.complete();
+          }.bind(this)
+        );
         socket2.on("connect", function() {
           socket2.io.engine.on("upgrade", function() {
             resultsBufferLimit = 1;
@@ -2371,7 +2388,12 @@
     "sync disconnect on unload": true,
     useNativeTimers: true
   });
-  var updater = new StatusUpdater(socket, util.elm("title"), util.elm("banner"), util.elm("browsers"));
+  var updater = new StatusUpdater(
+    socket,
+    util.elm("title"),
+    util.elm("banner"),
+    util.elm("browsers")
+  );
   window.karma = new Karma(
     updater,
     socket,

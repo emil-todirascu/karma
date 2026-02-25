@@ -1,5 +1,7 @@
 'use strict'
 
+const path = require('path')
+
 const pattern = (file, included, type) => ({
   pattern: file,
   included,
@@ -9,16 +11,9 @@ const pattern = (file, included, type) => ({
 })
 
 const framework = (files) => {
-  files.unshift(
-    pattern(require.resolve('chai/register-assert.js'), true, 'module')
-  )
-  files.unshift(
-    pattern(require.resolve('chai/register-expect.js'), true, 'module')
-  )
-  files.unshift(
-    pattern(require.resolve('chai/register-should.js'), true, 'module')
-  )
-  files.unshift(pattern(require.resolve('chai/index.js'), false, 'module'))
+  // Use the browser bundle and expose globals from `window.chai`.
+  files.unshift(pattern(path.join(__dirname, 'globals.js'), true))
+  files.unshift(pattern(require.resolve('chai/chai.js'), true))
 }
 
 framework.$inject = ['config.files']

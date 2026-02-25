@@ -2,7 +2,7 @@
 
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/karma-runner/karma) [![npm version](https://img.shields.io/npm/v/karma.svg?style=flat-square)](https://www.npmjs.com/package/karma) [![npm downloads](https://img.shields.io/npm/dm/karma.svg?style=flat-square)](https://npmcharts.com/compare/karma?minimal=true)
 
-[![Code Climate](https://img.shields.io/codeclimate/maintainability/karma-runner/karma)](https://codeclimate.com/github/karma-runner/karma) [![PRs Welcome](https://img.shields.io/badge/prs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com/) [![Dependency Status](https://img.shields.io/david/karma-runner/karma.svg?style=flat-square)](https://david-dm.org/karma-runner/karma) [![devDependency Status](https://img.shields.io/david/dev/karma-runner/karma.svg?style=flat-square)](https://david-dm.org/karma-runner/karma#info=devDependencies) [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+[![Code Climate](https://img.shields.io/codeclimate/maintainability/karma-runner/karma)](https://codeclimate.com/github/karma-runner/karma) [![PRs Welcome](https://img.shields.io/badge/prs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com/) [![Dependency Status](https://img.shields.io/david/karma-runner/karma.svg?style=flat-square)](https://david-dm.org/karma-runner/karma) [![devDependency Status](https://img.shields.io/david/dev/karma-runner/karma.svg?style=flat-square)](https://david-dm.org/karma-runner/karma#info=devDependencies)
 
 A simple tool that allows you to execute JavaScript code in multiple
 _real_ browsers.
@@ -50,7 +50,7 @@ It has been incredible to see Karma's impact on the web testing ecosystem and we
   reports.
 - You want to use [RequireJS] for your source files.
 
-## But I still want to use \_insert testing library\_
+## But I still want to use _insert testing library_
 
 Karma is not a testing framework, nor an assertion library.
 Karma just launches an HTTP server, and generates the test runner HTML file you probably already know from your favourite testing framework.
@@ -122,5 +122,6 @@ use the awesome [Socket.io] library and [Node.js].
 [@JsKarma]: https://twitter.com/JsKarma
 [RequireJS]: https://requirejs.org/
 [Istanbul]: https://github.com/gotwarlost/istanbul
+
 [browsers]: https://karma-runner.github.io/latest/config/browsers.html
 [documentation]: https://karma-runner.github.io

@@ -517,6 +517,7 @@
     "build:check": "node scripts/client.js check",
     "build:watch": "node scripts/client.js watch",
     "test:integration": "./scripts/integration-tests.sh",
-    "commitlint": "commitlint"
+    "commitlint": "commitlint",
+    "prepare": "husky"
   }
 }

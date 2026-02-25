@@ -1,5 +1,5 @@
-/* eslint-disable no-unused-vars */
+/* exported plus */
 // Some code under test
-function plus (a, b) {
+function plus(a, b) {
   return a + b
 }

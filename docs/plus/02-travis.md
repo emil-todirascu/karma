@@ -12,6 +12,7 @@ history will be available within their control panel. This article assumes you
 already have Travis account.
 
 ## Configure Travis
+
 Create a file in your project root called `.travis.yml` with the
 following YAML content:
 
@@ -22,6 +23,7 @@ node_js:
 ```
 
 ## Set up a Test Command
+
 If you do not already have a `package.json` in your project root, create one now. Travis runs `npm test` to trigger your tests, so this
 is where you tell Travis how to run your tests.
 
@@ -42,9 +44,11 @@ chance to specify any modules your app needs that Travis does not know
 about like Karma.
 
 ## Configure Travis with Firefox
+
 Travis supports running a real browser (Firefox) with a virtual
 screen. Just update your `.travis.yml` to set up the virtual screen
 like this (if you're using Xenial):
+
 ```ruby
 language: node_js
 node_js:
@@ -55,6 +59,7 @@ services:
 ```
 
 Or this, for Trusty and below:
+
 ```ruby
 language: node_js
 node_js:
@@ -66,20 +71,20 @@ before_script:
 
 And now, you can run your tests on Firefox, just change the `npm test`
 command to
+
 ```bash
 karma start --browsers Firefox --single-run
 ```
 
 ## Notes
 
-* Travis' Node environment has very little available. If the startup
+- Travis' Node environment has very little available. If the startup
   process in Travis fails to check for missing module information and be sure to add them to your `package.json` dependencies.
-* Travis does not run on your local network so any code that attempts
+- Travis does not run on your local network so any code that attempts
   to connect to resources should be stubbed out using [Nock].
-* There are more options available to your `.travis.yml`, such as
+- There are more options available to your `.travis.yml`, such as
   running scripts before the install or test run. There are hints in
   the Travis docs for [GUI apps] configuration.
-
 
 [Travis CI]: https://travis-ci.org/
 [Github]: https://github.com/

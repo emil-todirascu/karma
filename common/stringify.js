@@ -7,11 +7,11 @@ try {
 
 var instanceOf = require('./util').instanceOf
 
-function isNode (obj) {
+function isNode(obj) {
   return (obj.tagName || obj.nodeName) && obj.nodeType
 }
 
-function stringify (obj, depth) {
+function stringify(obj, depth) {
   if (depth === 0) {
     return '...'
   }

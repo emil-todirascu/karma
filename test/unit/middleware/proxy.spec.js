@@ -9,75 +9,80 @@ describe('middleware.proxy', () => {
   let type
   const m = loadFile(path.join(__dirname, '/../../../lib/middleware/proxy.js'))
 
-  const mockProxies = [{
-    path: '/proxy',
-    baseUrl: '',
-    host: 'localhost',
-    port: '9000',
-    proxy: {
-      web: function (req, res) {
-        type = 'web'
-        requestedUrl = req.url
-        res.writeHead(200)
-        res.end('DONE')
-      },
-      ws: function (req, socket, head) {
-        type = 'ws'
-        requestedUrl = req.url
+  const mockProxies = [
+    {
+      path: '/proxy',
+      baseUrl: '',
+      host: 'localhost',
+      port: '9000',
+      proxy: {
+        web: function (req, res) {
+          type = 'web'
+          requestedUrl = req.url
+          res.writeHead(200)
+          res.end('DONE')
+        },
+        ws: function (req, socket, head) {
+          type = 'ws'
+          requestedUrl = req.url
+        }
+      }
+    },
+    {
+      path: '/static',
+      baseUrl: '',
+      host: 'gstatic.com',
+      port: '80',
+      proxy: {
+        web: function (req, res) {
+          type = 'web'
+          requestedUrl = req.url
+          res.writeHead(200)
+          res.end('DONE')
+        },
+        ws: function (req, socket, head) {
+          type = 'ws'
+          requestedUrl = req.url
+        }
+      }
+    },
+    {
+      path: '/sub/some',
+      baseUrl: '/something',
+      host: 'gstatic.com',
+      port: '80',
+      proxy: {
+        web: function (req, res) {
+          type = 'web'
+          requestedUrl = req.url
+          res.writeHead(200)
+          res.end('DONE')
+        },
+        ws: function (req, socket, head) {
+          type = 'ws'
+          requestedUrl = req.url
+        }
+      }
+    },
+    {
+      path: '/sub',
+      baseUrl: '',
+      host: 'localhost',
+      port: '9000',
+      proxy: {
+        web: function (req, res) {
+          type = 'web'
+          requestedUrl = req.url
+          res.writeHead(200)
+          res.end('DONE')
+        },
+        ws: function (req, socket, head) {
+          type = 'ws'
+          requestedUrl = req.url
+        }
       }
     }
-  }, {
-    path: '/static',
-    baseUrl: '',
-    host: 'gstatic.com',
-    port: '80',
-    proxy: {
-      web: function (req, res) {
-        type = 'web'
-        requestedUrl = req.url
-        res.writeHead(200)
-        res.end('DONE')
-      },
-      ws: function (req, socket, head) {
-        type = 'ws'
-        requestedUrl = req.url
-      }
-    }
-  }, {
-    path: '/sub/some',
-    baseUrl: '/something',
-    host: 'gstatic.com',
-    port: '80',
-    proxy: {
-      web: function (req, res) {
-        type = 'web'
-        requestedUrl = req.url
-        res.writeHead(200)
-        res.end('DONE')
-      },
-      ws: function (req, socket, head) {
-        type = 'ws'
-        requestedUrl = req.url
-      }
-    }
-  }, {
-    path: '/sub',
-    baseUrl: '',
-    host: 'localhost',
-    port: '9000',
-    proxy: {
-      web: function (req, res) {
-        type = 'web'
-        requestedUrl = req.url
-        res.writeHead(200)
-        res.end('DONE')
-      },
-      ws: function (req, socket, head) {
-        type = 'ws'
-        requestedUrl = req.url
-      }
-    }
-  }]
+  ]
 
   beforeEach(() => {
     requestedUrl = ''
@@ -98,7 +103,11 @@ describe('middleware.proxy', () => {
 
   it('should proxy websocket requests', (done) => {
     const proxy = m.createProxyHandler(mockProxies, true, '/', {})
-    proxy.upgrade(new httpMock.ServerRequest('/proxy/test.html'), response, nextSpy)
+    proxy.upgrade(
+      new httpMock.ServerRequest('/proxy/test.html'),
+      response,
+      nextSpy
+    )
 
     expect(nextSpy).not.to.have.been.called
     expect(requestedUrl).to.equal('/test.html')
@@ -348,13 +357,17 @@ describe('middleware.proxy', () => {
   it('should bind proxy event', () => {
     const proxy = { '/base/': 'http://localhost:8000/' }
     const config = {
-      proxyReq: function proxyReq () {},
-      proxyRes: function proxyRes () {}
+      proxyReq: function proxyReq() {},
+      proxyRes: function proxyRes() {}
     }
     const parsedProxyConfig = m.parseProxyConfig(proxy, config)
     expect(parsedProxyConfig).to.have.length(1)
-    expect(parsedProxyConfig[0].proxy.listeners('proxyReq')[0]).to.equal(config.proxyReq)
-    expect(parsedProxyConfig[0].proxy.listeners('proxyRes')[0]).to.equal(config.proxyRes)
+    expect(parsedProxyConfig[0].proxy.listeners('proxyReq')[0]).to.equal(
+      config.proxyReq
+    )
+    expect(parsedProxyConfig[0].proxy.listeners('proxyRes')[0]).to.equal(
+      config.proxyRes
+    )
   })
 
   it('should handle empty proxy config', () => {

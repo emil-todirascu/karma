@@ -19,7 +19,7 @@ const stubPromise = (obj, method, stubAction) => {
   })
 }
 
-function FakeBrowser (id, name, baseBrowserDecorator) {
+function FakeBrowser(id, name, baseBrowserDecorator) {
   this.id = id
   this.name = name
   this.DEFAULT_CMD = {
@@ -39,7 +39,7 @@ function FakeBrowser (id, name, baseBrowserDecorator) {
   sinon.stub(this, 'restart')
 }
 
-function ScriptBrowser (id, name, baseBrowserDecorator) {
+function ScriptBrowser(id, name, baseBrowserDecorator) {
   this.id = id
   this.name = name
   this.DEFAULT_CMD = {
@@ -87,14 +87,16 @@ describe('launcher', () => {
         urlRoot: '/root/'
       }
 
-      const injector = new di.Injector([{
-        'launcher:Fake': ['type', FakeBrowser],
-        'launcher:Script': ['type', ScriptBrowser],
-        server: ['value', server],
-        emitter: ['value', emitter],
-        config: ['value', config],
-        timer: ['factory', createMockTimer]
-      }])
+      const injector = new di.Injector([
+        {
+          'launcher:Fake': ['type', FakeBrowser],
+          'launcher:Script': ['type', ScriptBrowser],
+          server: ['value', server],
+          emitter: ['value', emitter],
+          config: ['value', config],
+          timer: ['factory', createMockTimer]
+        }
+      ])
       l = new launcher.Launcher(server, emitter, injector)
     })
 
@@ -104,7 +106,9 @@ describe('launcher', () => {
 
         const browser = FakeBrowser._instances.pop()
         l.jobs.on('end', () => {
-          expect(browser.start).to.have.been.calledWith('http://localhost:1234/root/')
+          expect(browser.start).to.have.been.calledWith(
+            'http://localhost:1234/root/'
+          )
           expect(browser.id).to.equal(lastGeneratedId)
           expect(browser.name).to.equal('Fake')
           done()
@@ -129,14 +133,16 @@ describe('launcher', () => {
             }
           }
 
-          const injector = new di.Injector([{
-            'launcher:Fake': ['type', FakeBrowser],
-            'launcher:Script': ['type', ScriptBrowser],
-            server: ['value', server],
-            emitter: ['value', emitter],
-            config: ['value', config],
-            timer: ['factory', createMockTimer]
-          }])
+          const injector = new di.Injector([
+            {
+              'launcher:Fake': ['type', FakeBrowser],
+              'launcher:Script': ['type', ScriptBrowser],
+              server: ['value', server],
+              emitter: ['value', emitter],
+              config: ['value', config],
+              timer: ['factory', createMockTimer]
+            }
+          ])
           l = new launcher.Launcher(server, emitter, injector)
         })
 
@@ -145,7 +151,9 @@ describe('launcher', () => {
 
           const browser = FakeBrowser._instances.pop()
           l.jobs.on('end', () => {
-            expect(browser.start).to.have.been.calledWith('https://proxy:5678/__proxy__/root/')
+            expect(browser.start).to.have.been.calledWith(
+              'https://proxy:5678/__proxy__/root/'
+            )
             expect(browser.id).to.equal(lastGeneratedId)
             expect(browser.name).to.equal('Fake')
             done()
@@ -169,7 +177,9 @@ describe('launcher', () => {
         const script = ScriptBrowser._instances.pop()
 
         l.jobs.on('end', () => {
-          expect(script.start).to.have.been.calledWith('http://localhost:1234/root/')
+          expect(script.start).to.have.been.calledWith(
+            'http://localhost:1234/root/'
+          )
           expect(script.name).to.equal('/usr/local/bin/special-browser')
 
           done()
@@ -182,7 +192,9 @@ describe('launcher', () => {
 
         const browser = FakeBrowser._instances.pop()
         l.jobs.on('end', () => {
-          expect(browser.start).to.have.been.calledWith('http://whatever:1234/root/')
+          expect(browser.start).to.have.been.calledWith(
+            'http://whatever:1234/root/'
+          )
           done()
         })
       })
@@ -276,19 +288,25 @@ describe('launcher', () => {
 
     describe('areAllCaptured', () => {
       it('should return true if only if all browsers captured', () => {
-        l._browsers = [{
-          isCaptured: () => true
-        }, {
-          isCaptured: () => false
-        }]
+        l._browsers = [
+          {
+            isCaptured: () => true
+          },
+          {
+            isCaptured: () => false
+          }
+        ]
 
         expect(l.areAllCaptured()).to.be.equal(false)
 
-        l._browsers = [{
-          isCaptured: () => true
-        }, {
-          isCaptured: () => true
-        }]
+        l._browsers = [
+          {
+            isCaptured: () => true
+          },
+          {
+            isCaptured: () => true
+          }
+        ]
 
         expect(l.areAllCaptured()).to.be.equal(true)
       })

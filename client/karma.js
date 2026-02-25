@@ -2,7 +2,7 @@ var stringify = require('../common/stringify')
 var constant = require('./constants')
 var util = require('../common/util')
 
-function Karma (updater, socket, iframe, opener, navigator, location, document) {
+function Karma(updater, socket, iframe, opener, navigator, location, document) {
   this.updater = updater
   var startEmitted = false
   var self = this
@@ -37,7 +37,9 @@ function Karma (updater, socket, iframe, opener, navigator, location, document) 
       //     Should be safe to delete all reference to createURL by
       //     February 2020.
       // https://github.com/WICG/trusted-types/pull/204
-      policy.createURL = function (s) { return s }
+      policy.createURL = function (s) {
+        return s
+      }
     }
   }
 
@@ -59,29 +61,37 @@ function Karma (updater, socket, iframe, opener, navigator, location, document) 
   // DEV: These are to allow windows in separate processes execute local tasks
   //   Electron is one of these environments
   if (window.addEventListener) {
-    window.addEventListener('message', function handleMessage (evt) {
-      // Resolve the origin of our message
-      var origin = evt.origin || evt.originalEvent.origin
+    window.addEventListener(
+      'message',
+      function handleMessage(evt) {
+        // Resolve the origin of our message
+        var origin = evt.origin || evt.originalEvent.origin
 
-      // If the message isn't from our host, then reject it
-      if (origin !== window.location.origin) {
-        return
-      }
-
-      // Take action based on the message type
-      var method = evt.data.__karmaMethod
-      if (method) {
-        if (!self[method]) {
-          self.error('Received `postMessage` for "' + method + '" but the method doesn\'t exist')
+        // If the message isn't from our host, then reject it
+        if (origin !== window.location.origin) {
           return
         }
-        self[method].apply(self, evt.data.__karmaArguments)
-      }
-    }, false)
+
+        // Take action based on the message type
+        var method = evt.data.__karmaMethod
+        if (method) {
+          if (!self[method]) {
+            self.error(
+              'Received `postMessage` for "' +
+                method +
+                '" but the method doesn\'t exist'
+            )
+            return
+          }
+          self[method].apply(self, evt.data.__karmaArguments)
+        }
+      },
+      false
+    )
   }
 
   var childWindow = null
-  function navigateContextTo (url) {
+  function navigateContextTo(url) {
     if (self.config.useIframe === false) {
       // run in new window
       if (self.config.runInParent === false) {
@@ -95,10 +105,12 @@ function Karma (updater, socket, iframe, opener, navigator, location, document) 
         }
         childWindow = opener(url)
         if (childWindow === null) {
-          self.error('Opening a new tab/window failed, probably because pop-ups are blocked.')
+          self.error(
+            'Opening a new tab/window failed, probably because pop-ups are blocked.'
+          )
         }
-      // run context on parent element (client_with_context)
-      // using window.__karma__.scriptUrls to get the html element strings and load them dynamically
+        // run context on parent element (client_with_context)
+        // using window.__karma__.scriptUrls to get the html element strings and load them dynamically
       } else if (url !== 'about:blank') {
         var loadScript = function (idx) {
           if (idx < window.__karma__.scriptUrls.length) {
@@ -128,7 +140,7 @@ function Karma (updater, socket, iframe, opener, navigator, location, document) 
         }
         loadScript(0)
       }
-    // run in iframe
+      // run in iframe
     } else {
       // The onbeforeunload listener was added by the context to catch
       // unexpected navigations while running tests.
@@ -149,7 +161,7 @@ function Karma (updater, socket, iframe, opener, navigator, location, document) 
 
   this.stringify = stringify
 
-  function getLocation (url, lineno, colno) {
+  function getLocation(url, lineno, colno) {
     var location = ''
 
     if (url !== undefined) {
@@ -201,8 +213,11 @@ function Karma (updater, socket, iframe, opener, navigator, location, document) 
       if (Object.prototype.hasOwnProperty.call(originalResult, propertyName)) {
         var propertyValue = originalResult[propertyName]
 
-        if (Object.prototype.toString.call(propertyValue) === '[object Array]') {
-          convertedResult[propertyName] = Array.prototype.slice.call(propertyValue)
+        if (
+          Object.prototype.toString.call(propertyValue) === '[object Array]'
+        ) {
+          convertedResult[propertyName] =
+            Array.prototype.slice.call(propertyValue)
         } else {
           convertedResult[propertyName] = propertyValue
         }
@@ -244,7 +259,9 @@ function Karma (updater, socket, iframe, opener, navigator, location, document) 
     if (returnUrl) {
       var isReturnUrlAllowed = false
       for (var i = 0; i < this.config.allowedReturnUrlPatterns.length; i++) {
-        var allowedReturnUrlPattern = new RegExp(this.config.allowedReturnUrlPatterns[i])
+        var allowedReturnUrlPattern = new RegExp(
+          this.config.allowedReturnUrlPatterns[i]
+        )
         if (allowedReturnUrlPattern.test(returnUrl)) {
           isReturnUrlAllowed = true
           break
@@ -281,9 +298,12 @@ function Karma (updater, socket, iframe, opener, navigator, location, document) 
     navigateContextTo(constant.CONTEXT_URL)
 
     if (self.config.clientDisplayNone) {
-      [].forEach.call(document.querySelectorAll('#banner, #browsers'), function (el) {
-        el.style.display = 'none'
-      })
+      ;[].forEach.call(
+        document.querySelectorAll('#banner, #browsers'),
+        function (el) {
+          el.style.display = 'none'
+        }
+      )
     }
 
     // clear the console before run
@@ -292,9 +312,12 @@ function Karma (updater, socket, iframe, opener, navigator, location, document) 
       window.console.clear()
     }
   })
-  socket.on('stop', function () {
-    this.complete()
-  }.bind(this))
+  socket.on(
+    'stop',
+    function () {
+      this.complete()
+    }.bind(this)
+  )
 
   // Report the browser name and Id. Note that this event can also fire if the connection has
   // been temporarily lost, but the socket reconnected automatically. Read more in the docs:

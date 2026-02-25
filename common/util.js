@@ -1,5 +1,8 @@
 exports.instanceOf = function (value, constructorName) {
-  return Object.prototype.toString.apply(value) === '[object ' + constructorName + ']'
+  return (
+    Object.prototype.toString.apply(value) ===
+    '[object ' + constructorName + ']'
+  )
 }
 
 exports.elm = function (id) {

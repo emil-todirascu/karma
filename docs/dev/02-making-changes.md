@@ -12,20 +12,22 @@ Here are some tips on how to set up a Karma workspace and how to send a good pul
 
 ## Setting up the Workspace
 
-* Make sure you have a [GitHub account](https://github.com/signup/free).
-* [Fork the repository] on GitHub.
-* Clone your fork
+- Make sure you have a [GitHub account](https://github.com/signup/free).
+- [Fork the repository] on GitHub.
+- Clone your fork
   ```bash
   $ git clone https://github.com/<your-username>/karma.git
   $ cd karma
   ```
-* Install for development
+- Install for development
   ```bash
   $ npm install
   ```
 
 ## Testing and Building
+
 - Run the tests via:
+
   ```bash
   $ npm test
   # or you can run test suits individually
@@ -35,6 +37,7 @@ Here are some tips on how to set up a Karma workspace and how to send a good pul
   ```
 
 - Lint the code via:
+
   ```bash
   $ npm run lint
   # or you can also apply auto-fixes where possible
@@ -49,10 +52,13 @@ Here are some tips on how to set up a Karma workspace and how to send a good pul
   ```
 
 ## Changing the Code
+
 Checkout a new branch and name it accordingly to what you intend to do:
+
 - Features get the prefix `feature-`.
 - Bug fixes get the prefix `fix-`.
 - Improvements to the documentation get the prefix `docs-`.
+
 ```bash
 $ git checkout -b <branch_name>
 ```
@@ -61,7 +67,6 @@ Open your favorite editor, make some changes, run the tests, change the code, ru
 change the code, run the tests, etc.
 
 - Please follow http://nodeguide.com/style.html (with exception of 100 characters per line).
-
 
 ## Sending a Pull Request
 
@@ -84,10 +89,11 @@ After sending a pull request, other developers will review and discuss your chan
 Please address all the comments. Once everything is all right, one of the maintainers will merge
 your changes in.
 
-
 ## Contributor License Agreement
+
 Please sign our Contributor License Agreement (CLA) before sending pull requests.
 For any code changes to be accepted, the CLA must be signed. It's a quick process, we promise!
+
 - For individuals, we have a [simple click-through form].
 - For corporations we'll need you to print, sign and one of scan+email, fax or mail [the form].
 

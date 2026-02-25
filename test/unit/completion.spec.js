@@ -5,7 +5,7 @@ const c = require('../../lib/completion')
 describe('completion', () => {
   let completion
 
-  function mockEnv (line) {
+  function mockEnv(line) {
     const words = line.split(' ')
 
     return {
@@ -42,12 +42,18 @@ describe('completion', () => {
     })
 
     it('should filter out already used words/args', () => {
-      c.sendCompletion(['--single-run', '--port', '--xxx'], mockEnv('start --single-run '))
+      c.sendCompletion(
+        ['--single-run', '--port', '--xxx'],
+        mockEnv('start --single-run ')
+      )
       expect(completion).to.deep.equal(['--port', '--xxx'])
     })
 
     it('should filter out already used oposite words', () => {
-      c.sendCompletion(['--auto-watch', '--port'], mockEnv('start --no-auto-watch '))
+      c.sendCompletion(
+        ['--auto-watch', '--port'],
+        mockEnv('start --no-auto-watch ')
+      )
       expect(completion).to.deep.equal(['--port'])
     })
   })

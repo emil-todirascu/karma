@@ -25,7 +25,11 @@ describe('watcher', () => {
 
     it('should expand braces and watch all the patterns', () => {
       m.watchPatterns(['/some/{a,b}/*.js', '/a/*'], chokidarWatcher)
-      expect(chokidarWatcher.watchedPaths_).to.deep.equal(['/some/a', '/some/b', '/a'])
+      expect(chokidarWatcher.watchedPaths_).to.deep.equal([
+        '/some/a',
+        '/some/b',
+        '/a'
+      ])
     })
 
     it('should not watch the same path twice', () => {
@@ -39,19 +43,30 @@ describe('watcher', () => {
     })
 
     it('should not watch subpaths that are already watched', () => {
-      m.watchPatterns(['/some/sub/*.js', '/some/a*.*'].map(path.normalize), chokidarWatcher)
-      expect(chokidarWatcher.watchedPaths_).to.deep.equal([path.normalize('/some')])
+      m.watchPatterns(
+        ['/some/sub/*.js', '/some/a*.*'].map(path.normalize),
+        chokidarWatcher
+      )
+      expect(chokidarWatcher.watchedPaths_).to.deep.equal([
+        path.normalize('/some')
+      ])
     })
 
     it('should watch a file matching subpath directory', () => {
       // regression #521
       m.watchPatterns(['/some/test-file.js', '/some/test/**'], chokidarWatcher)
-      expect(chokidarWatcher.watchedPaths_).to.deep.equal(['/some/test-file.js', '/some/test'])
+      expect(chokidarWatcher.watchedPaths_).to.deep.equal([
+        '/some/test-file.js',
+        '/some/test'
+      ])
     })
 
     it('should watch files matching a subpath directory with braces', () => {
       m.watchPatterns(['/some/{a,b}/test.js'], chokidarWatcher)
-      expect(chokidarWatcher.watchedPaths_).to.deep.equal(['/some/a/test.js', '/some/b/test.js'])
+      expect(chokidarWatcher.watchedPaths_).to.deep.equal([
+        '/some/a/test.js',
+        '/some/b/test.js'
+      ])
     })
   })
 
@@ -88,7 +103,9 @@ describe('watcher', () => {
       expect(ignore('/some/files', FILE_STAT)).to.equal(false)
       expect(ignore('/some/files/deep/.npm', FILE_STAT)).to.equal(false)
       expect(ignore('.#files.js', FILE_STAT)).to.equal(true)
-      expect(ignore('/some/files/deeper/nested/.#files.js', FILE_STAT)).to.equal(true)
+      expect(
+        ignore('/some/files/deeper/nested/.#files.js', FILE_STAT)
+      ).to.equal(true)
     })
 
     it('should ignore files that do not match any pattern', () => {

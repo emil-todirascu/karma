@@ -1,4 +1,4 @@
-function middleware (request, response, next) {
+function middleware(request, response, next) {
   if (/\/foo\.js/.test(request.normalizedUrl)) {
     response.setHeader('Content-Type', 'text/plain')
     response.writeHead(200)
@@ -8,7 +8,7 @@ function middleware (request, response, next) {
   next()
 }
 
-function framework (config) {
+function framework(config) {
   config.middleware = config.middleware || []
   config.middleware.push('foo')
 }

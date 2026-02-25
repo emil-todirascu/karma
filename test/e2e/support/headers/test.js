@@ -1,4 +1,4 @@
-function httpGet (url) {
+function httpGet(url) {
   const xmlHttp = new XMLHttpRequest()
 
   xmlHttp.open('GET', url, false)
@@ -9,6 +9,10 @@ function httpGet (url) {
 
 describe('setting custom headers', function () {
   it('should get custom headers', function () {
-    expect(httpGet('/base/headers/foo.js').getResponseHeader('Custom-Header-Awesomeness')).toBe('there.is.no.dana.only.zuul')
+    expect(
+      httpGet('/base/headers/foo.js').getResponseHeader(
+        'Custom-Header-Awesomeness'
+      )
+    ).toBe('there.is.no.dana.only.zuul')
   })
 })

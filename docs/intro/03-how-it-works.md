@@ -3,6 +3,7 @@ The results of each test against each browser are examined and displayed via the
 such that they can see which browsers and tests passed or failed.
 
 A browser can be captured either
+
 - manually, by visiting the URL where the Karma server is listening (typically `http://localhost:9876/`),
 - or automatically by letting Karma know which browsers to start when Karma is run (see [browsers]).
 
@@ -26,12 +27,12 @@ Then karma launches zero, one, or more browsers, setting their start page the Ka
 
 When the browsers connect, Karma serves a 'client.html' page; when this page runs in the browser it connects back to the server via websockets.
 
-Once the server sees the websocket connection, it instructs the client -- over the websocket -- to execute tests.  The client page opens an iframe with a 'context.html' page from the server. The server generates this context.html page using the configuration. This page includes the test framework adapter, the code to be tested, and the test code.
+Once the server sees the websocket connection, it instructs the client -- over the websocket -- to execute tests. The client page opens an iframe with a 'context.html' page from the server. The server generates this context.html page using the configuration. This page includes the test framework adapter, the code to be tested, and the test code.
 
 When the browser loads this context page, the onload event handler connects the context page to the client page via postMessage. The framework adapter is in charge at this point: it runs the test, reporting errors or success by messaging through the client page.
 
-Messages sent to the client page are forwarded through the websocket to the Karma server. The server re-dispatches these messages as 'browser' events.  The reporters listening to 'browser' events get the data; they may print it, save it to files, or forward the data to another service.
-Since the data is sent by the test framework adapter to the reporter, adapters and reporters almost always come in pairs, like karma-jasmine and karma-jasmine-reporter.  The detailed content of test-result data is of no concern to other parts of karma: only the reporter needs to know its format.
+Messages sent to the client page are forwarded through the websocket to the Karma server. The server re-dispatches these messages as 'browser' events. The reporters listening to 'browser' events get the data; they may print it, save it to files, or forward the data to another service.
+Since the data is sent by the test framework adapter to the reporter, adapters and reporters almost always come in pairs, like karma-jasmine and karma-jasmine-reporter. The detailed content of test-result data is of no concern to other parts of karma: only the reporter needs to know its format.
 
 Karma has many variations and options that may cause different workflow with different configurations.
 

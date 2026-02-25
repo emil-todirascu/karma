@@ -23,7 +23,7 @@ describe('cli', () => {
   let currentCwd = null
 
   const pathMock = {
-    resolve (p) {
+    resolve(p) {
       return path.resolve(currentCwd, p)
     }
   }
@@ -49,7 +49,7 @@ describe('cli', () => {
       global: {},
       console: mockery.console,
       process: mockery.process,
-      require (path) {
+      require(path) {
         if (path.indexOf('./') === 0) {
           return require('../../lib/' + path)
         } else {
@@ -63,14 +63,31 @@ describe('cli', () => {
   describe('processArgs', () => {
     it('should override if multiple options given', () => {
       // yargs parses --port 123 --port 456 as port = [123, 456] which makes no sense
-      const options = processArgs(['start', 'some.conf', '--port', '12', '--log-level', 'info', '--port', '34', '--log-level', 'debug'])
+      const options = processArgs([
+        'start',
+        'some.conf',
+        '--port',
+        '12',
+        '--log-level',
+        'info',
+        '--port',
+        '34',
+        '--log-level',
+        'debug'
+      ])
 
       expect(options.port).to.equal(34)
       expect(options.logLevel).to.equal('DEBUG')
     })
 
     it('should return camelCased options', () => {
-      const options = processArgs(['start', 'some.conf', '--port', '12', '--single-run'])
+      const options = processArgs([
+        'start',
+        'some.conf',
+        '--port',
+        '12',
+        '--single-run'
+      ])
 
       expect(options.configFile).to.exist
       expect(options.port).to.equal(12)
@@ -80,7 +97,9 @@ describe('cli', () => {
     it('should parse options without configFile and set default', () => {
       setCWD('/cwd')
       const options = processArgs(['start', '--auto-watch'])
-      expect(path.resolve(options.configFile)).to.equal(path.resolve('/cwd/karma.conf.js'))
+      expect(path.resolve(options.configFile)).to.equal(
+        path.resolve('/cwd/karma.conf.js')
+      )
       expect(options.autoWatch).to.equal(true)
     })
 
@@ -88,14 +107,18 @@ describe('cli', () => {
       setCWD('/cwd2')
       const options = processArgs(['start', '--port', '10'])
 
-      expect(path.resolve(options.configFile)).to.equal(path.resolve('/cwd2/karma.conf.coffee'))
+      expect(path.resolve(options.configFile)).to.equal(
+        path.resolve('/cwd2/karma.conf.coffee')
+      )
     })
 
     it('should set default karma.conf.ts config file if exists', () => {
       setCWD('/cwd3')
       const options = processArgs(['start', '--port', '10'])
 
-      expect(path.resolve(options.configFile)).to.equal(path.resolve('/cwd3/karma.conf.ts'))
+      expect(path.resolve(options.configFile)).to.equal(
+        path.resolve('/cwd3/karma.conf.ts')
+      )
     })
 
     it('should not set default config if neither exists', () => {
@@ -106,13 +129,29 @@ describe('cli', () => {
     })
 
     it('should parse auto-watch, colors, singleRun to boolean', () => {
-      let options = processArgs(['start', '--auto-watch', 'false', '--colors', 'false', '--single-run', 'false'])
+      let options = processArgs([
+        'start',
+        '--auto-watch',
+        'false',
+        '--colors',
+        'false',
+        '--single-run',
+        'false'
+      ])
 
       expect(options.autoWatch).to.equal(false)
       expect(options.colors).to.equal(false)
       expect(options.singleRun).to.equal(false)
 
-      options = processArgs(['start', '--auto-watch', 'true', '--colors', 'true', '--single-run', 'true'])
+      options = processArgs([
+        'start',
+        '--auto-watch',
+        'true',
+        '--colors',
+        'true',
+        '--single-run',
+        'true'
+      ])
 
       expect(options.autoWatch).to.equal(true)
       expect(options.colors).to.equal(true)
@@ -129,34 +168,53 @@ describe('cli', () => {
       options = processArgs(['start', '--log-level', 'warn'])
       expect(options.logLevel).to.equal(constant.LOG_WARN)
 
-      options = processArgs(['start', '--log-level', 'foo'])
+      processArgs(['start', '--log-level', 'foo'])
       expect(mockery.process.exit).to.have.been.calledWith(1)
 
-      options = processArgs(['start', '--log-level'])
+      processArgs(['start', '--log-level'])
       expect(mockery.process.exit).to.have.been.calledWith(1)
     })
 
     it('should parse format-error into a function', () => {
       // root export
-      let options = processArgs(['start', '--format-error', '../../test/unit/fixtures/format-error-root'])
+      let options = processArgs([
+        'start',
+        '--format-error',
+        '../../test/unit/fixtures/format-error-root'
+      ])
       const formatErrorRoot = require('../../test/unit/fixtures/format-error-root')
       expect(options.formatError).to.equal(formatErrorRoot)
 
       // property export
-      options = processArgs(['start', '--format-error', '../../test/unit/fixtures/format-error-property'])
-      const formatErrorProperty = require('../../test/unit/fixtures/format-error-property').formatError
+      options = processArgs([
+        'start',
+        '--format-error',
+        '../../test/unit/fixtures/format-error-property'
+      ])
+      const formatErrorProperty =
+        require('../../test/unit/fixtures/format-error-property').formatError
       expect(options.formatError).to.equal(formatErrorProperty)
     })
 
     it('should parse browsers into an array', () => {
-      const options = processArgs(['start', '--browsers', 'Chrome,ChromeCanary,Firefox'])
-      expect(options.browsers).to.deep.equal(['Chrome', 'ChromeCanary', 'Firefox'])
+      const options = processArgs([
+        'start',
+        '--browsers',
+        'Chrome,ChromeCanary,Firefox'
+      ])
+      expect(options.browsers).to.deep.equal([
+        'Chrome',
+        'ChromeCanary',
+        'Firefox'
+      ])
     })
 
     it('should resolve configFile to absolute path', () => {
       setCWD('/cwd')
       const options = processArgs(['start', 'some/config.js'])
-      expect(path.resolve(options.configFile)).to.equal(path.resolve('/cwd/some/config.js'))
+      expect(path.resolve(options.configFile)).to.equal(
+        path.resolve('/cwd/some/config.js')
+      )
     })
 
     it('should parse report-slower-than to a number', () => {
@@ -178,9 +236,12 @@ describe('cli', () => {
     it('should parse removed/added/changed files to array', () => {
       const options = processArgs([
         'run',
-        '--removed-files', 'r1.js,r2.js',
-        '--changed-files', 'ch1.js,ch2.js',
-        '--added-files', 'a1.js,a2.js'
+        '--removed-files',
+        'r1.js,r2.js',
+        '--changed-files',
+        'ch1.js,ch2.js',
+        '--added-files',
+        'a1.js,a2.js'
       ])
 
       expect(options.removedFiles).to.deep.equal(['r1.js', 'r2.js'])
@@ -191,19 +252,43 @@ describe('cli', () => {
 
   describe('parseClientArgs', () => {
     it('should return arguments after --', () => {
-      const args = cli.parseClientArgs(['node', 'karma.js', 'runArg', '--flag', '--', '--foo', '--bar', 'baz'])
+      const args = cli.parseClientArgs([
+        'node',
+        'karma.js',
+        'runArg',
+        '--flag',
+        '--',
+        '--foo',
+        '--bar',
+        'baz'
+      ])
       expect(args).to.deep.equal(['--foo', '--bar', 'baz'])
     })
 
     it('should return empty args if -- is not present', () => {
-      const args = cli.parseClientArgs(['node', 'karma.js', 'runArg', '--flag', '--foo', '--bar', 'baz'])
+      const args = cli.parseClientArgs([
+        'node',
+        'karma.js',
+        'runArg',
+        '--flag',
+        '--foo',
+        '--bar',
+        'baz'
+      ])
       expect(args).to.deep.equal([])
     })
   })
 
   describe('argsBeforeDoubleDash', () => {
     it('should return array of args that occur before --', () => {
-      const args = cli.argsBeforeDoubleDash(['aa', '--bb', 'value', '--', 'some', '--no-more'])
+      const args = cli.argsBeforeDoubleDash([
+        'aa',
+        '--bb',
+        'value',
+        '--',
+        'some',
+        '--no-more'
+      ])
       expect(args).to.deep.equal(['aa', '--bb', 'value'])
     })
   })
@@ -233,8 +318,8 @@ describe('cli', () => {
     // scope. By using a factory, we can maintain one copy of the code in a
     // single location while still having access to scopped variables that we
     // need.
-    function createCliProcessFake () {
-      return sinon.fake(function cliProcessFake () {
+    function createCliProcessFake() {
+      return sinon.fake(function cliProcessFake() {
         const cliOptions = {}
         if (
           testCommand === COMMAND_COMPLETION ||
@@ -246,8 +331,8 @@ describe('cli', () => {
           cliOptions.cmd = testCommand
         } else {
           const errorMessage =
-          'cli.spec.js: A valid command must be provided when testing the' +
-          'exported `run()` method.'
+            'cli.spec.js: A valid command must be provided when testing the' +
+            'exported `run()` method.'
           throw new Error(errorMessage)
         }
         if (forceConfigFailure === true) {
@@ -270,12 +355,13 @@ describe('cli', () => {
 
       completionFake = sinon.fake()
       initFake = sinon.fake()
-      parseConfigFake = sinon.fake(function parseConfigFake () {
+      parseConfigFake = sinon.fake(function parseConfigFake() {
         const cliOptions = arguments[1]
 
         // Allow individual tests to test against success and failure without
         // needing to manage multiple sinon fakes.
-        const forceConfigFailure = cliOptions && cliOptions.forceConfigFailure === true
+        const forceConfigFailure =
+          cliOptions && cliOptions.forceConfigFailure === true
         if (forceConfigFailure) {
           // No need to mock out the synchronous API, the CLI is not intended to
           // use it
@@ -296,27 +382,24 @@ describe('cli', () => {
       serverStartFake = sinon.fake.resolves()
       ServerFake = sinon.fake.returns({ start: serverStartFake })
       stopFake = sinon.fake()
-      cliModule = proxyquire(
-        '../../lib/cli',
-        {
-          './completion': {
-            completion: completionFake
-          },
-          './config': {
-            parseConfig: parseConfigFake
-          },
-          './init': {
-            init: initFake
-          },
-          './runner': {
-            run: runFake
-          },
-          './server': ServerFake,
-          './stopper': {
-            stop: stopFake
-          }
+      cliModule = proxyquire('../../lib/cli', {
+        './completion': {
+          completion: completionFake
+        },
+        './config': {
+          parseConfig: parseConfigFake
+        },
+        './init': {
+          init: initFake
+        },
+        './runner': {
+          run: runFake
+        },
+        './server': ServerFake,
+        './stopper': {
+          stop: stopFake
         }
-      )
+      })
     })
 
     afterEach(() => {

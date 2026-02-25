@@ -6,6 +6,7 @@ See [configuration file docs] for more information about the syntax and all the 
 ## Generating the config file
 
 The configuration file can be generated using `karma init`:
+
 ```bash
 $ karma init my.conf.js
 
@@ -49,9 +50,11 @@ In fact, if you execute `karma init` with a `*.coffee` extension such as `karma 
 Of course, you can write the config file by hand or copy-paste it from another project ;-)
 
 ## Starting Karma
+
 When starting Karma, the configuration file path can be passed in as the first argument.
 
 By default, Karma will look for `karma.conf.js` or `karma.conf.coffee` in the current directory.
+
 ```bash
 # Start Karma using your configuration:
 $ karma start my.conf.js
@@ -61,6 +64,7 @@ For more detailed information about the Karma configuration file, such as availa
 please read the [configuration file docs].
 
 ## Command line arguments
+
 Some configurations, which are already present within the configuration file, can be overridden by specifying the configuration
 as a command line argument for when Karma is executed.
 
@@ -70,11 +74,10 @@ karma start my.conf.js --log-level debug --single-run
 
 Try `karma start --help` if you want to see all available options.
 
-
 ## Integrating with Grunt/Gulp
+
 - [grunt-karma]
 - [gulp-karma]
-
 
 [configuration file docs]: ../config/configuration-file.html
 [Grunt]: https://gruntjs.com/

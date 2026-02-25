@@ -5,7 +5,9 @@ describe('init', () => {
   let m = null
 
   beforeEach(() => {
-    m = loadFile(path.join(__dirname, '/../../lib/init.js'), { glob: require('glob') })
+    m = loadFile(path.join(__dirname, '/../../lib/init.js'), {
+      glob: require('glob')
+    })
     sinon.stub(m, 'installPackage')
   })
 
@@ -14,33 +16,47 @@ describe('init', () => {
     const replace = (p) => p.replace(/\//g, path.sep)
 
     it('should be empty if config file in cwd', () => {
-      expect(m.getBasePath('some.conf', replace('/usr/local/whatever'))).to.equal('')
+      expect(
+        m.getBasePath('some.conf', replace('/usr/local/whatever'))
+      ).to.equal('')
     })
 
     it('should handle leading "./', () => {
-      expect(m.getBasePath(replace('./some.conf'), replace('/usr/local/whatever'))).to.equal('')
+      expect(
+        m.getBasePath(replace('./some.conf'), replace('/usr/local/whatever'))
+      ).to.equal('')
     })
 
     it('should handle config file in subfolder', () => {
       // config /usr/local/sub/folder/file.conf
       const file = replace('sub/folder/file.conf')
-      expect(m.getBasePath(file, replace('/usr/local'))).to.equal(replace('../..'))
+      expect(m.getBasePath(file, replace('/usr/local'))).to.equal(
+        replace('../..')
+      )
     })
 
     it('should handle config in a parent path', () => {
       // config /home/file.js
-      const basePath = m.getBasePath(replace('../../../file.js'), replace('/home/vojta/tc/project'))
+      const basePath = m.getBasePath(
+        replace('../../../file.js'),
+        replace('/home/vojta/tc/project')
+      )
       expect(basePath).to.equal(replace('vojta/tc/project'))
     })
 
     it('should handle config in parent subfolder', () => {
       // config /home/vojta/other/f.js
       const f = replace('../../other/f.js')
-      expect(m.getBasePath(f, replace('/home/vojta/tc/prj'))).to.equal(replace('../tc/prj'))
+      expect(m.getBasePath(f, replace('/home/vojta/tc/prj'))).to.equal(
+        replace('../tc/prj')
+      )
     })
 
     it('should handle absolute paths', () => {
-      const basePath = m.getBasePath(replace('/Users/vojta/karma/conf.js'), replace('/Users/vojta'))
+      const basePath = m.getBasePath(
+        replace('/Users/vojta/karma/conf.js'),
+        replace('/Users/vojta')
+      )
       expect(basePath).to.equal(replace('..'))
     })
   })
@@ -55,11 +71,13 @@ describe('init', () => {
     }
 
     it('should add requirejs and set files non-included if requirejs used', () => {
-      const processedAnswers = m.processAnswers(answers({
-        requirejs: true,
-        includedFiles: ['test-main.js'],
-        files: ['*.js']
-      }))
+      const processedAnswers = m.processAnswers(
+        answers({
+          requirejs: true,
+          includedFiles: ['test-main.js'],
+          files: ['*.js']
+        })
+      )
 
       expect(processedAnswers.frameworks).to.contain('requirejs')
       expect(processedAnswers.files).to.deep.equal(['test-main.js'])
@@ -67,12 +85,16 @@ describe('init', () => {
     })
 
     it('should add coffee preprocessor', () => {
-      const processedAnswers = m.processAnswers(answers({
-        files: ['src/*.coffee']
-      }))
+      const processedAnswers = m.processAnswers(
+        answers({
+          files: ['src/*.coffee']
+        })
+      )
 
       expect(processedAnswers.preprocessors).to.have.property('**/*.coffee')
-      expect(processedAnswers.preprocessors['**/*.coffee']).to.deep.equal(['coffee'])
+      expect(processedAnswers.preprocessors['**/*.coffee']).to.deep.equal([
+        'coffee'
+      ])
     })
   })
 
@@ -96,7 +118,7 @@ describe('init', () => {
       question: () => ''
     }
 
-    let machine = formatter = null
+    let machine = (formatter = null)
 
     const evaluateConfigCode = (code) => {
       const sandbox = { module: {} }
@@ -113,9 +135,13 @@ describe('init', () => {
 
     it('should generate working config', (done) => {
       machine.process(m.questions, (answers) => {
-        const basePath = m.getBasePath('../karma.conf.js', path.normalize('/some/path'))
+        const basePath = m.getBasePath(
+          '../karma.conf.js',
+          path.normalize('/some/path')
+        )
         const processedAnswers = m.processAnswers(answers, basePath)
-        const generatedConfigCode = formatter.generateConfigFile(processedAnswers)
+        const generatedConfigCode =
+          formatter.generateConfigFile(processedAnswers)
         const config = evaluateConfigCode(generatedConfigCode)
 
         // expect correct configuration
@@ -123,7 +149,11 @@ describe('init', () => {
         expect(config.frameworks).to.deep.equal(['jasmine'])
         expect(config.browsers).to.contain('Chrome')
         expect(config.browsers).to.contain('Firefox')
-        expect(config.files).to.deep.equal(['src/app.js', 'src/**/*.js', 'test/**/*.js'])
+        expect(config.files).to.deep.equal([
+          'src/app.js',
+          'src/**/*.js',
+          'test/**/*.js'
+        ])
         expect(config.exclude).to.deep.equal(['src/config.js'])
         expect(config.autoWatch).to.equal(false)
         done()
@@ -159,7 +189,8 @@ describe('init', () => {
       machine.process(m.questions, (answers) => {
         const basePath = m.getBasePath('../karma.conf.js', '/some/path')
         const processedAnswers = m.processAnswers(answers, basePath)
-        const generatedConfigCode = formatter.generateConfigFile(processedAnswers)
+        const generatedConfigCode =
+          formatter.generateConfigFile(processedAnswers)
         const config = evaluateConfigCode(generatedConfigCode)
 
         // expect correct configuration
@@ -206,8 +237,13 @@ describe('init', () => {
     it('should generate the test-main for requirejs', (done) => {
       machine.process(m.questions, (answers) => {
         const basePath = m.getBasePath('../karma.conf.js', '/some/path')
-        const processedAnswers = m.processAnswers(answers, basePath, 'test-main.js')
-        const generatedConfigCode = formatter.generateConfigFile(processedAnswers)
+        const processedAnswers = m.processAnswers(
+          answers,
+          basePath,
+          'test-main.js'
+        )
+        const generatedConfigCode =
+          formatter.generateConfigFile(processedAnswers)
         const config = evaluateConfigCode(generatedConfigCode)
 
         // expect correct processedAnswers
@@ -254,7 +290,8 @@ describe('init', () => {
       machine.process(m.questions, (answers) => {
         const basePath = m.getBasePath('karma.conf.js', '/cwd')
         const processedAnswers = m.processAnswers(answers, basePath)
-        const generatedConfigCode = formatter.generateConfigFile(processedAnswers)
+        const generatedConfigCode =
+          formatter.generateConfigFile(processedAnswers)
         const config = evaluateConfigCode(generatedConfigCode)
 
         // expect correct configuration

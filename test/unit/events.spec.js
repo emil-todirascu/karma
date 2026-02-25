@@ -21,9 +21,9 @@ describe('events', () => {
 
       beforeEach(() => {
         // Note: es6 class instances have non-enumerable prototype properties.
-        function FB () {};
+        function FB() {}
         FB.prototype = {
-          onPrototypeBar () {}
+          onPrototypeBar() {}
         }
         object = new FB()
         Object.assign(object, {

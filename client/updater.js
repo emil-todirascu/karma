@@ -1,7 +1,7 @@
 var VERSION = require('./constants').VERSION
 
-function StatusUpdater (socket, titleElement, bannerElement, browsersElement) {
-  function updateBrowsersInfo (browsers) {
+function StatusUpdater(socket, titleElement, bannerElement, browsersElement) {
+  function updateBrowsersInfo(browsers) {
     if (!browsersElement) {
       return
     }
@@ -25,23 +25,32 @@ function StatusUpdater (socket, titleElement, bannerElement, browsersElement) {
   var testText = 'loading'
   var pingText = ''
 
-  function updateBanner () {
+  function updateBanner() {
     if (!titleElement || !bannerElement) {
       return
     }
-    titleElement.textContent = 'Karma v ' + VERSION + ' - ' + connectionText + '; test: ' + testText + '; ' + pingText
-    bannerElement.className = connectionText === 'connected' ? 'online' : 'offline'
+    titleElement.textContent =
+      'Karma v ' +
+      VERSION +
+      ' - ' +
+      connectionText +
+      '; test: ' +
+      testText +
+      '; ' +
+      pingText
+    bannerElement.className =
+      connectionText === 'connected' ? 'online' : 'offline'
   }
 
-  function updateConnectionStatus (connectionStatus) {
+  function updateConnectionStatus(connectionStatus) {
     connectionText = connectionStatus || connectionText
     updateBanner()
   }
-  function updateTestStatus (testStatus) {
+  function updateTestStatus(testStatus) {
     testText = testStatus || testText
     updateBanner()
   }
-  function updatePingStatus (pingStatus) {
+  function updatePingStatus(pingStatus) {
     pingText = pingStatus || pingText
     updateBanner()
   }

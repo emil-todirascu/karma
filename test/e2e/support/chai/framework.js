@@ -1,7 +1,5 @@
 'use strict'
 
-const path = require('path')
-
 const pattern = (file, included, type) => ({
   pattern: file,
   included,
@@ -11,9 +9,15 @@ const pattern = (file, included, type) => ({
 })
 
 const framework = (files) => {
-  files.unshift(pattern(require.resolve('chai/register-assert.js'), true, 'module'))
-  files.unshift(pattern(require.resolve('chai/register-expect.js'), true, 'module'))
-  files.unshift(pattern(require.resolve('chai/register-should.js'), true, 'module'))
+  files.unshift(
+    pattern(require.resolve('chai/register-assert.js'), true, 'module')
+  )
+  files.unshift(
+    pattern(require.resolve('chai/register-expect.js'), true, 'module')
+  )
+  files.unshift(
+    pattern(require.resolve('chai/register-should.js'), true, 'module')
+  )
   files.unshift(pattern(require.resolve('chai/index.js'), false, 'module'))
 }
 

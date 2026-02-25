@@ -18,18 +18,24 @@ describe('reporter', () => {
 
   describe('formatError', () => {
     let emitter
-    let formatError = emitter = null
+    let formatError = (emitter = null)
     let sandbox
 
     beforeEach(() => {
       emitter = new EventEmitter()
-      formatError = m.createErrorFormatter({ basePath: '', hostname: 'localhost', port: 8080 }, emitter)
+      formatError = m.createErrorFormatter(
+        { basePath: '', hostname: 'localhost', port: 8080 },
+        emitter
+      )
       sandbox = sinon.createSandbox()
     })
 
     it('should call config.formatError if defined', () => {
       const spy = sandbox.spy()
-      formatError = m.createErrorFormatter({ basePath: '', formatError: spy }, emitter)
+      formatError = m.createErrorFormatter(
+        { basePath: '', formatError: spy },
+        emitter
+      )
       formatError()
 
       expect(spy).to.have.been.calledOnce
@@ -45,7 +51,10 @@ describe('reporter', () => {
     it('should pass the error message as the first config.formatError argument', () => {
       const ERROR = 'foo bar'
       const spy = sandbox.spy()
-      formatError = m.createErrorFormatter({ basePath: '', formatError: spy }, emitter)
+      formatError = m.createErrorFormatter(
+        { basePath: '', formatError: spy },
+        emitter
+      )
       formatError(ERROR)
 
       expect(spy.firstCall.args[0]).to.equal(ERROR)
@@ -53,7 +62,10 @@ describe('reporter', () => {
 
     it('should display the exact error returned by config.formatError', () => {
       const formattedError = 'A new error'
-      formatError = m.createErrorFormatter({ basePath: '', formatError: () => formattedError }, emitter)
+      formatError = m.createErrorFormatter(
+        { basePath: '', formatError: () => formattedError },
+        emitter
+      )
 
       expect(formatError('Something', '\t')).to.equal(formattedError)
     })
@@ -67,51 +79,71 @@ describe('reporter', () => {
     })
 
     it('should handle arbitrary error objects', () => {
-      expect(
-        formatError({ hello: 'world' })
-      ).to.equal(
+      expect(formatError({ hello: 'world' })).to.equal(
         JSON.stringify({ hello: 'world' }) + '\n'
       )
     })
 
     it('should handle error objects', () => {
-      expect(
-        formatError(new Error('fail'))
-      ).to.equal(
-        'fail\n'
-      )
+      expect(formatError(new Error('fail'))).to.equal('fail\n')
     })
 
     it('should remove specified hostname from files', () => {
-      expect(formatError('file http://localhost:8080/base/usr/a.js and http://127.0.0.1:8080/absolute/home/b.js')).to.be.equal('file usr/a.js and http://127.0.0.1:8080/home/b.js\n')
+      expect(
+        formatError(
+          'file http://localhost:8080/base/usr/a.js and http://127.0.0.1:8080/absolute/home/b.js'
+        )
+      ).to.be.equal('file usr/a.js and http://127.0.0.1:8080/home/b.js\n')
     })
 
     it('should remove shas', () => {
-      const ERROR = 'file http://localhost:8080/base/usr/file.js?6e31cb249ee5b32d91f37ea516ca0f84bddc5aa9 and http://127.0.0.1:8080/absolute/home/file.js?6e31cb249ee5b32d91f37ea516ca0f84bddc5aa9'
-      expect(formatError(ERROR)).to.be.equal('file usr/file.js and http://127.0.0.1:8080/home/file.js\n')
+      const ERROR =
+        'file http://localhost:8080/base/usr/file.js?6e31cb249ee5b32d91f37ea516ca0f84bddc5aa9 and http://127.0.0.1:8080/absolute/home/file.js?6e31cb249ee5b32d91f37ea516ca0f84bddc5aa9'
+      expect(formatError(ERROR)).to.be.equal(
+        'file usr/file.js and http://127.0.0.1:8080/home/file.js\n'
+      )
     })
 
     it('should indent all lines', () => {
-      expect(formatError('first\nsecond\nthird', '\t')).to.equal('\tfirst\n\tsecond\n\tthird\n')
+      expect(formatError('first\nsecond\nthird', '\t')).to.equal(
+        '\tfirst\n\tsecond\n\tthird\n'
+      )
     })
 
     it('should restore base paths', () => {
-      formatError = m.createErrorFormatter({ basePath: '/some/base', hostname: 'localhost', port: 123 }, emitter)
-      expect(formatError('at http://localhost:123/base/a.js?123')).to.equal('at a.js\n')
+      formatError = m.createErrorFormatter(
+        { basePath: '/some/base', hostname: 'localhost', port: 123 },
+        emitter
+      )
+      expect(formatError('at http://localhost:123/base/a.js?123')).to.equal(
+        'at a.js\n'
+      )
     })
 
     it('should restore urlRoot paths', () => {
-      formatError = m.createErrorFormatter({ urlRoot: '/__karma__', basePath: '/some/base', hostname: 'localhost', port: 123 }, emitter)
-      expect(formatError('at http://localhost:123/__karma__/base/sub/a.js?123')).to.equal('at sub/a.js\n')
+      formatError = m.createErrorFormatter(
+        {
+          urlRoot: '/__karma__',
+          basePath: '/some/base',
+          hostname: 'localhost',
+          port: 123
+        },
+        emitter
+      )
+      expect(
+        formatError('at http://localhost:123/__karma__/base/sub/a.js?123')
+      ).to.equal('at sub/a.js\n')
     })
 
     it('should restore absolute paths', () => {
-      const ERROR = 'at http://localhost:8080/absolute/usr/path.js?6e31cb249ee5b32d91f37ea516ca0f84bddc5aa9'
+      const ERROR =
+        'at http://localhost:8080/absolute/usr/path.js?6e31cb249ee5b32d91f37ea516ca0f84bddc5aa9'
       expect(formatError(ERROR)).to.equal('at /usr/path.js\n')
     })
 
     it('should preserve line numbers', () => {
-      const ERROR = 'at http://localhost:8080/absolute/usr/path.js?6e31cb249ee5b32d91f37ea516ca0f84bddc5aa9:2'
+      const ERROR =
+        'at http://localhost:8080/absolute/usr/path.js?6e31cb249ee5b32d91f37ea516ca0f84bddc5aa9:2'
       expect(formatError(ERROR)).to.equal('at /usr/path.js:2\n')
     })
 
@@ -132,14 +164,19 @@ describe('reporter', () => {
       let logWarnStub
 
       class MockSourceMapConsumer {
-        constructor (sourceMap) {
-          this.source = sourceMap.content.replace('SOURCE MAP ', sourceMappingPath)
+        constructor(sourceMap) {
+          this.source = sourceMap.content.replace(
+            'SOURCE MAP ',
+            sourceMappingPath
+          )
         }
 
-        originalPositionFor (position) {
+        originalPositionFor(position) {
           originalPositionForCallCount++
           if (position.line === 0) {
-            throw new TypeError('Line must be greater than or equal to 1, got 0')
+            throw new TypeError(
+              'Line must be greater than or equal to 1, got 0'
+            )
           }
 
           return {
@@ -151,17 +188,20 @@ describe('reporter', () => {
       }
 
       class MockSourceMapConsumerWithParseError {
-        constructor () {
+        constructor() {
           throw new Error('Fake parse error from source map consumer')
         }
       }
 
       class MockSourceMapConsumerWithGeneratedCode {
-        constructor (sourceMap) {
-          this.source = sourceMap.content.replace('SOURCE MAP ', sourceMappingPath)
+        constructor(sourceMap) {
+          this.source = sourceMap.content.replace(
+            'SOURCE MAP ',
+            sourceMappingPath
+          )
         }
 
-        originalPositionFor () {
+        originalPositionFor() {
           return {
             source: null,
             line: null,
@@ -186,8 +226,15 @@ describe('reporter', () => {
       MockSourceMapConsumer.LEAST_UPPER_BOUND = 2
 
       it('should rewrite stack traces', (done) => {
-        formatError = m.createErrorFormatter({ basePath: '/some/base', hostname: 'localhost', port: 123 }, emitter, MockSourceMapConsumer)
-        const servedFiles = [new File('/some/base/a.js'), new File('/some/base/b.js')]
+        formatError = m.createErrorFormatter(
+          { basePath: '/some/base', hostname: 'localhost', port: 123 },
+          emitter,
+          MockSourceMapConsumer
+        )
+        const servedFiles = [
+          new File('/some/base/a.js'),
+          new File('/some/base/b.js')
+        ]
         servedFiles[0].sourceMap = { content: 'SOURCE MAP a.js' }
         servedFiles[1].sourceMap = { content: 'SOURCE MAP b.js' }
 
@@ -195,7 +242,9 @@ describe('reporter', () => {
 
         _.defer(() => {
           const ERROR = 'at http://localhost:123/base/b.js:2:6'
-          expect(formatError(ERROR)).to.equal('at /original/b.js:4:8 <- b.js:2:6\n')
+          expect(formatError(ERROR)).to.equal(
+            'at /original/b.js:4:8 <- b.js:2:6\n'
+          )
           done()
         })
       })
@@ -204,8 +253,11 @@ describe('reporter', () => {
       // Note that the scenario outlined in the PR should no longer surface due to a check
       // ensuring that the line always is non-zero, but there could be other parsing errors.
       it('should handle source map errors gracefully', (done) => {
-        formatError = m.createErrorFormatter({ basePath: '', hostname: 'localhost', port: 123 }, emitter,
-          MockSourceMapConsumerWithParseError)
+        formatError = m.createErrorFormatter(
+          { basePath: '', hostname: 'localhost', port: 123 },
+          emitter,
+          MockSourceMapConsumerWithParseError
+        )
 
         const servedFiles = [new File('/a.js'), new File('/b.js')]
         servedFiles[0].sourceMap = { content: 'SOURCE MAP a.js' }
@@ -217,8 +269,14 @@ describe('reporter', () => {
           const ERROR = 'at http://localhost:123/base/b.js:2:6'
           expect(formatError(ERROR)).to.equal('at b.js:2:6\n')
           expect(logWarnStub.callCount).to.equal(2)
-          expect(logWarnStub).to.have.been.calledWith('An unexpected error occurred while resolving the original position for: http://localhost:123/base/b.js:2:6')
-          expect(logWarnStub).to.have.been.calledWith(sinon.match({ message: 'Fake parse error from source map consumer' }))
+          expect(logWarnStub).to.have.been.calledWith(
+            'An unexpected error occurred while resolving the original position for: http://localhost:123/base/b.js:2:6'
+          )
+          expect(logWarnStub).to.have.been.calledWith(
+            sinon.match({
+              message: 'Fake parse error from source map consumer'
+            })
+          )
           done()
         })
       })
@@ -228,8 +286,11 @@ describe('reporter', () => {
       // that is generated and does not map to anything, so-called generated code that
       // is allowed as case #1 in the source map spec.
       it('should not warn for trace file portion for generated code', (done) => {
-        formatError = m.createErrorFormatter({ basePath: '', hostname: 'localhost', port: 123 }, emitter,
-          MockSourceMapConsumerWithGeneratedCode)
+        formatError = m.createErrorFormatter(
+          { basePath: '', hostname: 'localhost', port: 123 },
+          emitter,
+          MockSourceMapConsumerWithGeneratedCode
+        )
 
         const servedFiles = [new File('/a.js'), new File('/b.js')]
         servedFiles[0].sourceMap = { content: 'SOURCE MAP a.js' }
@@ -246,7 +307,11 @@ describe('reporter', () => {
       })
 
       it('should rewrite stack traces (when basePath is empty)', (done) => {
-        formatError = m.createErrorFormatter({ basePath: '', hostname: 'localhost', port: 123 }, emitter, MockSourceMapConsumer)
+        formatError = m.createErrorFormatter(
+          { basePath: '', hostname: 'localhost', port: 123 },
+          emitter,
+          MockSourceMapConsumer
+        )
         const servedFiles = [new File('/a.js'), new File('/b.js')]
         servedFiles[0].sourceMap = { content: 'SOURCE MAP a.js' }
         servedFiles[1].sourceMap = { content: 'SOURCE MAP b.js' }
@@ -255,14 +320,23 @@ describe('reporter', () => {
 
         _.defer(() => {
           const ERROR = 'at http://localhost:123/base/b.js:2:6'
-          expect(formatError(ERROR)).to.equal('at /original/b.js:4:8 <- b.js:2:6\n')
+          expect(formatError(ERROR)).to.equal(
+            'at /original/b.js:4:8 <- b.js:2:6\n'
+          )
           done()
         })
       })
 
       it('should rewrite stack traces to the first column when no column is given', (done) => {
-        formatError = m.createErrorFormatter({ basePath: '/some/base', hostname: 'localhost', port: 123 }, emitter, MockSourceMapConsumer)
-        const servedFiles = [new File('/some/base/a.js'), new File('/some/base/b.js')]
+        formatError = m.createErrorFormatter(
+          { basePath: '/some/base', hostname: 'localhost', port: 123 },
+          emitter,
+          MockSourceMapConsumer
+        )
+        const servedFiles = [
+          new File('/some/base/a.js'),
+          new File('/some/base/b.js')
+        ]
         servedFiles[0].sourceMap = { content: 'SOURCE MAP a.js' }
         servedFiles[1].sourceMap = { content: 'SOURCE MAP b.js' }
 
@@ -270,14 +344,23 @@ describe('reporter', () => {
 
         _.defer(() => {
           const ERROR = 'at http://localhost:123/base/b.js:2'
-          expect(formatError(ERROR)).to.equal('at /original/b.js:4:3 <- b.js:2\n')
+          expect(formatError(ERROR)).to.equal(
+            'at /original/b.js:4:3 <- b.js:2\n'
+          )
           done()
         })
       })
 
       it('should rewrite relative url stack traces', (done) => {
-        formatError = m.createErrorFormatter({ basePath: '/some/base', hostname: 'localhost', port: 123 }, emitter, MockSourceMapConsumer)
-        const servedFiles = [new File('/some/base/a.js'), new File('/some/base/b.js')]
+        formatError = m.createErrorFormatter(
+          { basePath: '/some/base', hostname: 'localhost', port: 123 },
+          emitter,
+          MockSourceMapConsumer
+        )
+        const servedFiles = [
+          new File('/some/base/a.js'),
+          new File('/some/base/b.js')
+        ]
         servedFiles[0].sourceMap = { content: 'SOURCE MAP a.js' }
         servedFiles[1].sourceMap = { content: 'SOURCE MAP b.js' }
 
@@ -285,14 +368,20 @@ describe('reporter', () => {
 
         _.defer(() => {
           const ERROR = 'at /base/b.js:2:6'
-          expect(formatError(ERROR)).to.equal('at /original/b.js:4:8 <- b.js:2:6\n')
+          expect(formatError(ERROR)).to.equal(
+            'at /original/b.js:4:8 <- b.js:2:6\n'
+          )
           done()
         })
       })
 
       it('should resolve relative urls from source maps', (done) => {
         sourceMappingPath = 'original/' // Note: relative path.
-        formatError = m.createErrorFormatter({ basePath: '/some/base' }, emitter, MockSourceMapConsumer)
+        formatError = m.createErrorFormatter(
+          { basePath: '/some/base' },
+          emitter,
+          MockSourceMapConsumer
+        )
         const servedFiles = [new File('/some/base/path/a.js')]
         servedFiles[0].sourceMap = { content: 'SOURCE MAP a.fancyjs' }
 
@@ -300,14 +389,23 @@ describe('reporter', () => {
 
         _.defer(() => {
           const ERROR = 'at /base/path/a.js:2:6'
-          expect(formatError(ERROR)).to.equal('at path/original/a.fancyjs:4:8 <- path/a.js:2:6\n')
+          expect(formatError(ERROR)).to.equal(
+            'at path/original/a.fancyjs:4:8 <- path/a.js:2:6\n'
+          )
           done()
         })
       })
 
       it('should fall back to non-source-map format if originalPositionFor throws', (done) => {
-        formatError = m.createErrorFormatter({ basePath: '/some/base', hostname: 'localhost', port: 123 }, emitter, MockSourceMapConsumer)
-        const servedFiles = [new File('/some/base/a.js'), new File('/some/base/b.js')]
+        formatError = m.createErrorFormatter(
+          { basePath: '/some/base', hostname: 'localhost', port: 123 },
+          emitter,
+          MockSourceMapConsumer
+        )
+        const servedFiles = [
+          new File('/some/base/a.js'),
+          new File('/some/base/b.js')
+        ]
         servedFiles[0].sourceMap = { content: 'SOURCE MAP a.js' }
         servedFiles[1].sourceMap = { content: 'SOURCE MAP b.js' }
 
@@ -321,8 +419,15 @@ describe('reporter', () => {
       })
 
       it('should not try to use source maps when no line is given', (done) => {
-        formatError = m.createErrorFormatter({ basePath: '/some/base', hostname: 'localhost', port: 123 }, emitter, MockSourceMapConsumer)
-        const servedFiles = [new File('/some/base/a.js'), new File('/some/base/b.js')]
+        formatError = m.createErrorFormatter(
+          { basePath: '/some/base', hostname: 'localhost', port: 123 },
+          emitter,
+          MockSourceMapConsumer
+        )
+        const servedFiles = [
+          new File('/some/base/a.js'),
+          new File('/some/base/b.js')
+        ]
         servedFiles[0].sourceMap = { content: 'SOURCE MAP a.js' }
         servedFiles[1].sourceMap = { content: 'SOURCE MAP b.js' }
 
@@ -337,8 +442,15 @@ describe('reporter', () => {
       })
 
       it('should not try to match domains with spaces', (done) => {
-        formatError = m.createErrorFormatter({ basePath: '/some/base', hostname: 'localhost', port: 9876 }, emitter, MockSourceMapConsumer)
-        const servedFiles = [new File('/some/base/a.js'), new File('/some/base/b.js')]
+        formatError = m.createErrorFormatter(
+          { basePath: '/some/base', hostname: 'localhost', port: 9876 },
+          emitter,
+          MockSourceMapConsumer
+        )
+        const servedFiles = [
+          new File('/some/base/a.js'),
+          new File('/some/base/b.js')
+        ]
         servedFiles[0].sourceMap = { content: 'SOURCE MAP a.js' }
         servedFiles[1].sourceMap = { content: 'SOURCE MAP b.js' }
 
@@ -346,7 +458,9 @@ describe('reporter', () => {
 
         _.defer(() => {
           const ERROR = '"http://localhost:9876"\n at /base/b.js:2:6'
-          expect(formatError(ERROR)).to.equal('"http://localhost:9876"\n at /original/b.js:4:8 <- b.js:2:6\n')
+          expect(formatError(ERROR)).to.equal(
+            '"http://localhost:9876"\n at /original/b.js:4:8 <- b.js:2:6\n'
+          )
           done()
         })
       })
@@ -356,7 +470,11 @@ describe('reporter', () => {
         let servedFiles = null
 
         beforeEach(() => {
-          formatError = m.createErrorFormatter({ basePath: '/some/base', hostname: 'localhost', port: 123 }, emitter, MockSourceMapConsumer)
+          formatError = m.createErrorFormatter(
+            { basePath: '/some/base', hostname: 'localhost', port: 123 },
+            emitter,
+            MockSourceMapConsumer
+          )
           servedFiles = [new File('C:/a/b/c.js')]
           servedFiles[0].sourceMap = { content: 'SOURCE MAP b.js' }
         })
@@ -366,7 +484,9 @@ describe('reporter', () => {
 
           _.defer(() => {
             const ERROR = 'at http://localhost:123/absoluteC:/a/b/c.js:2:6'
-            expect(formatError(ERROR)).to.equal('at c:/original/b.js:4:8 <- C:/a/b/c.js:2:6\n')
+            expect(formatError(ERROR)).to.equal(
+              'at c:/original/b.js:4:8 <- C:/a/b/c.js:2:6\n'
+            )
             done()
           })
         })
@@ -375,8 +495,11 @@ describe('reporter', () => {
           emitter.emit('file_list_modified', { served: servedFiles })
 
           _.defer(() => {
-            const ERROR = 'at http://localhost:123/absoluteC:/a/b/c.js?da39a3ee5e6:2:6'
-            expect(formatError(ERROR)).to.equal('at c:/original/b.js:4:8 <- C:/a/b/c.js:2:6\n')
+            const ERROR =
+              'at http://localhost:123/absoluteC:/a/b/c.js?da39a3ee5e6:2:6'
+            expect(formatError(ERROR)).to.equal(
+              'at c:/original/b.js:4:8 <- C:/a/b/c.js:2:6\n'
+            )
             done()
           })
         })

@@ -10,8 +10,8 @@ If you are interested in contributing to Karma, you might check out [Contributin
 We use [gitter/karma-runner] to talk about pull requests and issues, stuff like,
 “hey this is important, can you look into it...”, “I’m not sure what to do about this issue...”.
 
-
 ## Triaging issues
+
 New issues pop up every day. We need to identify urgent issues (such as “nobody can install karma”),
 close duplicates, answer questions, etc.
 
@@ -20,7 +20,9 @@ See [angular/TRIAGING.md] for more info.
 An issue or pull request is untriaged (needs to be triaged) when it is not assigned to any milestone.
 
 ## Merging a pull request
+
 Please, make sure:
+
 - CI build is green.
 - At least one owner (other than you) approved the PR
   - by commenting “LGTM” or something like that.
@@ -33,7 +35,9 @@ Please, make sure:
   - It’s alright to ask the author of the pull request to fix any of the above.
 
 ## Releasing npm
+
 For core collaborators with admin rights.
+
 - Be on a good network that won't go down in the middle.
 - Make sure you are sync to upstream master.
 - `echo $GH_TOKEN`
@@ -41,10 +45,10 @@ For core collaborators with admin rights.
 - `npm login karmarunnerbot`
   - The password is known to authorized releasers.
 - `grunt release`
-If the release fails, check the state of the git tags pushed to github.  You may have to delete one.
-
+  If the release fails, check the state of the git tags pushed to github. You may have to delete one.
 
 ## Ownership
+
 Every project has one or more owners (or “maintainers”), listed in `owners` field of the
 `package.json`. Typically, owners have push permissions.
 
@@ -52,8 +56,8 @@ Being a maintainer of one plugin doesn’t mean you can’t contribute to some o
 In fact, you can be a maintainer of multiple projects. The main point is to have people who are
 familiar with the codebase and therefore can better decide what a good change is or not.
 
-
 ## Becoming a maintainer
+
 If you are interested in becoming a Karma maintainer, start by triaging issues, reviewing pull
 requests and stop by at [gitter/karma-runner]. Once we see you are helping, we will give you push
 permissions. Being a maintainer is not an obligation. You can help when you have time and be less

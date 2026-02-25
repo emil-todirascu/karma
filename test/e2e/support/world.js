@@ -17,7 +17,7 @@ const getNextPort = () => {
 }
 
 class World {
-  constructor () {
+  constructor() {
     this.proxy = new Proxy()
 
     /**
@@ -43,7 +43,9 @@ class World {
      * Absolute path to the Karma executable.
      * @type {string}
      */
-    this.karmaExecutable = fs.realpathSync(path.join(__dirname, '../../../bin/karma'))
+    this.karmaExecutable = fs.realpathSync(
+      path.join(__dirname, '../../../bin/karma')
+    )
 
     this.config = {
       singleRun: true,
@@ -76,18 +78,26 @@ class World {
     }
   }
 
-  updateConfig (configOverrides) {
+  updateConfig(configOverrides) {
     vm.runInNewContext(configOverrides, this.config)
   }
 
-  writeConfigFile () {
+  writeConfigFile() {
     delete this.config._resolve
 
-    const config = JSON.stringify(Object.assign({}, this.config, {
-      customLaunchers: Object.assign({
-        ChromeHeadlessNoSandbox: { base: 'ChromeHeadless', flags: ['--no-sandbox'] }
-      }, this.config.customLaunchers)
-    }))
+    const config = JSON.stringify(
+      Object.assign({}, this.config, {
+        customLaunchers: Object.assign(
+          {
+            ChromeHeadlessNoSandbox: {
+              base: 'ChromeHeadless',
+              flags: ['--no-sandbox']
+            }
+          },
+          this.config.customLaunchers
+        )
+      })
+    )
 
     const content = `process.env.CHROME_BIN = require('puppeteer').executablePath();
 
@@ -99,14 +109,18 @@ module.exports = (config) => {
     fs.writeFileSync(this.configFile, content)
   }
 
-  ensureSandbox () {
+  ensureSandbox() {
     rimraf.sync(this.sandboxDir)
     mkdirp.sync(this.sandboxDir)
   }
 
-  async runBackgroundProcess (args, readyOutput = null) {
+  async runBackgroundProcess(args, readyOutput = null) {
     return new Promise((resolve, reject) => {
-      const handle = this.backgroundProcess.handle = spawn(this.karmaExecutable, args, { cwd: this.workDir })
+      const handle = (this.backgroundProcess.handle = spawn(
+        this.karmaExecutable,
+        args,
+        { cwd: this.workDir }
+      ))
 
       let isSettled = false
 
@@ -136,7 +150,10 @@ module.exports = (config) => {
         this.backgroundProcess.stdout += chunk.toString()
 
         if (!isSettled) {
-          if (readyOutput == null || this.backgroundProcess.stdout.includes(readyOutput)) {
+          if (
+            readyOutput == null ||
+            this.backgroundProcess.stdout.includes(readyOutput)
+          ) {
             isSettled = true
             handle.off('error', errorHandler)
             resolve()
@@ -146,8 +163,11 @@ module.exports = (config) => {
     })
   }
 
-  async stopBackgroundProcessIfRunning () {
-    if (this.backgroundProcess.handle != null && this.backgroundProcess.handle.exitCode == null) {
+  async stopBackgroundProcessIfRunning() {
+    if (
+      this.backgroundProcess.handle != null &&
+      this.backgroundProcess.handle.exitCode == null
+    ) {
       return new Promise((resolve, reject) => {
         this.backgroundProcess.handle
           .once('exit', () => resolve())
@@ -157,14 +177,18 @@ module.exports = (config) => {
     }
   }
 
-  async runForegroundProcess (args) {
+  async runForegroundProcess(args) {
     return new Promise((resolve) => {
-      exec(`${this.karmaExecutable} ${args}`, { cwd: this.workDir }, (error, stdout, stderr) => {
-        this.lastRun.error = error
-        this.lastRun.stdout = stdout.toString()
-        this.lastRun.stderr = stderr.toString()
-        resolve()
-      })
+      exec(
+        `${this.karmaExecutable} ${args}`,
+        { cwd: this.workDir },
+        (error, stdout, stderr) => {
+          this.lastRun.error = error
+          this.lastRun.stdout = stdout.toString()
+          this.lastRun.stderr = stderr.toString()
+          resolve()
+        }
+      )
     })
   }
 }

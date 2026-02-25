@@ -5,7 +5,7 @@ describe('BrowserCollection', () => {
   const e = require('../../lib/events')
   const Collection = require('../../lib/browser_collection')
   const Browser = require('../../lib/browser')
-  let collection = emitter = null
+  let collection = (emitter = null)
 
   beforeEach(() => {
     emitter = new e.EventEmitter()
@@ -281,15 +281,22 @@ describe('BrowserCollection', () => {
         expect(res).to.be.equal(EXIT_CODE_SUCCESS)
       })
       it('shall pass if failOnEmptyTestSuite is false', () => {
-        const res = collection.calculateExitCode(results, false, { failOnEmptyTestSuite: false })
+        const res = collection.calculateExitCode(results, false, {
+          failOnEmptyTestSuite: false
+        })
         expect(res).to.be.equal(EXIT_CODE_SUCCESS)
       })
       it('shall fail if failOnEmptyTestSuite is true', () => {
-        const res = collection.calculateExitCode(results, false, { failOnEmptyTestSuite: true })
+        const res = collection.calculateExitCode(results, false, {
+          failOnEmptyTestSuite: true
+        })
         expect(res).to.be.equal(EXIT_CODE_ERROR)
       })
       it('shall fail if failOnFailingTestSuite is set', () => {
-        const res = collection.calculateExitCode(results, false, { failOnEmptyTestSuite: true, failOnFailingTestSuite: true })
+        const res = collection.calculateExitCode(results, false, {
+          failOnEmptyTestSuite: true,
+          failOnFailingTestSuite: true
+        })
         expect(res).to.be.equal(EXIT_CODE_ERROR)
       })
     })
@@ -308,15 +315,23 @@ describe('BrowserCollection', () => {
         expect(res).to.be.equal(EXIT_CODE_SUCCESS)
       })
       it('shall pass if failOnEmptyTestSuite not is set', () => {
-        const res = collection.calculateExitCode(results, false, { failOnEmptyTestSuite: false })
+        const res = collection.calculateExitCode(results, false, {
+          failOnEmptyTestSuite: false
+        })
         expect(res).to.be.equal(EXIT_CODE_SUCCESS)
       })
       it('shall pass if failOnFailingTestSuite is true', () => {
-        const res = collection.calculateExitCode(results, false, { failOnEmptyTestSuite: true, failOnFailingTestSuite: true })
+        const res = collection.calculateExitCode(results, false, {
+          failOnEmptyTestSuite: true,
+          failOnFailingTestSuite: true
+        })
         expect(res).to.be.equal(EXIT_CODE_SUCCESS)
       })
       it('shall pass if failOnFailingTestSuite is false', () => {
-        const res = collection.calculateExitCode(results, false, { failOnEmptyTestSuite: true, failOnFailingTestSuite: false })
+        const res = collection.calculateExitCode(results, false, {
+          failOnEmptyTestSuite: true,
+          failOnFailingTestSuite: false
+        })
         expect(res).to.be.equal(EXIT_CODE_SUCCESS)
       })
     })
@@ -335,15 +350,23 @@ describe('BrowserCollection', () => {
         expect(res).to.be.equal(EXIT_CODE_ERROR)
       })
       it('shall fail if failOnEmptyTestSuite not is set', () => {
-        const res = collection.calculateExitCode(results, false, { failOnEmptyTestSuite: false })
+        const res = collection.calculateExitCode(results, false, {
+          failOnEmptyTestSuite: false
+        })
         expect(res).to.be.equal(EXIT_CODE_ERROR)
       })
       it('shall fail if failOnFailingTestSuite is true', () => {
-        const res = collection.calculateExitCode(results, false, { failOnEmptyTestSuite: true, failOnFailingTestSuite: true })
+        const res = collection.calculateExitCode(results, false, {
+          failOnEmptyTestSuite: true,
+          failOnFailingTestSuite: true
+        })
         expect(res).to.be.equal(EXIT_CODE_ERROR)
       })
       it('shall pass if failOnFailingTestSuite is false', () => {
-        const res = collection.calculateExitCode(results, false, { failOnEmptyTestSuite: true, failOnFailingTestSuite: false })
+        const res = collection.calculateExitCode(results, false, {
+          failOnEmptyTestSuite: true,
+          failOnFailingTestSuite: false
+        })
         expect(res).to.be.equal(EXIT_CODE_SUCCESS)
       })
     })
@@ -358,11 +381,17 @@ describe('BrowserCollection', () => {
         expect(res).to.be.equal(EXIT_CODE_ERROR)
       })
       it('shall fail if failOnSkippedTests is true', () => {
-        const res = collection.calculateExitCode(results, false, { failOnEmptyTestSuite: true, failOnSkippedTests: true })
+        const res = collection.calculateExitCode(results, false, {
+          failOnEmptyTestSuite: true,
+          failOnSkippedTests: true
+        })
         expect(res).to.be.equal(EXIT_CODE_ERROR)
       })
       it('shall pass if failOnSkippedTests is false', () => {
-        const res = collection.calculateExitCode(results, false, { failOnEmptyTestSuite: true, failOnSkippedTests: false })
+        const res = collection.calculateExitCode(results, false, {
+          failOnEmptyTestSuite: true,
+          failOnSkippedTests: false
+        })
         expect(res).to.be.equal(EXIT_CODE_SUCCESS)
       })
     })

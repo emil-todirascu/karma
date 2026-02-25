@@ -27,7 +27,9 @@ describe('launchers/base.js', () => {
       launcher.on('start', spyOnStart)
       launcher.start('http://localhost:9876/')
 
-      expect(spyOnStart).to.have.been.calledWith('http://localhost:9876/?id=fake-id')
+      expect(spyOnStart).to.have.been.calledWith(
+        'http://localhost:9876/?id=fake-id'
+      )
     })
   })
 
@@ -50,7 +52,9 @@ describe('launchers/base.js', () => {
       spyOnKill.callArg(0)
 
       _.defer(() => {
-        expect(spyOnStart).to.have.been.calledWith('http://host:9988/?id=fake-id')
+        expect(spyOnStart).to.have.been.calledWith(
+          'http://host:9988/?id=fake-id'
+        )
         done()
       })
     })

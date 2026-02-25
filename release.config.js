@@ -13,14 +13,8 @@ module.exports = {
     '@semantic-release/npm',
     '@semantic-release/git'
   ],
-  publish: [
-    '@semantic-release/npm',
-    '@semantic-release/github'
-  ],
-  success: [
-    '@semantic-release/github',
-    './tools/update-docs'
-  ],
+  publish: ['@semantic-release/npm', '@semantic-release/github'],
+  success: ['@semantic-release/github', './tools/update-docs'],
 
   // The release rules determine what kind of release should be triggered
   // based on the information included in the commit message. The default

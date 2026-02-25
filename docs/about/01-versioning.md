@@ -6,7 +6,7 @@ It is recommended that you add Karma by running:
 $ yarn add --dev karma
 ```
 
-or: 
+or:
 
 ```bash
 $ npm --save-dev install karma

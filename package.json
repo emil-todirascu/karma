@@ -470,6 +470,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-n": "^17.23.1",
     "globals": "^17.3.0",
+    "husky": "^9.1.7",
     "jasmine-core": "^6.1.0",
     "karma": ".",
     "karma-browserstack-launcher": "^1.6.0",
@@ -518,6 +519,6 @@
     "build:watch": "node scripts/client.js watch",
     "test:integration": "./scripts/integration-tests.sh",
     "commitlint": "commitlint",
-    "prepare": "husky"
+    "prepare": "[ -w .git/config ] && husky || true"
   }
 }

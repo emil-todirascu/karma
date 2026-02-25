@@ -15,7 +15,7 @@ chai.use(resolvePlugin(require('sinon-chai')))
 chai.use(resolvePlugin(require('chai-subset')))
 
 exports.mochaHooks = {
-  beforeEach () {
+  beforeEach() {
     global.sinon = sinon.createSandbox()
 
     // Use https://log4js-node.github.io/log4js-node/recording.html to verify logs
@@ -23,7 +23,7 @@ exports.mochaHooks = {
     logger.setup('INFO', false, vcr)
   },
 
-  afterEach () {
+  afterEach() {
     global.sinon.restore()
     recording.erase()
   }
@@ -31,21 +31,32 @@ exports.mochaHooks = {
 
 // TODO(vojta): move to helpers or something
 chai.use((chai, utils) => {
-  chai.Assertion.addMethod('beServedAs', function (expectedStatus, expectedBody) {
-    const response = utils.flag(this, 'object')
+  chai.Assertion.addMethod(
+    'beServedAs',
+    function (expectedStatus, expectedBody) {
+      const response = utils.flag(this, 'object')
 
-    this.assert(response._status === expectedStatus,
-      `expected response status '${response._status}' to be '${expectedStatus}'`)
-    this.assert(response._body === expectedBody,
-      `expected response body '${response._body}' to be '${expectedBody}'`)
-  })
+      this.assert(
+        response._status === expectedStatus,
+        `expected response status '${response._status}' to be '${expectedStatus}'`
+      )
+      this.assert(
+        response._body === expectedBody,
+        `expected response body '${response._body}' to be '${expectedBody}'`
+      )
+    }
+  )
 
   chai.Assertion.addMethod('beNotServed', function () {
     const response = utils.flag(this, 'object')
 
-    this.assert(response._status === null,
-      `expected response status to not be set, it was '${response._status}'`)
-    this.assert(response._body === null,
-      `expected response body to not be set, it was '${response._body}'`)
+    this.assert(
+      response._status === null,
+      `expected response status to not be set, it was '${response._status}'`
+    )
+    this.assert(
+      response._body === null,
+      `expected response body to not be set, it was '${response._body}'`
+    )
   })
 })

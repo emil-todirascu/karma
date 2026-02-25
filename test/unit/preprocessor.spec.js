@@ -12,7 +12,9 @@ describe('preprocessor', () => {
   // Each test will define a spy; the fakeInstatiatePlugin will return it.
   let fakePreprocessor
 
-  const simpleFakeInstantiatePlugin = () => { return fakePreprocessor }
+  const simpleFakeInstantiatePlugin = () => {
+    return fakePreprocessor
+  }
 
   beforeEach(() => {
     mockFs = mocks.fs.create({
@@ -33,7 +35,10 @@ describe('preprocessor', () => {
       'graceful-fs': mockFs,
       minimatch: require('minimatch')
     }
-    m = mocks.loadFile(path.join(__dirname, '/../../lib/preprocessor.js'), mocks_)
+    m = mocks.loadFile(
+      path.join(__dirname, '/../../lib/preprocessor.js'),
+      mocks_
+    )
   })
 
   it('should preprocess matching file', async () => {
@@ -42,7 +47,12 @@ describe('preprocessor', () => {
       done(null, 'new-content')
     })
 
-    const pp = m.createPriorityPreprocessor({ '**/*.js': ['fake'] }, {}, null, simpleFakeInstantiatePlugin)
+    const pp = m.createPriorityPreprocessor(
+      { '**/*.js': ['fake'] },
+      {},
+      null,
+      simpleFakeInstantiatePlugin
+    )
 
     const file = { originalPath: '/some/a.js', path: 'path' }
 
@@ -58,7 +68,12 @@ describe('preprocessor', () => {
       done(null, 'new-content')
     })
 
-    const pp = m.createPriorityPreprocessor({ '**/*.js': ['fake'] }, {}, null, simpleFakeInstantiatePlugin)
+    const pp = m.createPriorityPreprocessor(
+      { '**/*.js': ['fake'] },
+      {},
+      null,
+      simpleFakeInstantiatePlugin
+    )
 
     const file = { originalPath: '/some/.dir/a.js', path: 'path' }
 
@@ -74,7 +89,12 @@ describe('preprocessor', () => {
       return 'new-content'
     })
 
-    const pp = m.createPriorityPreprocessor({ '**/*.js': ['fake'] }, {}, null, simpleFakeInstantiatePlugin)
+    const pp = m.createPriorityPreprocessor(
+      { '**/*.js': ['fake'] },
+      {},
+      null,
+      simpleFakeInstantiatePlugin
+    )
 
     const file = { originalPath: '/some/.dir/a.js', path: 'path' }
 
@@ -90,7 +110,12 @@ describe('preprocessor', () => {
       done(null, 'new-content')
     })
 
-    const pp = m.createPriorityPreprocessor({ '**/*.js': ['fake'] }, {}, null, simpleFakeInstantiatePlugin)
+    const pp = m.createPriorityPreprocessor(
+      { '**/*.js': ['fake'] },
+      {},
+      null,
+      simpleFakeInstantiatePlugin
+    )
 
     const file = { originalPath: '/some/.dir/a.js', path: 'path' }
 
@@ -107,7 +132,12 @@ describe('preprocessor', () => {
     })
 
     const config = { '**/*.txt': ['fake'] }
-    const pp = m.createPriorityPreprocessor(config, {}, null, simpleFakeInstantiatePlugin)
+    const pp = m.createPriorityPreprocessor(
+      config,
+      {},
+      null,
+      simpleFakeInstantiatePlugin
+    )
 
     const file = { originalPath: '/some/a.js', path: 'path' }
 
@@ -124,7 +154,12 @@ describe('preprocessor', () => {
       done(null, '')
     })
 
-    const pp = m.createPriorityPreprocessor({ '**/*.js': ['fake'] }, {}, null, simpleFakeInstantiatePlugin)
+    const pp = m.createPriorityPreprocessor(
+      { '**/*.js': ['fake'] },
+      {},
+      null,
+      simpleFakeInstantiatePlugin
+    )
 
     const file = { originalPath: '/some/a.txt', path: 'path' }
 
@@ -143,11 +178,16 @@ describe('preprocessor', () => {
         done(content + '-c2')
       })
     }
-    function fakeInstatiatePlugin (kind, name) {
+    function fakeInstatiatePlugin(kind, name) {
       return fakes[name]
     }
 
-    const pp = m.createPriorityPreprocessor({ '**/*.js': ['fake1', 'fake2'] }, {}, null, fakeInstatiatePlugin)
+    const pp = m.createPriorityPreprocessor(
+      { '**/*.js': ['fake1', 'fake2'] },
+      {},
+      null,
+      fakeInstatiatePlugin
+    )
 
     const file = { originalPath: '/some/a.js', path: 'path' }
 
@@ -159,7 +199,12 @@ describe('preprocessor', () => {
   })
 
   it('should compute SHA', async () => {
-    const pp = m.createPriorityPreprocessor({}, {}, null, simpleFakeInstantiatePlugin)
+    const pp = m.createPriorityPreprocessor(
+      {},
+      {},
+      null,
+      simpleFakeInstantiatePlugin
+    )
     const file = { originalPath: '/some/a.js', path: 'path' }
 
     await pp(file)
@@ -181,7 +226,12 @@ describe('preprocessor', () => {
       done(null, content + '-processed')
     })
 
-    const pp = m.createPriorityPreprocessor({ '**/a.js': ['fake'] }, {}, null, simpleFakeInstantiatePlugin)
+    const pp = m.createPriorityPreprocessor(
+      { '**/a.js': ['fake'] },
+      {},
+      null,
+      simpleFakeInstantiatePlugin
+    )
 
     const fileProcess = { originalPath: '/some/a.js', path: 'path' }
     const fileSkip = { originalPath: '/some/b.js', path: 'path' }
@@ -200,15 +250,23 @@ describe('preprocessor', () => {
       done(new Error('Some error'), null)
     })
 
-    const pp = m.createPriorityPreprocessor({ '**/*.js': ['failing'] }, {}, null, simpleFakeInstantiatePlugin)
+    const pp = m.createPriorityPreprocessor(
+      { '**/*.js': ['failing'] },
+      {},
+      null,
+      simpleFakeInstantiatePlugin
+    )
 
     const file = { originalPath: '/some/a.js', path: 'path' }
 
-    return pp(file).then(() => {
-      throw new Error('Should be failed')
-    }, (err) => {
-      expect(err).to.exist
-    })
+    return pp(file).then(
+      () => {
+        throw new Error('Should be failed')
+      },
+      (err) => {
+        expect(err).to.exist
+      }
+    )
   })
 
   it('should stop preprocessing after an error', async () => {
@@ -221,19 +279,27 @@ describe('preprocessor', () => {
       })
     }
 
-    function fakeInstantiatePlugin (kind, name) {
+    function fakeInstantiatePlugin(kind, name) {
       return fakes[name]
     }
 
-    const pp = m.createPriorityPreprocessor({ '**/*.js': ['failing', 'fake'] }, {}, null, fakeInstantiatePlugin)
+    const pp = m.createPriorityPreprocessor(
+      { '**/*.js': ['failing', 'fake'] },
+      {},
+      null,
+      fakeInstantiatePlugin
+    )
 
     const file = { originalPath: '/some/a.js', path: 'path' }
 
-    await pp(file).then(() => {
-      throw new Error('should be failed')
-    }, (err) => {
-      expect(err.message).to.equal('Some error')
-    })
+    await pp(file).then(
+      () => {
+        throw new Error('should be failed')
+      },
+      (err) => {
+        expect(err.message).to.equal('Some error')
+      }
+    )
     expect(fakes.fake).not.to.have.been.called
   })
 
@@ -249,27 +315,43 @@ describe('preprocessor', () => {
         done(null, content)
       })
 
-      const pp = m.createPriorityPreprocessor({ '**/*.js': ['fake'] }, {}, null, simpleFakeInstantiatePlugin)
+      const pp = m.createPriorityPreprocessor(
+        { '**/*.js': ['fake'] },
+        {},
+        null,
+        simpleFakeInstantiatePlugin
+      )
 
-      await pp(file).then(() => {
-        throw new Error('Should be rejected')
-      }, () => {
-        // 3 times repeated and 1 the first execution
-        expect(mockFs.readFileSync.callCount).to.equal(4)
-        expect(fakePreprocessor.notCalled).to.be.true
-        mockFs.readFileSync.restore()
-      })
+      await pp(file).then(
+        () => {
+          throw new Error('Should be rejected')
+        },
+        () => {
+          // 3 times repeated and 1 the first execution
+          expect(mockFs.readFileSync.callCount).to.equal(4)
+          expect(fakePreprocessor.notCalled).to.be.true
+          mockFs.readFileSync.restore()
+        }
+      )
     })
 
     it('should throw after 3 retries', async () => {
-      const pp = m.createPriorityPreprocessor({ '**/*.js': [] }, {}, null, simpleFakeInstantiatePlugin)
+      const pp = m.createPriorityPreprocessor(
+        { '**/*.js': [] },
+        {},
+        null,
+        simpleFakeInstantiatePlugin
+      )
 
-      await pp(file).then(() => {
-        throw new Error('Should be rejected')
-      }, () => {
-        expect(mockFs.readFileSync.callCount).to.equal(4)
-        mockFs.readFileSync.restore()
-      })
+      await pp(file).then(
+        () => {
+          throw new Error('Should be rejected')
+        },
+        () => {
+          expect(mockFs.readFileSync.callCount).to.equal(4)
+          mockFs.readFileSync.restore()
+        }
+      )
     })
   })
 
@@ -278,7 +360,12 @@ describe('preprocessor', () => {
       done(null, content)
     })
 
-    const pp = m.createPriorityPreprocessor({ '**/*': ['fake'] }, {}, null, simpleFakeInstantiatePlugin)
+    const pp = m.createPriorityPreprocessor(
+      { '**/*': ['fake'] },
+      {},
+      null,
+      simpleFakeInstantiatePlugin
+    )
 
     const file = { originalPath: '/some/photo.png', path: 'path' }
 
@@ -292,9 +379,18 @@ describe('preprocessor', () => {
       done(null, content)
     })
 
-    const pp = m.createPriorityPreprocessor({ '**/*': ['fake'] }, {}, null, simpleFakeInstantiatePlugin)
+    const pp = m.createPriorityPreprocessor(
+      { '**/*': ['fake'] },
+      {},
+      null,
+      simpleFakeInstantiatePlugin
+    )
 
-    const file = { originalPath: '/some/proto.pb', path: 'path', isBinary: true }
+    const file = {
+      originalPath: '/some/proto.pb',
+      path: 'path',
+      isBinary: true
+    }
 
     await pp(file)
     expect(fakePreprocessor).not.to.have.been.called
@@ -306,10 +402,19 @@ describe('preprocessor', () => {
       done(null, content)
     })
 
-    const pp = m.createPriorityPreprocessor({ '**/*': ['fake'] }, {}, null, simpleFakeInstantiatePlugin)
+    const pp = m.createPriorityPreprocessor(
+      { '**/*': ['fake'] },
+      {},
+      null,
+      simpleFakeInstantiatePlugin
+    )
 
     // Explicit false for isBinary
-    const file = { originalPath: '/some/proto.pb', path: 'path', isBinary: false }
+    const file = {
+      originalPath: '/some/proto.pb',
+      path: 'path',
+      isBinary: false
+    }
 
     await pp(file)
     expect(fakePreprocessor).to.have.been.calledOnce
@@ -322,7 +427,12 @@ describe('preprocessor', () => {
     })
     fakePreprocessor.handleBinaryFiles = true
 
-    const pp = m.createPriorityPreprocessor({ '**/*': ['fake'] }, {}, null, simpleFakeInstantiatePlugin)
+    const pp = m.createPriorityPreprocessor(
+      { '**/*': ['fake'] },
+      {},
+      null,
+      simpleFakeInstantiatePlugin
+    )
 
     const file = { originalPath: '/some/photo.png', path: 'path' }
 
@@ -336,7 +446,12 @@ describe('preprocessor', () => {
       done(null, content)
     })
 
-    const pp = m.createPriorityPreprocessor({ '**/*': ['fake'] }, {}, null, simpleFakeInstantiatePlugin)
+    const pp = m.createPriorityPreprocessor(
+      { '**/*': ['fake'] },
+      {},
+      null,
+      simpleFakeInstantiatePlugin
+    )
 
     const file = { originalPath: '/some/CAM_PHOTO.JPG', path: 'path' }
 
@@ -365,15 +480,20 @@ describe('preprocessor', () => {
         done(null, content)
       })
     }
-    function fakeInstantiatePlugin (kind, name) {
+    function fakeInstantiatePlugin(kind, name) {
       return fakes[name]
     }
 
-    const pp = m.createPriorityPreprocessor({
-      '/*/a.js': ['fakeA', 'fakeB'],
-      '/some/*': ['fakeB', 'fakeC'],
-      '/some/a.js': ['fakeD']
-    }, {}, null, fakeInstantiatePlugin)
+    const pp = m.createPriorityPreprocessor(
+      {
+        '/*/a.js': ['fakeA', 'fakeB'],
+        '/some/*': ['fakeB', 'fakeC'],
+        '/some/a.js': ['fakeD']
+      },
+      {},
+      null,
+      fakeInstantiatePlugin
+    )
 
     const file = { originalPath: '/some/a.js', path: 'path' }
 
@@ -406,17 +526,22 @@ describe('preprocessor', () => {
         done(null, content)
       })
     }
-    function fakeInstantiatePlugin (kind, name) {
+    function fakeInstantiatePlugin(kind, name) {
       return fakes[name]
     }
 
     const priority = { fakeA: -1, fakeB: 1, fakeD: 100 }
 
-    const pp = m.createPriorityPreprocessor({
-      '/*/a.js': ['fakeA', 'fakeB'],
-      '/some/*': ['fakeB', 'fakeC'],
-      '/some/a.js': ['fakeD']
-    }, priority, null, fakeInstantiatePlugin)
+    const pp = m.createPriorityPreprocessor(
+      {
+        '/*/a.js': ['fakeA', 'fakeB'],
+        '/some/*': ['fakeB', 'fakeC'],
+        '/some/a.js': ['fakeD']
+      },
+      priority,
+      null,
+      fakeInstantiatePlugin
+    )
 
     const file = { originalPath: '/some/a.js', path: 'path' }
 

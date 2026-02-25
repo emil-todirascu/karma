@@ -4,9 +4,9 @@ menuTitle: Semaphore CI
 ---
 
 [Semaphore] is a popular continuous integration service that
-supports a [wide range of programming languages]. Up-to-date 
-versions of [Firefox], [PhantomJS] and [Node.js] make it a good 
-testing ground for JavaScript applications. This article assumes 
+supports a [wide range of programming languages]. Up-to-date
+versions of [Firefox], [PhantomJS] and [Node.js] make it a good
+testing ground for JavaScript applications. This article assumes
 you already have a Semaphore account.
 
 ## Configure Your Project
@@ -55,7 +55,6 @@ your test browser, Semaphore will automatically run it on a virtual screen
 during your builds.
 
 Also, if necessary, build commands can be further [customized] at any time.
-
 
 [screencast]: https://semaphoreci.com/docs/adding-github-bitbucket-project-to-semaphore.html
 [Semaphore]: https://semaphoreci.com

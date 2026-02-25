@@ -53,21 +53,67 @@ describe('runner', () => {
     })
 
     it('should parse any single digit exit code', () => {
-      expect(m.parseExitCode(Buffer.from(`something\nfake${EXIT}01`)).exitCode).to.equal(1)
-      expect(m.parseExitCode(Buffer.from(`something\nfake${EXIT}17`)).exitCode).to.equal(7)
+      expect(
+        m.parseExitCode(Buffer.from(`something\nfake${EXIT}01`)).exitCode
+      ).to.equal(1)
+      expect(
+        m.parseExitCode(Buffer.from(`something\nfake${EXIT}17`)).exitCode
+      ).to.equal(7)
     })
 
     it('should return exit code 0 if failOnEmptyTestSuite is false and and non-empty int is 0', () => {
-      expect(m.parseExitCode(Buffer.from(`something\nfake${EXIT}01`), undefined, false).exitCode).to.equal(0)
+      expect(
+        m.parseExitCode(
+          Buffer.from(`something\nfake${EXIT}01`),
+          undefined,
+          false
+        ).exitCode
+      ).to.equal(0)
     })
 
     it('should return exit code if failOnEmptyTestSuite is true', () => {
-      expect(m.parseExitCode(Buffer.from(`something\nfake${EXIT}00`), undefined, true).exitCode).to.equal(0)
-      expect(m.parseExitCode(Buffer.from(`something\nfake${EXIT}01`), undefined, true).exitCode).to.equal(1)
-      expect(m.parseExitCode(Buffer.from(`something\nfake${EXIT}07`), undefined, true).exitCode).to.equal(7)
-      expect(m.parseExitCode(Buffer.from(`something\nfake${EXIT}10`), undefined, true).exitCode).to.equal(0)
-      expect(m.parseExitCode(Buffer.from(`something\nfake${EXIT}11`), undefined, true).exitCode).to.equal(1)
-      expect(m.parseExitCode(Buffer.from(`something\nfake${EXIT}17`), undefined, true).exitCode).to.equal(7)
+      expect(
+        m.parseExitCode(
+          Buffer.from(`something\nfake${EXIT}00`),
+          undefined,
+          true
+        ).exitCode
+      ).to.equal(0)
+      expect(
+        m.parseExitCode(
+          Buffer.from(`something\nfake${EXIT}01`),
+          undefined,
+          true
+        ).exitCode
+      ).to.equal(1)
+      expect(
+        m.parseExitCode(
+          Buffer.from(`something\nfake${EXIT}07`),
+          undefined,
+          true
+        ).exitCode
+      ).to.equal(7)
+      expect(
+        m.parseExitCode(
+          Buffer.from(`something\nfake${EXIT}10`),
+          undefined,
+          true
+        ).exitCode
+      ).to.equal(0)
+      expect(
+        m.parseExitCode(
+          Buffer.from(`something\nfake${EXIT}11`),
+          undefined,
+          true
+        ).exitCode
+      ).to.equal(1)
+      expect(
+        m.parseExitCode(
+          Buffer.from(`something\nfake${EXIT}17`),
+          undefined,
+          true
+        ).exitCode
+      ).to.equal(7)
     })
   })
 })

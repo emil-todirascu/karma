@@ -1,3 +1,3 @@
-exports.formatError = function formatErrorProperty (msg) {
+exports.formatError = function formatErrorProperty(msg) {
   return msg
 }

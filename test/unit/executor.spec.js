@@ -99,9 +99,12 @@ describe('executor', () => {
       expect(result).to.be.false
       expect(spy.onRunComplete).to.not.have.been.called
       emitter.emit('run_complete')
-      expect(spy.onRunComplete).to.have.been.calledWith([], sinon.match({
-        error: expectedError
-      }))
+      expect(spy.onRunComplete).to.have.been.calledWith(
+        [],
+        sinon.match({
+          error: expectedError
+        })
+      )
     })
   })
 })

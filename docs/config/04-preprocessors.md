@@ -16,6 +16,7 @@ can be listed more than once as another way to specify multiple file path expres
 Note: Most of the preprocessors need to be loaded as [plugins].
 
 ## Available Preprocessors
+
 - [coffee]
 - [html2js]
   - Note any .html files listed in the files section must be referenced at run time as `window.__html__['template.html']`. [Learn more](https://github.com/karma-runner/karma-html2js-preprocessor#how-does-it-work-).
@@ -34,19 +35,19 @@ $ npm install karma-coffee-preprocessor --save-dev
 And then inside your configuration file...
 
 ```javascript
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
     preprocessors: {
       '**/*.coffee': ['coffee']
     }
-  });
-};
+  })
+}
 ```
 
 Of course, you can write [custom plugins] too!
 
-
 ## Configured Preprocessors
+
 Some of the preprocessors can also be configured:
 
 ```javascript
@@ -68,21 +69,19 @@ customPreprocessors: {
 }
 ```
 
-
 ## Mini matching
+
 The keys of the preprocessors config object are used to filter the files specified in
 the `files` configuration.
 
-* First the file paths are expanded to an absolute path, based on the
+- First the file paths are expanded to an absolute path, based on the
   `basePath` configuration and the directory of the configuration file. See
   [files] for more information on that.
-* Then the newly expanded path is matched using [minimatch] against the specified key.
+- Then the newly expanded path is matched using [minimatch] against the specified key.
 
 So for example the path `/my/absolute/path/to/test/unit/file.coffee` matched against
 the key `**/*.coffee` would return `true`, but matched against just `*.coffee` it would
 return `false` and the preprocessor would not be executed on the CoffeeScript files.
-
-
 
 [files]: files.html
 [minimatch]: https://github.com/isaacs/minimatch
@@ -119,7 +118,8 @@ preprocessors: {
 }
 ```
 
-then for `a.js`, karma will run `'a'` then `'b'` then `'c'`.  If two lists contradict each other, like:
+then for `a.js`, karma will run `'a'` then `'b'` then `'c'`. If two lists contradict each other, like:
+
 ```js
 preprocessors: {
   '*.js': ['a', 'b'],
@@ -127,7 +127,7 @@ preprocessors: {
 }
 ```
 
-then karma will arbitrarily pick one list to prioritize over the other.  In a
+then karma will arbitrarily pick one list to prioritize over the other. In a
 case like:
 
 ```js

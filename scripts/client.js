@@ -3,7 +3,7 @@ const { readFile } = require('fs').promises
 
 const punycodeAliasPlugin = {
   name: 'punycode-alias',
-  setup (build) {
+  setup(build) {
     build.onResolve({ filter: /^punycode$/ }, () => ({
       path: require.resolve('punycode/')
     }))
@@ -63,15 +63,21 @@ const runBuild = async () => {
 }
 
 const runCheck = async () => {
-  const [expectedClient, expectedContext] = await Promise.all(configs.map(buildResourceBuffer))
+  const [expectedClient, expectedContext] = await Promise.all(
+    configs.map(buildResourceBuffer)
+  )
   const [actualClient, actualContext] = await Promise.all([
     readFile('static/karma.js'),
     readFile('static/context.js')
   ])
 
-  if (Buffer.compare(expectedClient, actualClient) !== 0 || Buffer.compare(expectedContext, actualContext) !== 0) {
-    // eslint-disable-next-line no-throw-literal
-    throw 'Bundled client assets are outdated. Forgot to run "npm run build"?'
+  if (
+    Buffer.compare(expectedClient, actualClient) !== 0 ||
+    Buffer.compare(expectedContext, actualContext) !== 0
+  ) {
+    throw new Error(
+      'Bundled client assets are outdated. Forgot to run "npm run build"?'
+    )
   }
 }
 
@@ -87,8 +93,7 @@ const main = async () => {
   } else if (process.argv[2] === 'watch') {
     await runWatch()
   } else {
-    // eslint-disable-next-line no-throw-literal
-    throw `Unknown command: ${process.argv[2]}`
+    throw new Error(`Unknown command: ${process.argv[2]}`)
   }
 }
 

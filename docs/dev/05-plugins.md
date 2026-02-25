@@ -2,19 +2,19 @@
 pageTitle: Developing Plugins
 ---
 
-Karma can be extended through plugins. There are five kinds of plugins: *framework*, *reporter*, *launcher*, *preprocessor* and *middleware*. Each type allows to modify a certain aspect of the Karma behavior.
+Karma can be extended through plugins. There are five kinds of plugins: _framework_, _reporter_, _launcher_, _preprocessor_ and _middleware_. Each type allows to modify a certain aspect of the Karma behavior.
 
-- A *framework* connects a testing framework (like Mocha) to a Karma API, so browser can send test results back to a Karma server.
-- A *reporter* defines how test results are reported to a user.
-- A *launcher* allows Karma to launch different browsers to run tests in.
-- A *preprocessor* is responsible for transforming/transpiling source files before loading them into a browser.
-- A *middleware* can be used to customise how files are served to a browser.
+- A _framework_ connects a testing framework (like Mocha) to a Karma API, so browser can send test results back to a Karma server.
+- A _reporter_ defines how test results are reported to a user.
+- A _launcher_ allows Karma to launch different browsers to run tests in.
+- A _preprocessor_ is responsible for transforming/transpiling source files before loading them into a browser.
+- A _middleware_ can be used to customise how files are served to a browser.
 
 ## Dependency injection
 
-Karma is assembled using [*dependency injection*](https://en.wikipedia.org/wiki/Dependency_injection). It is important to understand this concept to be able to develop plugins.
+Karma is assembled using [_dependency injection_](https://en.wikipedia.org/wiki/Dependency_injection). It is important to understand this concept to be able to develop plugins.
 
-On the very high level you can think of Karma as an object where each key (a *DI token*) is mapped to a certain Karma object (a *service*). For example, `config` DI token maps to `Config` instance, which holds current Karma configuration. Plugins can request (or *inject*) various Karma objects by specifying a corresponding DI token. Upon injection a plugin can interact with injected services to implement their functionality.
+On the very high level you can think of Karma as an object where each key (a _DI token_) is mapped to a certain Karma object (a _service_). For example, `config` DI token maps to `Config` instance, which holds current Karma configuration. Plugins can request (or _inject_) various Karma objects by specifying a corresponding DI token. Upon injection a plugin can interact with injected services to implement their functionality.
 
 There is no exhaustive list of all available services and their DI tokens, but you can discover them by reading Karma's or other plugins' source code.
 
@@ -22,7 +22,7 @@ There is no exhaustive list of all available services and their DI tokens, but y
 
 Each plugin is essentially a service with its associated DI token. When user [activates a plugin][plugins] in their config, Karma looks for a corresponding DI token and instantiates a service linked to this DI token.
 
-To declare a plugin one should define a DI token for the plugin and explain Karma how to instantiate it. A DI token consists of two parts: a plugin type and plugin's unique name. The former defines what a plugin can do, requirements to the service's API and when it is instantiated. The latter is a unique name, which a plugin user will use to activate a plugin. 
+To declare a plugin one should define a DI token for the plugin and explain Karma how to instantiate it. A DI token consists of two parts: a plugin type and plugin's unique name. The former defines what a plugin can do, requirements to the service's API and when it is instantiated. The latter is a unique name, which a plugin user will use to activate a plugin.
 
 It is totally valid for a plugin to define multiple services. This can be done by adding more keys to the object exported by the plugin. Common example of this would be `framework` + `reporter` plugins, which usually come together.
 
@@ -34,7 +34,7 @@ Let's make a very simple plugin, which prints "Hello, world!" when instantiated.
 // A factory function for our plugin, it will be called, when Karma needs to
 // instantiate a plugin. Normally it should return an instance of the service
 // conforming to the API requirements of the plugin type (more on that below),
-// but for our simple example we don't need any service and just print 
+// but for our simple example we don't need any service and just print
 // a message when function is called.
 function helloFrameworkFactory() {
   console.log('Hello, world!')
@@ -46,7 +46,7 @@ module.exports = {
   // function and use whatever it returns as a service for the DI token
   // `framework:hello`.
   'framework:hello': ['factory', helloFrameworkFactory]
-};
+}
 ```
 
 ```js
@@ -54,10 +54,8 @@ module.exports = {
 
 module.exports = (config) => {
   config.set({
-    plugins: [
-      require('./hello-plugin')
-    ],
-    // Activate our plugin by specifying its unique name in the 
+    plugins: [require('./hello-plugin')],
+    // Activate our plugin by specifying its unique name in the
     // corresponding configuration key.
     frameworks: ['hello']
   })
@@ -88,7 +86,7 @@ helloFrameworkFactory.$inject = ['config']
 
 module.exports = {
   'framework:hello': ['factory', helloFrameworkFactory]
-};
+}
 ```
 
 The Karma config is unchanged and is omitted for brevity. See above example for the plugin usage.
@@ -111,10 +109,10 @@ Karma frameworks _must_ implement a `window.__karma__.start` method that Karma w
 call to start test execution. This function is called with an object that has methods
 to send results back to karma:
 
-* `.result` a single test has finished
-* `.complete` the client completed execution of all the tests
-* `.error` an error happened in the client
-* `.info` other data (e.g. number of tests or debugging messages)
+- `.result` a single test has finished
+- `.complete` the client completed execution of all the tests
+- `.error` an error happened in the client
+- `.info` other data (e.g. number of tests or debugging messages)
 
 Most commonly you'll use the `result` method to send individual test success or failure
 statuses. The method takes an object of the form:
@@ -163,10 +161,10 @@ A preprocessor is a function that accepts three arguments (`content`, `file`, an
 - arguments passed to preprocessor plugins:
   - **`content`** of the file being processed
   - **`file`** object describing the file being processed
-     - **path:** the current file, mutable file path. e. g. `some/file.coffee` -> `some/file.coffee.js` _This path is mutable and may not actually exist._
-     - **originalPath:** the original, unmutated path
-     - **encodings:** A mutable, keyed object where the keys are a valid encoding type ('gzip', 'compress', 'br', etc.) and the values are the encoded content. Encoded content should be stored here and not resolved using `next(null, encodedContent)`
-     - **type:** determines how to include a file, when serving
+    - **path:** the current file, mutable file path. e. g. `some/file.coffee` -> `some/file.coffee.js` _This path is mutable and may not actually exist._
+    - **originalPath:** the original, unmutated path
+    - **encodings:** A mutable, keyed object where the keys are a valid encoding type ('gzip', 'compress', 'br', etc.) and the values are the encoded content. Encoded content should be stored here and not resolved using `next(null, encodedContent)`
+    - **type:** determines how to include a file, when serving
   - **`next`** function to be called when preprocessing is complete, should be called as `next(null, processedContent)` or `next(error)`
 
 ### Crazier stuff

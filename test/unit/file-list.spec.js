@@ -10,15 +10,15 @@ const helper = require('../../lib/helper')
 const config = require('../../lib/config')
 
 // create an array of pattern objects from given strings
-function patterns () {
+function patterns() {
   return Array.from(arguments).map((str) => new config.Pattern(str))
 }
 
-function pathsFrom (files) {
+function pathsFrom(files) {
   return Array.from(files).map((file) => file.path)
 }
 
-function findFile (path, files) {
+function findFile(path, files) {
   return Array.from(files).find((file) => file.path === path)
 }
 
@@ -61,7 +61,15 @@ describe('FileList', () => {
   let mg
   let modified
   let glob
-  let List = list = emitter = preprocess = patternList = mg = modified = glob = null
+  let List =
+    (list =
+    emitter =
+    preprocess =
+    patternList =
+    mg =
+    modified =
+    glob =
+      null)
 
   beforeEach(() => {
     preprocess = sinon.stub().resolves()
@@ -103,7 +111,11 @@ describe('FileList', () => {
 
       return list.refresh().then(() => {
         expect(list.files.served).to.have.length(3)
-        expect(pathsFrom(list.files.served)).to.contain('/a.txt', '/b.txt', '/c.txt')
+        expect(pathsFrom(list.files.served)).to.contain(
+          '/a.txt',
+          '/b.txt',
+          '/c.txt'
+        )
       })
     })
 
@@ -191,7 +203,9 @@ describe('FileList', () => {
     it('returns the first match if it finds one', () => {
       list = new List(patterns('*.js', '**/*.js'), [], emitter, preprocess)
       expect(list._findIncluded('world.js').pattern).to.be.eql('*.js')
-      expect(list._findIncluded('/hello/world/i.js').pattern).to.be.eql('**/*.js')
+      expect(list._findIncluded('/hello/world/i.js').pattern).to.be.eql(
+        '**/*.js'
+      )
     })
   })
 
@@ -256,7 +270,13 @@ describe('FileList', () => {
         'graceful-fs': mockFs
       })
 
-      list = new List(patterns('/some/*.js', '*.txt'), [], emitter, preprocess, 100)
+      list = new List(
+        patterns('/some/*.js', '*.txt'),
+        [],
+        emitter,
+        preprocess,
+        100
+      )
     })
 
     it('resolves patterns', () => {
@@ -284,7 +304,11 @@ describe('FileList', () => {
 
     it('cancels refreshs', () => {
       const checkResult = (files) => {
-        expect(pathsFrom(files.served)).to.contain('/some/a.js', '/some/b.js', '/some/c.js')
+        expect(pathsFrom(files.served)).to.contain(
+          '/some/a.js',
+          '/some/b.js',
+          '/some/c.js'
+        )
       }
 
       const p1 = list.refresh().then(checkResult)
@@ -294,8 +318,12 @@ describe('FileList', () => {
       let called = false
       const callback = (data) => {
         expect(called).to.be.false
-        expect(data.served[0].mtime.toString()).to.not.equal(data.served[2].mtime.toString())
-        expect(data.served[0].mtime.toString()).to.equal(data.served[1].mtime.toString())
+        expect(data.served[0].mtime.toString()).to.not.equal(
+          data.served[2].mtime.toString()
+        )
+        expect(data.served[0].mtime.toString()).to.equal(
+          data.served[1].mtime.toString()
+        )
         called = true
       }
       list._emitter.on('file_list_modified', callback)
@@ -318,7 +346,12 @@ describe('FileList', () => {
     })
 
     it('sets the mtime for relative patterns', () => {
-      list = new List(patterns('/some/world/../*.js', '*.txt'), [], emitter, preprocess)
+      list = new List(
+        patterns('/some/world/../*.js', '*.txt'),
+        [],
+        emitter,
+        preprocess
+      )
 
       return list.refresh().then((files) => {
         const bucket = list.buckets.get('/some/world/../*.js')
@@ -335,7 +368,12 @@ describe('FileList', () => {
       // /(a.*      ) => /a.txt                   [MATCH in *.txt as well]
       // /some/*.(js) => /some/a.js, /some/b.js   [/some/b.js EXCLUDED]
       // *.(txt     ) => /c.txt, a.txt, b.txt     [UNSORTED]
-      list = new List(patterns('/a.*', '/some/*.js', '*.txt'), ['**/b.js'], emitter, preprocess)
+      list = new List(
+        patterns('/a.*', '/some/*.js', '*.txt'),
+        ['**/b.js'],
+        emitter,
+        preprocess
+      )
 
       return list.refresh().then((files) => {
         expect(pathsFrom(files.served)).to.deep.equal([
@@ -348,7 +386,12 @@ describe('FileList', () => {
     })
 
     it('ingores excluded files', () => {
-      list = new List(patterns('*.txt'), ['/a.*', '**/b.txt'], emitter, preprocess)
+      list = new List(
+        patterns('*.txt'),
+        ['/a.*', '**/b.txt'],
+        emitter,
+        preprocess
+      )
 
       return list.refresh().then((files) => {
         const bucket = pathsFrom(list.buckets.get('*.txt'))
@@ -362,13 +405,12 @@ describe('FileList', () => {
     it('does not glob urls and sets the isUrl flag', () => {
       list = new List(patterns('http://some.com'), [], emitter, preprocess)
 
-      return list.refresh()
-        .then((files) => {
-          const bucket = list.buckets.get('http://some.com')
-          const file = findFile('http://some.com', bucket)
+      return list.refresh().then((files) => {
+        const bucket = list.buckets.get('http://some.com')
+        const file = findFile('http://some.com', bucket)
 
-          expect(file).to.have.property('isUrl', true)
-        })
+        expect(file).to.have.property('isUrl', true)
+      })
     })
 
     it('preprocesses all files', () => {
@@ -391,9 +433,11 @@ describe('FileList', () => {
       const modified = sinon.stub()
       emitter.on('file_list_modified', modified)
 
-      return list.refresh().then(() => {
-        expect(modified).to.have.been.calledOnce
-      })
+      return list
+        .refresh()
+        .then(() => {
+          expect(modified).to.have.been.calledOnce
+        })
         .then(() => {
           list.refresh().then(() => {
             expect(modified).to.have.been.calledTwice
@@ -414,10 +458,9 @@ describe('FileList', () => {
       return Promise.all([
         list.refresh(),
         list.reload(patterns('*.txt'), [])
-      ])
-        .then(() => {
-          expect(list._refresh).to.have.been.calledTwice
-        })
+      ]).then(() => {
+        expect(list._refresh).to.have.been.calledTwice
+      })
     })
   })
 
@@ -440,7 +483,13 @@ describe('FileList', () => {
       }
 
       clock = sinon.useFakeTimers({
-        toFake: ['Date', 'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval']
+        toFake: [
+          'Date',
+          'setTimeout',
+          'clearTimeout',
+          'setInterval',
+          'clearInterval'
+        ]
       })
       // This hack is needed to ensure lodash is using the fake timers
       // from sinon
@@ -456,7 +505,13 @@ describe('FileList', () => {
         path: pathLib.posix
       })
 
-      list = new List(patterns('/some/*.js', '*.txt'), ['/secret/*.txt'], emitter, preprocess, 100)
+      list = new List(
+        patterns('/some/*.js', '*.txt'),
+        ['/secret/*.txt'],
+        emitter,
+        preprocess,
+        100
+      )
     })
 
     afterEach(() => {
@@ -534,7 +589,9 @@ describe('FileList', () => {
 
       return list.refresh().then(() => {
         return list.addFile('/a.js').then((files) => {
-          expect(findFile('/a.js', files.served).mtime).to.eql(new Date('2012-01-01'))
+          expect(findFile('/a.js', files.served).mtime).to.eql(
+            new Date('2012-01-01')
+          )
         })
       })
     })
@@ -571,7 +628,13 @@ describe('FileList', () => {
       }
 
       clock = sinon.useFakeTimers({
-        toFake: ['Date', 'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval']
+        toFake: [
+          'Date',
+          'setTimeout',
+          'clearTimeout',
+          'setInterval',
+          'clearInterval'
+        ]
       })
       // This hack is needed to ensure lodash is using the fake timers
       // from sinon
@@ -593,7 +656,13 @@ describe('FileList', () => {
 
     it('updates mtime and fires "file_list_modified"', () => {
       // MATCH: /some/a.js, /some/b.js
-      list = new List(patterns('/some/*.js', '/a.*'), [], emitter, preprocess, 100)
+      list = new List(
+        patterns('/some/*.js', '/a.*'),
+        [],
+        emitter,
+        preprocess,
+        100
+      )
       const modified = sinon.stub()
       emitter.on('file_list_modified', modified)
 
@@ -604,14 +673,21 @@ describe('FileList', () => {
         return list.changeFile('/some/b.js').then((files) => {
           clock.tick(101)
           expect(modified).to.have.been.calledOnce
-          expect(findFile('/some/b.js', files.served).mtime).to.be.eql(new Date('3020-01-01'))
+          expect(findFile('/some/b.js', files.served).mtime).to.be.eql(
+            new Date('3020-01-01')
+          )
         })
       })
     })
 
     it('does not fire "file_list_modified" if no matching file is found', () => {
       // MATCH: /some/a.js
-      list = new List(patterns('/some/*.js', '/a.*'), ['/some/b.js'], emitter, preprocess)
+      list = new List(
+        patterns('/some/*.js', '/a.*'),
+        ['/some/b.js'],
+        emitter,
+        preprocess
+      )
 
       const modified = sinon.stub()
       emitter.on('file_list_modified', modified)
@@ -670,7 +746,10 @@ describe('FileList', () => {
         mockFs._touchFile('/some/a.js', '3020-01-01')
         return list.changeFile('/some/a.js').then(() => {
           expect(preprocess).to.have.been.called
-          expect(preprocess.lastCall.args[0]).to.have.property('path', '/some/a.js')
+          expect(preprocess.lastCall.args[0]).to.have.property(
+            'path',
+            '/some/a.js'
+          )
         })
       })
     })
@@ -695,7 +774,13 @@ describe('FileList', () => {
       }
 
       clock = sinon.useFakeTimers({
-        toFake: ['Date', 'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval']
+        toFake: [
+          'Date',
+          'setTimeout',
+          'clearTimeout',
+          'setInterval',
+          'clearInterval'
+        ]
       })
       // This hack is needed to ensure lodash is using the fake timers
       // from sinon
@@ -717,22 +802,28 @@ describe('FileList', () => {
 
     it('removes the file from the list and fires "file_list_modified"', () => {
       // MATCH: /some/a.js, /some/b.js, /a.txt
-      list = new List(patterns('/some/*.js', '/a.*'), [], emitter, preprocess, 100)
+      list = new List(
+        patterns('/some/*.js', '/a.*'),
+        [],
+        emitter,
+        preprocess,
+        100
+      )
 
       const modified = sinon.stub()
       emitter.on('file_list_modified', modified)
 
-      return list.refresh().then((files) => {
-        modified.resetHistory()
-        return list.removeFile('/some/a.js')
-      }).then((files) => {
-        expect(pathsFrom(files.served)).to.be.eql([
-          '/some/b.js',
-          '/a.txt'
-        ])
-        clock.tick(101)
-        expect(modified).to.have.been.calledOnce
-      })
+      return list
+        .refresh()
+        .then((files) => {
+          modified.resetHistory()
+          return list.removeFile('/some/a.js')
+        })
+        .then((files) => {
+          expect(pathsFrom(files.served)).to.be.eql(['/some/b.js', '/a.txt'])
+          clock.tick(101)
+          expect(modified).to.have.been.calledOnce
+        })
     })
 
     it('does not fire "file_list_modified" if the file is not in the list', () => {
@@ -779,7 +870,13 @@ describe('FileList', () => {
       emitter.on('file_list_modified', modified)
 
       clock = sinon.useFakeTimers({
-        toFake: ['Date', 'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval']
+        toFake: [
+          'Date',
+          'setTimeout',
+          'clearTimeout',
+          'setInterval',
+          'clearInterval'
+        ]
       })
       // This hack is needed to ensure lodash is using the fake timers
       // from sinon
@@ -822,7 +919,13 @@ describe('FileList', () => {
     })
 
     it('debounces a single file change', () => {
-      list = new List(patterns('/some/*.js', '/a.*'), [], emitter, preprocess, 100)
+      list = new List(
+        patterns('/some/*.js', '/a.*'),
+        [],
+        emitter,
+        preprocess,
+        100
+      )
 
       return list.refresh().then((files) => {
         modified.resetHistory()
@@ -846,7 +949,13 @@ describe('FileList', () => {
     })
 
     it('debounces several changes to a file', () => {
-      list = new List(patterns('/some/*.js', '/a.*'), [], emitter, preprocess, 100)
+      list = new List(
+        patterns('/some/*.js', '/a.*'),
+        [],
+        emitter,
+        preprocess,
+        100
+      )
 
       return list.refresh().then((files) => {
         modified.resetHistory()
@@ -888,7 +997,13 @@ describe('FileList', () => {
 
     it('debounces multiple changes until there is quiescence', () => {
       // MATCH: /some/a.js, /some/b.js, /a.txt
-      list = new List(patterns('/some/*.js', '/a.*'), [], emitter, preprocess, 100)
+      list = new List(
+        patterns('/some/*.js', '/a.*'),
+        [],
+        emitter,
+        preprocess,
+        100
+      )
 
       return list.refresh().then((files) => {
         modified.resetHistory()
@@ -939,9 +1054,11 @@ describe('FileList', () => {
         expect(preprocess).to.not.have.been.called
 
         const promise = new Promise((resolve) => {
-          emitter.once('file_list_modified', () => _.defer(() => {
-            resolve()
-          }))
+          emitter.once('file_list_modified', () =>
+            _.defer(() => {
+              resolve()
+            })
+          )
         })
 
         clock.tick(2)

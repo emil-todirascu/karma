@@ -17,7 +17,9 @@ describe('middleware.strip_host', function () {
   })
 
   it('should strip request with absoluteURI over HTTPS', function () {
-    const normalizedUrl = stripHost('https://karma-runner.github.io/base/a.js?123345')
+    const normalizedUrl = stripHost(
+      'https://karma-runner.github.io/base/a.js?123345'
+    )
     expect(normalizedUrl).to.equal('/base/a.js?123345')
   })
 

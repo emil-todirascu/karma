@@ -5,11 +5,17 @@ describe('reporter', () => {
 
   describe('Base', () => {
     let reporter
-    let adapter = reporter = null
+    let adapter = (reporter = null)
 
     beforeEach(() => {
       adapter = sinon.spy()
-      reporter = new BaseReporter(null, null, false, { terminal: true }, adapter)
+      reporter = new BaseReporter(
+        null,
+        null,
+        false,
+        { terminal: true },
+        adapter
+      )
       return reporter
     })
 
@@ -78,10 +84,16 @@ describe('reporter', () => {
     })
 
     it('should not log if lower priority than browserConsoleLogOptions "error"', () => {
-      const reporter = new BaseReporter(null, null, true, {
-        level: 'error',
-        terminal: true
-      }, adapter)
+      const reporter = new BaseReporter(
+        null,
+        null,
+        true,
+        {
+          level: 'error',
+          terminal: true
+        },
+        adapter
+      )
       const writeSpy = sinon.spy(reporter, 'writeCommonMsg')
 
       reporter._browsers = ['Chrome']
@@ -91,10 +103,16 @@ describe('reporter', () => {
     })
 
     it('should not log if lower priority than browserConsoleLogOptions "warn"', () => {
-      const reporter = new BaseReporter(null, null, true, {
-        level: 'warn',
-        terminal: true
-      }, adapter)
+      const reporter = new BaseReporter(
+        null,
+        null,
+        true,
+        {
+          level: 'warn',
+          terminal: true
+        },
+        adapter
+      )
       const writeSpy = sinon.spy(reporter, 'writeCommonMsg')
 
       reporter._browsers = ['Chrome']
@@ -104,10 +122,16 @@ describe('reporter', () => {
     })
 
     it('should not log if lower priority than browserConsoleLogOptions "log"', () => {
-      const reporter = new BaseReporter(null, null, true, {
-        level: 'log',
-        terminal: true
-      }, adapter)
+      const reporter = new BaseReporter(
+        null,
+        null,
+        true,
+        {
+          level: 'log',
+          terminal: true
+        },
+        adapter
+      )
       const writeSpy = sinon.spy(reporter, 'writeCommonMsg')
 
       reporter._browsers = ['Chrome']
@@ -117,10 +141,16 @@ describe('reporter', () => {
     })
 
     it('should not log if lower priority than browserConsoleLogOptions "info"', () => {
-      const reporter = new BaseReporter(null, null, true, {
-        level: 'info',
-        terminal: true
-      }, adapter)
+      const reporter = new BaseReporter(
+        null,
+        null,
+        true,
+        {
+          level: 'info',
+          terminal: true
+        },
+        adapter
+      )
       const writeSpy = sinon.spy(reporter, 'writeCommonMsg')
 
       reporter._browsers = ['Chrome']
@@ -130,10 +160,16 @@ describe('reporter', () => {
     })
 
     it('should log if higher priority than browserConsoleLogOptions "warn"', () => {
-      const reporter = new BaseReporter(null, null, true, {
-        level: 'warn',
-        terminal: true
-      }, adapter)
+      const reporter = new BaseReporter(
+        null,
+        null,
+        true,
+        {
+          level: 'warn',
+          terminal: true
+        },
+        adapter
+      )
       const writeSpy = sinon.spy(reporter, 'writeCommonMsg')
 
       reporter._browsers = ['Chrome']
@@ -143,10 +179,16 @@ describe('reporter', () => {
     })
 
     it('should log if higher priority than browserConsoleLogOptions "log"', () => {
-      const reporter = new BaseReporter(null, null, true, {
-        level: 'log',
-        terminal: true
-      }, adapter)
+      const reporter = new BaseReporter(
+        null,
+        null,
+        true,
+        {
+          level: 'log',
+          terminal: true
+        },
+        adapter
+      )
       const writeSpy = sinon.spy(reporter, 'writeCommonMsg')
 
       reporter._browsers = ['Chrome']
@@ -156,10 +198,16 @@ describe('reporter', () => {
     })
 
     it('should log if higher priority than browserConsoleLogOptions "info"', () => {
-      const reporter = new BaseReporter(null, null, true, {
-        level: 'info',
-        terminal: true
-      }, adapter)
+      const reporter = new BaseReporter(
+        null,
+        null,
+        true,
+        {
+          level: 'info',
+          terminal: true
+        },
+        adapter
+      )
       const writeSpy = sinon.spy(reporter, 'writeCommonMsg')
 
       reporter._browsers = ['Chrome']
@@ -169,10 +217,16 @@ describe('reporter', () => {
     })
 
     it('should log if higher priority than browserConsoleLogOptions "debug"', () => {
-      const reporter = new BaseReporter(null, null, true, {
-        level: 'debug',
-        terminal: true
-      }, adapter)
+      const reporter = new BaseReporter(
+        null,
+        null,
+        true,
+        {
+          level: 'debug',
+          terminal: true
+        },
+        adapter
+      )
       const writeSpy = sinon.spy(reporter, 'writeCommonMsg')
 
       reporter._browsers = ['Chrome']

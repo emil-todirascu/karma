@@ -1,4 +1,4 @@
-Karma can be easily extended through plugins. In fact, all the existing preprocessors, reporters, browser launchers and frameworks are plugins. 
+Karma can be easily extended through plugins. In fact, all the existing preprocessors, reporters, browser launchers and frameworks are plugins.
 
 You can install [existing plugins] from npm or you can write [your own plugins][developing plugins] for Karma.
 
@@ -37,11 +37,11 @@ config.set({
 
     // Load a plugin from the file in your project.
     require('./my-custom-plugin'),
-  
+
     // Define a plugin inline.
     { 'framework:xyz': ['factory', factoryFn] },
 
-    // Specify a module name or path which Karma will require() and load its 
+    // Specify a module name or path which Karma will require() and load its
     // default export as a plugin.
     'karma-chrome-launcher',
     './my-fancy-plugin'

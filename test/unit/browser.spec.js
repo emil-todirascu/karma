@@ -9,7 +9,7 @@ describe('Browser', () => {
   const Collection = require('../../lib/browser_collection')
   const createMockTimer = require('./mocks/timer')
 
-  let browser = collection = emitter = socket = null
+  let browser = (collection = emitter = socket = null)
   let socketId = 0
 
   const mkSocket = () => {
@@ -26,14 +26,18 @@ describe('Browser', () => {
   })
 
   it('should set fullName and name', () => {
-    const fullName = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.7 ' + '(KHTML, like Gecko) Chrome/16.0.912.63 Safari/535.7'
+    const fullName =
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.7 ' +
+      '(KHTML, like Gecko) Chrome/16.0.912.63 Safari/535.7'
     browser = new Browser('id', fullName, collection, emitter, socket)
     expect(browser.name).to.equal('Chrome 16.0.912.63 (Mac OS 10.6.8)')
     expect(browser.fullName).to.equal(fullName)
   })
 
   it('should serialize to JSON', () => {
-    const fullName = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.7 ' + '(KHTML, like Gecko) Chrome/16.0.912.63 Safari/535.7'
+    const fullName =
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.7 ' +
+      '(KHTML, like Gecko) Chrome/16.0.912.63 Safari/535.7'
     browser = new Browser('id', fullName, collection, emitter, socket)
     emitter.browser = browser
     const json = JSON.stringify(browser)
@@ -64,7 +68,9 @@ describe('Browser', () => {
 
   describe('toString', () => {
     it('should return browser name', () => {
-      const fullName = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.7 ' + '(KHTML, like Gecko) Chrome/16.0.912.63 Safari/535.7'
+      const fullName =
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.7 ' +
+        '(KHTML, like Gecko) Chrome/16.0.912.63 Safari/535.7'
       browser = new Browser('id', fullName, collection, emitter, socket)
       expect(browser.toString()).to.equal('Chrome 16.0.912.63 (Mac OS 10.6.8)')
     })
@@ -220,7 +226,15 @@ describe('Browser', () => {
 
     beforeEach(() => {
       timer = createMockTimer()
-      browser = new Browser('fake-id', 'full name', collection, emitter, socket, timer, 10)
+      browser = new Browser(
+        'fake-id',
+        'full name',
+        collection,
+        emitter,
+        socket,
+        timer,
+        10
+      )
       browser.init()
     })
 
@@ -257,7 +271,15 @@ describe('Browser', () => {
     it('should cancel disconnecting', () => {
       const timer = createMockTimer()
 
-      browser = new Browser('id', 'Chrome 19.0', collection, emitter, socket, timer, 10)
+      browser = new Browser(
+        'id',
+        'Chrome 19.0',
+        collection,
+        emitter,
+        socket,
+        timer,
+        10
+      )
       browser.init()
       browser.state = Browser.STATE_EXECUTING
 
@@ -271,7 +293,15 @@ describe('Browser', () => {
     it('should ignore disconnects on old sockets, but accept other messages', () => {
       // IE on polling sometimes reconnect on another socket (before disconnecting)
 
-      browser = new Browser('id', 'Chrome 19.0', collection, emitter, socket, null, 0)
+      browser = new Browser(
+        'id',
+        'Chrome 19.0',
+        collection,
+        emitter,
+        socket,
+        null,
+        0
+      )
       browser.init()
       browser.state = Browser.STATE_EXECUTING
 
@@ -290,7 +320,15 @@ describe('Browser', () => {
     })
 
     it('should reconnect a disconnected browser', () => {
-      browser = new Browser('id', 'Chrome 25.0', collection, emitter, socket, null, 10)
+      browser = new Browser(
+        'id',
+        'Chrome 25.0',
+        collection,
+        emitter,
+        socket,
+        null,
+        10
+      )
       browser.state = Browser.STATE_DISCONNECTED
 
       browser.reconnect(mkSocket(), true)
@@ -299,7 +337,15 @@ describe('Browser', () => {
     })
 
     it('should not add a disconnected browser to the collection multiple times', () => {
-      browser = new Browser('id', 'Chrome 25.0', collection, emitter, socket, null, 10)
+      browser = new Browser(
+        'id',
+        'Chrome 25.0',
+        collection,
+        emitter,
+        socket,
+        null,
+        10
+      )
       browser.init()
 
       expect(collection.length).to.equal(1)
@@ -363,8 +409,10 @@ describe('Browser', () => {
     it('should accept array of results', () => {
       browser.state = Browser.STATE_EXECUTING
       browser.onResult([
-        createSuccessResult(), createSuccessResult(),
-        createFailedResult(), createSkippedResult()
+        createSuccessResult(),
+        createSuccessResult(),
+        createFailedResult(),
+        createSkippedResult()
       ])
 
       expect(browser.lastResult.success).to.equal(2)
@@ -380,7 +428,11 @@ describe('Browser', () => {
       browser.name = 'Browser 1.0'
       browser.id = '12345'
 
-      expect(browser.serialize()).to.deep.equal({ id: '12345', name: 'Browser 1.0', isConnected: true })
+      expect(browser.serialize()).to.deep.equal({
+        id: '12345',
+        name: 'Browser 1.0',
+        isConnected: true
+      })
     })
   })
 
@@ -392,8 +444,18 @@ describe('Browser', () => {
       const noActivityTimeout = 0
       const singleRun = false
       const clientConfig = {}
-      browser = new Browser('fake-id', 'full name', collection, emitter, socket,
-        timer, disconnectDelay, noActivityTimeout, singleRun, clientConfig)
+      browser = new Browser(
+        'fake-id',
+        'full name',
+        collection,
+        emitter,
+        socket,
+        timer,
+        disconnectDelay,
+        noActivityTimeout,
+        singleRun,
+        clientConfig
+      )
       socket.on('execute', spyExecute)
       browser.execute()
 
@@ -414,7 +476,15 @@ describe('Browser', () => {
   describe('scenario:', () => {
     it('reconnecting during the run', () => {
       const timer = createMockTimer()
-      browser = new Browser('fake-id', 'full name', collection, emitter, socket, timer, 10)
+      browser = new Browser(
+        'fake-id',
+        'full name',
+        collection,
+        emitter,
+        socket,
+        timer,
+        10
+      )
       browser.init()
       browser.state = Browser.STATE_EXECUTING
       socket.emit('result', { success: true, suite: [], log: [] })
@@ -436,7 +506,15 @@ describe('Browser', () => {
       const spy = sinon.spy()
       emitter.on('browser_complete', spy)
       const timer = createMockTimer()
-      browser = new Browser('fake-id', 'full name', collection, emitter, socket, timer, 10)
+      browser = new Browser(
+        'fake-id',
+        'full name',
+        collection,
+        emitter,
+        socket,
+        timer,
+        10
+      )
       browser.init()
       browser.state = Browser.STATE_EXECUTING
       socket.emit('result', { success: true, suite: [], log: [] })
@@ -453,7 +531,15 @@ describe('Browser', () => {
 
     it('restarting a disconnected browser', () => {
       const timer = createMockTimer()
-      browser = new Browser('fake-id', 'Chrome 31.0', collection, emitter, socket, timer, 10)
+      browser = new Browser(
+        'fake-id',
+        'Chrome 31.0',
+        collection,
+        emitter,
+        socket,
+        timer,
+        10
+      )
       browser.init()
       expect(browser.state).to.equal(Browser.STATE_CONNECTED)
 
@@ -487,7 +573,15 @@ describe('Browser', () => {
     it('keeping multiple active sockets', () => {
       // If there is a new connection (socket) for an already connected browser,
       // we need to keep the old socket, in the case that the new socket will disconnect.
-      browser = new Browser('fake-id', 'Chrome 31.0', collection, emitter, socket, null, 10)
+      browser = new Browser(
+        'fake-id',
+        'Chrome 31.0',
+        collection,
+        emitter,
+        socket,
+        null,
+        10
+      )
       browser.init()
       expect(browser.state).to.equal(Browser.STATE_CONNECTED)
 
@@ -512,7 +606,15 @@ describe('Browser', () => {
     it('complete only once after reconnect on the same socket', () => {
       // If there is a new connection on the same socket,
       // we should emit complete message only once.
-      browser = new Browser('fake-id', 'Chrome 31.0', collection, emitter, socket, null, 10)
+      browser = new Browser(
+        'fake-id',
+        'Chrome 31.0',
+        collection,
+        emitter,
+        socket,
+        null,
+        10
+      )
       browser.onComplete = sinon.spy()
       browser.init()
       browser.execute()
@@ -528,7 +630,16 @@ describe('Browser', () => {
 
     it('disconnect when no message during the run', () => {
       const timer = createMockTimer()
-      browser = new Browser('fake-id', 'Chrome 31.0', collection, emitter, socket, timer, 10, 20)
+      browser = new Browser(
+        'fake-id',
+        'Chrome 31.0',
+        collection,
+        emitter,
+        socket,
+        timer,
+        10,
+        20
+      )
       browser.init()
       browser.execute()
 

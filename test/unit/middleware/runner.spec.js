@@ -22,7 +22,7 @@ describe('middleware.runner', () => {
   let handler
   let fileListMock
 
-  function createHandler () {
+  function createHandler() {
     handler = createRunnerMiddleware(
       emitter,
       fileListMock,
@@ -40,7 +40,7 @@ describe('middleware.runner', () => {
   beforeEach(() => {
     mockReporter = {
       adapters: [],
-      write (msg) {
+      write(msg) {
         return this.adapters.forEach((adapter) => adapter(msg))
       }
     }
@@ -115,7 +115,11 @@ describe('middleware.runner', () => {
 
       executor.onSchedule = () => {
         mockReporter.write('result')
-        emitter.emit('run_complete', capturedBrowsers, { exitCode: 0, success: 0, failed: 0 })
+        emitter.emit('run_complete', capturedBrowsers, {
+          exitCode: 0,
+          success: 0,
+          failed: 0
+        })
       }
     })
 
@@ -137,7 +141,11 @@ describe('middleware.runner', () => {
 
       executor.onSchedule = () => {
         mockReporter.write('result')
-        emitter.emit('run_complete', capturedBrowsers, { exitCode: 0, success: 3, failed: 0 })
+        emitter.emit('run_complete', capturedBrowsers, {
+          exitCode: 0,
+          success: 3,
+          failed: 0
+        })
       }
     })
 
@@ -159,14 +167,21 @@ describe('middleware.runner', () => {
 
       executor.onSchedule = () => {
         mockReporter.write('result')
-        emitter.emit('run_complete', capturedBrowsers, { exitCode: 0, success: 0, failed: 6 })
+        emitter.emit('run_complete', capturedBrowsers, {
+          exitCode: 0,
+          success: 0,
+          failed: 6
+        })
       }
     })
 
     it('should not run if there is no browser captured', (done) => {
       response.once('end', () => {
         expect(nextSpy).to.not.have.been.called
-        expect(response).to.beServedAs(200, 'No captured browser, open http://localhost:8877/\n')
+        expect(response).to.beServedAs(
+          200,
+          'No captured browser, open http://localhost:8877/\n'
+        )
         expect(fileListMock.refresh).not.to.have.been.called
         done()
       })
@@ -196,10 +211,18 @@ describe('middleware.runner', () => {
 
       executor.onSchedule = () => {
         expect(fileListMock.refresh).not.to.have.been.called
-        expect(fileListMock.addFile).to.have.been.calledWith(path.resolve('/new.js'))
-        expect(fileListMock.removeFile).to.have.been.calledWith(path.resolve('/foo.js'))
-        expect(fileListMock.removeFile).to.have.been.calledWith(path.resolve('/bar.js'))
-        expect(fileListMock.changeFile).to.have.been.calledWith(path.resolve('/changed.js'))
+        expect(fileListMock.addFile).to.have.been.calledWith(
+          path.resolve('/new.js')
+        )
+        expect(fileListMock.removeFile).to.have.been.calledWith(
+          path.resolve('/foo.js')
+        )
+        expect(fileListMock.removeFile).to.have.been.calledWith(
+          path.resolve('/bar.js')
+        )
+        expect(fileListMock.changeFile).to.have.been.calledWith(
+          path.resolve('/changed.js')
+        )
         done()
       }
     })
@@ -282,7 +305,9 @@ describe('middleware.runner', () => {
       handler(new HttpRequestMock('/__run__'), response, nextSpy)
       executor.scheduleError = (errorMessage) => {
         try {
-          expect(errorMessage).eq(`Error during refresh file list. ${error.stack}`)
+          expect(errorMessage).eq(
+            `Error during refresh file list. ${error.stack}`
+          )
           done()
         } catch (err) {
           done(err)

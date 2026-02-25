@@ -73,15 +73,19 @@ describe('launchers/process.js', () => {
     it('should remove quotes from the cmd', () => {
       ProcessLauncher.call(launcher, null, mockTempDir)
 
-      expect(launcher._normalizeCommand('"/bin/brow ser"')).to.equal(path.normalize('/bin/brow ser'))
+      expect(launcher._normalizeCommand('"/bin/brow ser"')).to.equal(
+        path.normalize('/bin/brow ser')
+      )
       expect(launcher._normalizeCommand("'/bin/brow ser'")).to.equal
       path.normalize('/bin/brow ser')
-      expect(launcher._normalizeCommand('`/bin/brow ser`')).to.equal(path.normalize('/bin/brow ser'))
+      expect(launcher._normalizeCommand('`/bin/brow ser`')).to.equal(
+        path.normalize('/bin/brow ser')
+      )
     })
   })
 
   describe('with RetryLauncher', () => {
-    function assertSpawnError ({ errorCode, emitExit, expectedError }, done) {
+    function assertSpawnError({ errorCode, emitExit, expectedError }, done) {
       ProcessLauncher.call(launcher, mockSpawn, mockTempDir)
       RetryLauncher.call(launcher, 2)
       launcher._getCommand = () => BROWSER_PATH
@@ -100,53 +104,75 @@ describe('launchers/process.js', () => {
         expect(launcher.state).to.equal(launcher.STATE_FINISHED)
         expect(failureSpy).to.have.been.called
         expect(logDebugSpy).to.have.been.callCount(5)
-        expect(logDebugSpy.getCall(0)).to.have.been.calledWithExactly('null -> BEING_CAPTURED')
-        expect(logDebugSpy.getCall(1)).to.have.been.calledWithExactly(`${BROWSER_PATH} http://host:9876/?id=fake-id`)
-        expect(logDebugSpy.getCall(2)).to.have.been.calledWithExactly('Process fake-name exited with code -1 and signal null')
-        expect(logDebugSpy.getCall(3)).to.have.been.calledWithExactly('fake-name failed (cannot start). Not restarting.')
-        expect(logDebugSpy.getCall(4)).to.have.been.calledWithExactly('BEING_CAPTURED -> FINISHED')
+        expect(logDebugSpy.getCall(0)).to.have.been.calledWithExactly(
+          'null -> BEING_CAPTURED'
+        )
+        expect(logDebugSpy.getCall(1)).to.have.been.calledWithExactly(
+          `${BROWSER_PATH} http://host:9876/?id=fake-id`
+        )
+        expect(logDebugSpy.getCall(2)).to.have.been.calledWithExactly(
+          'Process fake-name exited with code -1 and signal null'
+        )
+        expect(logDebugSpy.getCall(3)).to.have.been.calledWithExactly(
+          'fake-name failed (cannot start). Not restarting.'
+        )
+        expect(logDebugSpy.getCall(4)).to.have.been.calledWithExactly(
+          'BEING_CAPTURED -> FINISHED'
+        )
         expect(logErrorSpy).to.have.been.calledWith(expectedError)
         done()
       })
     }
 
     it('should handle spawn ENOENT error and not even retry', (done) => {
-      assertSpawnError({
-        errorCode: 'ENOENT',
-        emitExit: true,
-        expectedError: `Cannot start fake-name\n\tCan not find the binary ${BROWSER_PATH}\n\tPlease set env variable fake-ENV-CMD`
-      }, done)
+      assertSpawnError(
+        {
+          errorCode: 'ENOENT',
+          emitExit: true,
+          expectedError: `Cannot start fake-name\n\tCan not find the binary ${BROWSER_PATH}\n\tPlease set env variable fake-ENV-CMD`
+        },
+        done
+      )
     })
 
     it('should handle spawn EACCES error and not even retry', (done) => {
-      assertSpawnError({
-        errorCode: 'EACCES',
-        emitExit: true,
-        expectedError: `Cannot start fake-name\n\tPermission denied accessing the binary ${BROWSER_PATH}\n\tMaybe it's a directory?`
-      }, done)
+      assertSpawnError(
+        {
+          errorCode: 'EACCES',
+          emitExit: true,
+          expectedError: `Cannot start fake-name\n\tPermission denied accessing the binary ${BROWSER_PATH}\n\tMaybe it's a directory?`
+        },
+        done
+      )
     })
 
     it('should handle spawn ENOENT error and report the error when exit event is not emitted', (done) => {
-      assertSpawnError({
-        errorCode: 'ENOENT',
-        emitExit: false,
-        expectedError: `Cannot start fake-name\n\tCan not find the binary ${BROWSER_PATH}\n\tPlease set env variable fake-ENV-CMD`
-      }, done)
+      assertSpawnError(
+        {
+          errorCode: 'ENOENT',
+          emitExit: false,
+          expectedError: `Cannot start fake-name\n\tCan not find the binary ${BROWSER_PATH}\n\tPlease set env variable fake-ENV-CMD`
+        },
+        done
+      )
     })
 
     it('should handle spawn EACCES error and report the error when exit event is not emitted', (done) => {
-      assertSpawnError({
-        errorCode: 'EACCES',
-        emitExit: false,
-        expectedError: `Cannot start fake-name\n\tPermission denied accessing the binary ${BROWSER_PATH}\n\tMaybe it's a directory?`
-      }, done)
+      assertSpawnError(
+        {
+          errorCode: 'EACCES',
+          emitExit: false,
+          expectedError: `Cannot start fake-name\n\tPermission denied accessing the binary ${BROWSER_PATH}\n\tMaybe it's a directory?`
+        },
+        done
+      )
     })
   })
 
   // higher level tests with Retry and CaptureTimeout launchers
   describe('flow', () => {
     let failureSpy
-    let mockTimer = failureSpy = null
+    let mockTimer = (failureSpy = null)
 
     beforeEach(() => {
       mockTimer = createMockTimer()
@@ -164,7 +190,9 @@ describe('launchers/process.js', () => {
     it('start -> capture -> kill', async () => {
       // start the browser
       launcher.start('http://localhost/')
-      expect(mockSpawn).to.have.been.calledWith(BROWSER_PATH, ['http://localhost/?id=fake-id'])
+      expect(mockSpawn).to.have.been.calledWith(BROWSER_PATH, [
+        'http://localhost/?id=fake-id'
+      ])
 
       // mark captured
       launcher.markCaptured()
@@ -192,7 +220,9 @@ describe('launchers/process.js', () => {
       launcher.start('http://localhost/')
 
       // expect starting the process
-      expect(mockSpawn).to.have.been.calledWith(BROWSER_PATH, ['http://localhost/?id=fake-id'])
+      expect(mockSpawn).to.have.been.calledWith(BROWSER_PATH, [
+        'http://localhost/?id=fake-id'
+      ])
       const browserProcess = mockSpawn._processes.shift()
 
       const expectedStdoutString = 'starting...'
@@ -217,7 +247,9 @@ describe('launchers/process.js', () => {
 
       _.defer(() => {
         // expect re-starting
-        expect(mockSpawn).to.have.been.calledWith(BROWSER_PATH, ['http://localhost/?id=fake-id'])
+        expect(mockSpawn).to.have.been.calledWith(BROWSER_PATH, [
+          'http://localhost/?id=fake-id'
+        ])
         expect(failureSpy).not.to.have.been.called
         done()
       })
@@ -228,7 +260,9 @@ describe('launchers/process.js', () => {
       launcher.start('http://localhost/')
 
       // expect starting
-      expect(mockSpawn).to.have.been.calledWith(BROWSER_PATH, ['http://localhost/?id=fake-id'])
+      expect(mockSpawn).to.have.been.calledWith(BROWSER_PATH, [
+        'http://localhost/?id=fake-id'
+      ])
 
       let browserProcess = mockSpawn._processes.shift()
       mockSpawn.resetHistory()
@@ -244,7 +278,9 @@ describe('launchers/process.js', () => {
 
       _.defer(() => {
         // expect re-starting
-        expect(mockSpawn).to.have.been.calledWith(BROWSER_PATH, ['http://localhost/?id=fake-id'])
+        expect(mockSpawn).to.have.been.calledWith(BROWSER_PATH, [
+          'http://localhost/?id=fake-id'
+        ])
         browserProcess = mockSpawn._processes.shift()
         expect(failureSpy).not.to.have.been.called
         mockSpawn.resetHistory()
@@ -260,7 +296,9 @@ describe('launchers/process.js', () => {
 
         _.defer(() => {
           // expect re-starting
-          expect(mockSpawn).to.have.been.calledWith(BROWSER_PATH, ['http://localhost/?id=fake-id'])
+          expect(mockSpawn).to.have.been.calledWith(BROWSER_PATH, [
+            'http://localhost/?id=fake-id'
+          ])
           browserProcess = mockSpawn._processes.shift()
           expect(failureSpy).not.to.have.been.called
           mockSpawn.resetHistory()
@@ -289,7 +327,9 @@ describe('launchers/process.js', () => {
       launcher.start('http://localhost/')
 
       // expect starting the process
-      expect(mockSpawn).to.have.been.calledWith(BROWSER_PATH, ['http://localhost/?id=fake-id'])
+      expect(mockSpawn).to.have.been.calledWith(BROWSER_PATH, [
+        'http://localhost/?id=fake-id'
+      ])
       let browserProcess = mockSpawn._processes.shift()
       mockSpawn.resetHistory()
 
@@ -300,7 +340,9 @@ describe('launchers/process.js', () => {
 
       _.defer(() => {
         // expect re-starting
-        expect(mockSpawn).to.have.been.calledWith(BROWSER_PATH, ['http://localhost/?id=fake-id'])
+        expect(mockSpawn).to.have.been.calledWith(BROWSER_PATH, [
+          'http://localhost/?id=fake-id'
+        ])
         browserProcess = mockSpawn._processes.shift()
 
         expect(failureSpy).not.to.have.been.called
@@ -332,7 +374,9 @@ describe('launchers/process.js', () => {
       launcher.start('http://localhost/')
 
       // expect starting the process
-      expect(mockSpawn).to.have.been.calledWith(BROWSER_PATH, ['http://localhost/?id=fake-id'])
+      expect(mockSpawn).to.have.been.calledWith(BROWSER_PATH, [
+        'http://localhost/?id=fake-id'
+      ])
       const browserProcess = mockSpawn._processes.shift()
 
       // timeout

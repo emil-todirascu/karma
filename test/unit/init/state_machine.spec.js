@@ -39,9 +39,7 @@ describe('init/StateMachine', () => {
   })
 
   it('should allow multiple answers', () => {
-    const questions = [
-      { id: 'browsers', multiple: true }
-    ]
+    const questions = [{ id: 'browsers', multiple: true }]
 
     done = sinon.spy((answers) => {
       expect(answers.browsers).to.deep.equal(['Chrome', 'Safari'])
@@ -55,9 +53,7 @@ describe('init/StateMachine', () => {
   })
 
   it('should treat spaces as confirmation of multiple answers', () => {
-    const questions = [
-      { id: 'browsers', multiple: true }
-    ]
+    const questions = [{ id: 'browsers', multiple: true }]
 
     done = sinon.spy((answers) => {
       expect(answers.browsers).to.deep.equal(['Chrome'])
@@ -70,9 +66,7 @@ describe('init/StateMachine', () => {
   })
 
   it('should always return array for multiple', () => {
-    const questions = [
-      { id: 'empty', multiple: true }
-    ]
+    const questions = [{ id: 'empty', multiple: true }]
 
     done = sinon.spy((answers) => {
       expect(answers.empty).to.deep.equal([])
@@ -85,9 +79,7 @@ describe('init/StateMachine', () => {
 
   it('should validate answers', () => {
     const validator = sinon.spy()
-    const questions = [
-      { id: 'validated', validate: validator }
-    ]
+    const questions = [{ id: 'validated', validate: validator }]
 
     machine.process(questions, done)
     machine.onLine('something')
@@ -147,8 +139,18 @@ describe('init/StateMachine', () => {
     })
 
     const questions = [
-      { id: 'what', options: ['yes', 'no'], boolean: true, validate: validator },
-      { id: 'really', options: ['yes', 'no'], boolean: true, validate: validator }
+      {
+        id: 'what',
+        options: ['yes', 'no'],
+        boolean: true,
+        validate: validator
+      },
+      {
+        id: 'really',
+        options: ['yes', 'no'],
+        boolean: true,
+        validate: validator
+      }
     ]
 
     machine.process(questions, done)

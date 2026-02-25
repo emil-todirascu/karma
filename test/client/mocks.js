@@ -1,4 +1,4 @@
-function Emitter () {
+function Emitter() {
   var listeners = {}
 
   this.on = function (event, fn) {
@@ -22,7 +22,7 @@ function Emitter () {
   }
 }
 
-function MockSocket () {
+function MockSocket() {
   Emitter.call(this)
 
   this.socket = { transport: { name: 'websocket' } }

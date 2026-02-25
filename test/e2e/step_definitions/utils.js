@@ -2,7 +2,11 @@ const { promisify } = require('util')
 
 const sleep = promisify(setTimeout)
 
-module.exports.waitForCondition = async (evaluateCondition, timeout = 1000, customError = null) => {
+module.exports.waitForCondition = async (
+  evaluateCondition,
+  timeout = 1000,
+  customError = null
+) => {
   let remainingTime = timeout
   while (!evaluateCondition()) {
     if (remainingTime > 0) {

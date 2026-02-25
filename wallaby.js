@@ -1,4 +1,3 @@
-
 module.exports = function (wallaby) {
   return {
     files: [
@@ -27,9 +26,7 @@ module.exports = function (wallaby) {
       'test/unit/mocha-globals.js'
     ],
 
-    tests: [
-      'test/unit/**/*.spec.js'
-    ],
+    tests: ['test/unit/**/*.spec.js'],
 
     bootstrap: function (w) {
       var path = require('path')

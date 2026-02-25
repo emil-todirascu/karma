@@ -2,7 +2,7 @@
 var stringify = require('../common/stringify')
 
 // Define our context Karma constructor
-function ContextKarma (callParentKarmaMethod) {
+function ContextKarma(callParentKarmaMethod) {
   // Define local variables
   var hasError = false
   var self = this
@@ -31,8 +31,10 @@ function ContextKarma (callParentKarmaMethod) {
   }
 
   // Define our start handler
-  function UNIMPLEMENTED_START () {
-    this.error('You need to include some adapter that implements __karma__.start method!')
+  function UNIMPLEMENTED_START() {
+    this.error(
+      'You need to include some adapter that implements __karma__.start method!'
+    )
   }
   // all files loaded, let's start the execution
   this.loaded = function () {
@@ -57,11 +59,11 @@ function ContextKarma (callParentKarmaMethod) {
   // DEV: This is a closured `for` loop (same as a `forEach`) for IE support
   var proxyMethods = ['complete', 'info', 'result']
   for (var i = 0; i < proxyMethods.length; i++) {
-    (function bindProxyMethod (methodName) {
-      self[methodName] = function boundProxyMethod () {
+    ;(function bindProxyMethod(methodName) {
+      self[methodName] = function boundProxyMethod() {
         callParentKarmaMethod(methodName, [].slice.call(arguments))
       }
-    }(proxyMethods[i]))
+    })(proxyMethods[i])
   }
 
   // Define bindings for context window
@@ -104,18 +106,20 @@ function ContextKarma (callParentKarmaMethod) {
     }
 
     // If we want to overload our console, then do it
-    function getConsole (currentWindow) {
-      return currentWindow.console || {
-        log: function () {},
-        info: function () {},
-        warn: function () {},
-        error: function () {},
-        debug: function () {}
-      }
+    function getConsole(currentWindow) {
+      return (
+        currentWindow.console || {
+          log: function () {},
+          info: function () {},
+          warn: function () {},
+          error: function () {},
+          debug: function () {}
+        }
+      )
     }
     if (self.config.captureConsole) {
       // patch the console
-      var localConsole = contextWindow.console = getConsole(contextWindow)
+      var localConsole = (contextWindow.console = getConsole(contextWindow))
       var logMethods = ['log', 'info', 'warn', 'error', 'debug']
       var patchConsoleMethod = function (method) {
         var orig = localConsole[method]
@@ -140,10 +144,12 @@ function ContextKarma (callParentKarmaMethod) {
 
 // Define call/proxy methods
 ContextKarma.getDirectCallParentKarmaMethod = function (parentWindow) {
-  return function directCallParentKarmaMethod (method, args) {
+  return function directCallParentKarmaMethod(method, args) {
     // If the method doesn't exist, then error out
     if (!parentWindow.karma[method]) {
-      parentWindow.karma.error('Expected Karma method "' + method + '" to exist but it doesn\'t')
+      parentWindow.karma.error(
+        'Expected Karma method "' + method + '" to exist but it doesn\'t'
+      )
       return
     }
 
@@ -152,8 +158,11 @@ ContextKarma.getDirectCallParentKarmaMethod = function (parentWindow) {
   }
 }
 ContextKarma.getPostMessageCallParentKarmaMethod = function (parentWindow) {
-  return function postMessageCallParentKarmaMethod (method, args) {
-    parentWindow.postMessage({ __karmaMethod: method, __karmaArguments: args }, window.location.origin)
+  return function postMessageCallParentKarmaMethod(method, args) {
+    parentWindow.postMessage(
+      { __karmaMethod: method, __karmaArguments: args },
+      window.location.origin
+    )
   }
 }
 

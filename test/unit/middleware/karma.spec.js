@@ -17,7 +17,7 @@ describe('middleware.karma', () => {
   let response
 
   class MockFile extends File {
-    constructor (path, sha, type, content, integrity) {
+    constructor(path, sha, type, content, integrity) {
       super(path, undefined, undefined, type, undefined, integrity)
       this.sha = sha || 'sha-default'
       this.content = content
@@ -27,24 +27,34 @@ describe('middleware.karma', () => {
   const fsMock = mocks.fs.create({
     karma: {
       static: {
-        'client.html': mocks.fs.file(0, 'CLIENT HTML%X_UA_COMPATIBLE%%X_UA_COMPATIBLE_URL%'),
-        'client_with_context.html': mocks.fs.file(0, 'CLIENT_WITH_CONTEXT\n%SCRIPT_URL_ARRAY%'),
+        'client.html': mocks.fs.file(
+          0,
+          'CLIENT HTML%X_UA_COMPATIBLE%%X_UA_COMPATIBLE_URL%'
+        ),
+        'client_with_context.html': mocks.fs.file(
+          0,
+          'CLIENT_WITH_CONTEXT\n%SCRIPT_URL_ARRAY%'
+        ),
         'context.html': mocks.fs.file(0, 'CONTEXT\n%SCRIPTS%'),
         'debug.html': mocks.fs.file(0, 'DEBUG\n%SCRIPTS%%X_UA_COMPATIBLE%'),
-        'karma.js': mocks.fs.file(0, 'root: %KARMA_URL_ROOT%, proxy: %KARMA_PROXY_PATH%, v: %KARMA_VERSION%')
+        'karma.js': mocks.fs.file(
+          0,
+          'root: %KARMA_URL_ROOT%, proxy: %KARMA_PROXY_PATH%, v: %KARMA_VERSION%'
+        )
       }
     }
   })
 
-  const createServeFile = require('../../../lib/middleware/common').createServeFile
+  const createServeFile =
+    require('../../../lib/middleware/common').createServeFile
   const createKarmaMiddleware = require('../../../lib/middleware/karma').create
-  let handler = serveFile = filesDeferred = nextSpy = response = null
+  let handler = (serveFile = filesDeferred = nextSpy = response = null)
 
   const clientConfig = {
     foo: 'bar'
   }
   const injector = {
-    get (val) {
+    get(val) {
       switch (val) {
         case 'config.client':
           return clientConfig
@@ -87,8 +97,12 @@ describe('middleware.karma', () => {
     return req
   }
 
-  function callHandlerWith (urlPath, next) {
-    const promise = handler(normalizedHttpRequest(urlPath), response, next || nextSpy)
+  function callHandlerWith(urlPath, next) {
+    const promise = handler(
+      normalizedHttpRequest(urlPath),
+      response,
+      next || nextSpy
+    )
     if (promise && promise.done) promise.done()
   }
 
@@ -170,7 +184,10 @@ describe('middleware.karma', () => {
 
     response.once('end', () => {
       expect(nextSpy).not.to.have.been.called
-      expect(response).to.beServedAs(200, 'CLIENT HTML<meta http-equiv="X-UA-Compatible" content="xxx=yyy"/>?x-ua-compatible=xxx%3Dyyy')
+      expect(response).to.beServedAs(
+        200,
+        'CLIENT HTML<meta http-equiv="X-UA-Compatible" content="xxx=yyy"/>?x-ua-compatible=xxx%3Dyyy'
+      )
       done()
     })
 
@@ -182,7 +199,10 @@ describe('middleware.karma', () => {
 
     response.once('end', () => {
       expect(nextSpy).not.to.have.been.called
-      expect(response).to.beServedAs(200, 'DEBUG\n<meta http-equiv="X-UA-Compatible" content="xxx=yyy"/>')
+      expect(response).to.beServedAs(
+        200,
+        'DEBUG\n<meta http-equiv="X-UA-Compatible" content="xxx=yyy"/>'
+      )
       done()
     })
 
@@ -192,8 +212,13 @@ describe('middleware.karma', () => {
   it('should serve karma.js with version and urlRoot constiables', (done) => {
     response.once('end', () => {
       expect(nextSpy).not.to.have.been.called
-      expect(response).to.beServedAs(200, 'root: /__karma__/, proxy: /__proxy__/, v: ' + constants.VERSION)
-      expect(response._headers['Content-Type']).to.equal('application/javascript')
+      expect(response).to.beServedAs(
+        200,
+        'root: /__karma__/, proxy: /__proxy__/, v: ' + constants.VERSION
+      )
+      expect(response._headers['Content-Type']).to.equal(
+        'application/javascript'
+      )
       done()
     })
 
@@ -208,7 +233,10 @@ describe('middleware.karma', () => {
 
     response.once('end', () => {
       expect(nextSpy).not.to.have.been.called
-      expect(response).to.beServedAs(200, 'CONTEXT\n<script type="text/javascript" src="/__proxy__/__karma__/absolute/first.js?sha123" crossorigin="anonymous"></script>\n<script type="text/javascript" src="/__proxy__/__karma__/absolute/second.js?sha456" crossorigin="anonymous"></script>')
+      expect(response).to.beServedAs(
+        200,
+        'CONTEXT\n<script type="text/javascript" src="/__proxy__/__karma__/absolute/first.js?sha123" crossorigin="anonymous"></script>\n<script type="text/javascript" src="/__proxy__/__karma__/absolute/second.js?sha456" crossorigin="anonymous"></script>'
+      )
       done()
     })
 
@@ -223,7 +251,10 @@ describe('middleware.karma', () => {
 
     response.once('end', () => {
       expect(nextSpy).not.to.have.been.called
-      expect(response).to.beServedAs(200, 'CONTEXT\n<script type="text/javascript" src="/__proxy__/__karma__/absolute/.yarn/$$virtual/first.js?sha123" crossorigin="anonymous"></script>\n<script type="text/javascript" src="/__proxy__/__karma__/absolute/.yarn/$$virtual/second.dart?sha456" crossorigin="anonymous"></script>')
+      expect(response).to.beServedAs(
+        200,
+        'CONTEXT\n<script type="text/javascript" src="/__proxy__/__karma__/absolute/.yarn/$$virtual/first.js?sha123" crossorigin="anonymous"></script>\n<script type="text/javascript" src="/__proxy__/__karma__/absolute/.yarn/$$virtual/second.dart?sha456" crossorigin="anonymous"></script>'
+      )
       done()
     })
 
@@ -238,7 +269,10 @@ describe('middleware.karma', () => {
 
     response.once('end', () => {
       expect(nextSpy).not.to.have.been.called
-      expect(response).to.beServedAs(200, 'CONTEXT\n<script type="text/javascript" src="/__proxy__/__karma__/absolute/first.js?sha123" crossorigin="anonymous"></script>\n<script type="text/javascript" src="/__proxy__/__karma__/absolute/second.js?sha456" integrity="sha256-XXX" crossorigin="anonymous"></script>')
+      expect(response).to.beServedAs(
+        200,
+        'CONTEXT\n<script type="text/javascript" src="/__proxy__/__karma__/absolute/first.js?sha123" crossorigin="anonymous"></script>\n<script type="text/javascript" src="/__proxy__/__karma__/absolute/second.js?sha456" integrity="sha256-XXX" crossorigin="anonymous"></script>'
+      )
       done()
     })
 
@@ -257,7 +291,10 @@ describe('middleware.karma', () => {
 
     response.once('end', () => {
       expect(nextSpy).not.to.have.been.called
-      expect(response).to.beServedAs(200, 'CONTEXT\n<link type="text/css" href="/__proxy__/__karma__/absolute/first.css?sha007" rel="stylesheet" crossorigin="anonymous">\n<link href="/__proxy__/__karma__/absolute/second.html?sha678" rel="import" crossorigin="anonymous">\n<link type="text/css" href="/__proxy__/__karma__/absolute/third?sha111" rel="stylesheet" crossorigin="anonymous">\n<link href="/__proxy__/__karma__/absolute/fourth?sha222" rel="import" crossorigin="anonymous">\n<link type="text/css" href="http://some.url.com/fifth" rel="stylesheet" crossorigin="anonymous">\n<link href="http://some.url.com/sixth" rel="import" crossorigin="anonymous">')
+      expect(response).to.beServedAs(
+        200,
+        'CONTEXT\n<link type="text/css" href="/__proxy__/__karma__/absolute/first.css?sha007" rel="stylesheet" crossorigin="anonymous">\n<link href="/__proxy__/__karma__/absolute/second.html?sha678" rel="import" crossorigin="anonymous">\n<link type="text/css" href="/__proxy__/__karma__/absolute/third?sha111" rel="stylesheet" crossorigin="anonymous">\n<link href="/__proxy__/__karma__/absolute/fourth?sha222" rel="import" crossorigin="anonymous">\n<link type="text/css" href="http://some.url.com/fifth" rel="stylesheet" crossorigin="anonymous">\n<link href="http://some.url.com/sixth" rel="import" crossorigin="anonymous">'
+      )
       done()
     })
 
@@ -272,7 +309,10 @@ describe('middleware.karma', () => {
 
     response.once('end', () => {
       expect(nextSpy).not.to.have.been.called
-      expect(response).to.beServedAs(200, 'CONTEXT\n<script type="text/javascript" src="/__proxy__/__karma__/absolute/some/abc/a.js?sha" crossorigin="anonymous"></script>\n<script type="text/javascript" src="/__proxy__/__karma__/base/b.js?shaaa" crossorigin="anonymous"></script>')
+      expect(response).to.beServedAs(
+        200,
+        'CONTEXT\n<script type="text/javascript" src="/__proxy__/__karma__/absolute/some/abc/a.js?sha" crossorigin="anonymous"></script>\n<script type="text/javascript" src="/__proxy__/__karma__/base/b.js?shaaa" crossorigin="anonymous"></script>'
+      )
       done()
     })
 
@@ -293,7 +333,10 @@ describe('middleware.karma', () => {
 
     response.once('end', () => {
       expect(nextSpy).not.to.have.been.called
-      expect(response).to.beServedAs(200, 'CONTEXT\n<link type="text/css" href="/__proxy__/__karma__/absolute/some/abc/a.css?sha1" rel="stylesheet" crossorigin="anonymous">\n<link type="text/css" href="/__proxy__/__karma__/base/b.css?sha2" rel="stylesheet" crossorigin="anonymous">\n<link href="/__proxy__/__karma__/absolute/some/abc/c.html?sha3" rel="import" crossorigin="anonymous">\n<link href="/__proxy__/__karma__/base/d.html?sha4" rel="import" crossorigin="anonymous">\n<link type="text/css" href="/__proxy__/__karma__/absolute/some/abc/e?sha5" rel="stylesheet" crossorigin="anonymous">\n<link type="text/css" href="/__proxy__/__karma__/base/f?sha6" rel="stylesheet" crossorigin="anonymous">\n<link href="/__proxy__/__karma__/absolute/some/abc/g?sha7" rel="import" crossorigin="anonymous">\n<link href="/__proxy__/__karma__/base/h?sha8" rel="import" crossorigin="anonymous">')
+      expect(response).to.beServedAs(
+        200,
+        'CONTEXT\n<link type="text/css" href="/__proxy__/__karma__/absolute/some/abc/a.css?sha1" rel="stylesheet" crossorigin="anonymous">\n<link type="text/css" href="/__proxy__/__karma__/base/b.css?sha2" rel="stylesheet" crossorigin="anonymous">\n<link href="/__proxy__/__karma__/absolute/some/abc/c.html?sha3" rel="import" crossorigin="anonymous">\n<link href="/__proxy__/__karma__/base/d.html?sha4" rel="import" crossorigin="anonymous">\n<link type="text/css" href="/__proxy__/__karma__/absolute/some/abc/e?sha5" rel="stylesheet" crossorigin="anonymous">\n<link type="text/css" href="/__proxy__/__karma__/base/f?sha6" rel="stylesheet" crossorigin="anonymous">\n<link href="/__proxy__/__karma__/absolute/some/abc/g?sha7" rel="import" crossorigin="anonymous">\n<link href="/__proxy__/__karma__/base/h?sha8" rel="import" crossorigin="anonymous">'
+      )
       done()
     })
 
@@ -308,7 +351,10 @@ describe('middleware.karma', () => {
 
     response.once('end', () => {
       expect(nextSpy).not.to.have.been.called
-      expect(response).to.beServedAs(200, 'CONTEXT\n<link type="text/css" href="/__proxy__/__karma__/absolute/first.css?sha007" rel="stylesheet" integrity="sha256-XXX" crossorigin="anonymous">\n<link href="/__proxy__/__karma__/absolute/second.html?sha678" rel="import" integrity="sha256-XXX" crossorigin="anonymous">')
+      expect(response).to.beServedAs(
+        200,
+        'CONTEXT\n<link type="text/css" href="/__proxy__/__karma__/absolute/first.css?sha007" rel="stylesheet" integrity="sha256-XXX" crossorigin="anonymous">\n<link href="/__proxy__/__karma__/absolute/second.html?sha678" rel="import" integrity="sha256-XXX" crossorigin="anonymous">'
+      )
       done()
     })
 
@@ -355,18 +401,21 @@ describe('middleware.karma', () => {
 
     response.once('end', () => {
       expect(nextSpy).not.to.have.been.called
-      expect(response).to.beServedAs(200, JSON.stringify({
-        files: [
-          '/__proxy__/__karma__/absolute/some/abc/a.css?sha1',
-          '/__proxy__/__karma__/base/b.css?sha2',
-          '/__proxy__/__karma__/absolute/some/abc/c.html?sha3',
-          '/__proxy__/__karma__/base/d.html?sha4',
-          '/__proxy__/__karma__/absolute/some/abc/e?sha5',
-          '/__proxy__/__karma__/base/f?sha6',
-          '/__proxy__/__karma__/absolute/some/abc/g?sha7',
-          '/__proxy__/__karma__/base/h?sha8'
-        ]
-      }))
+      expect(response).to.beServedAs(
+        200,
+        JSON.stringify({
+          files: [
+            '/__proxy__/__karma__/absolute/some/abc/a.css?sha1',
+            '/__proxy__/__karma__/base/b.css?sha2',
+            '/__proxy__/__karma__/absolute/some/abc/c.html?sha3',
+            '/__proxy__/__karma__/base/d.html?sha4',
+            '/__proxy__/__karma__/absolute/some/abc/e?sha5',
+            '/__proxy__/__karma__/base/f?sha6',
+            '/__proxy__/__karma__/absolute/some/abc/g?sha7',
+            '/__proxy__/__karma__/base/h?sha8'
+          ]
+        })
+      )
       done()
     })
 
@@ -374,12 +423,13 @@ describe('middleware.karma', () => {
   })
 
   it('should not change urls', (done) => {
-    includedFiles([
-      new Url('http://some.url.com/whatever')
-    ])
+    includedFiles([new Url('http://some.url.com/whatever')])
 
     response.once('end', () => {
-      expect(response).to.beServedAs(200, 'CONTEXT\n<script type="text/javascript" src="http://some.url.com/whatever" crossorigin="anonymous"></script>')
+      expect(response).to.beServedAs(
+        200,
+        'CONTEXT\n<script type="text/javascript" src="http://some.url.com/whatever" crossorigin="anonymous"></script>'
+      )
       done()
     })
 
@@ -387,7 +437,7 @@ describe('middleware.karma', () => {
   })
 
   it('should send non-caching headers for context.html', (done) => {
-    const ZERO_DATE = (new Date(0)).toUTCString()
+    const ZERO_DATE = new Date(0).toUTCString()
 
     includedFiles([])
 
@@ -412,7 +462,10 @@ describe('middleware.karma', () => {
     ])
 
     response.once('end', () => {
-      expect(response).to.beServedAs(200, "window.__karma__.files = {\n  '/__proxy__/__karma__/absolute/some/abc/a.js': 'sha_a',\n  '/__proxy__/__karma__/base/b.js': 'sha_b',\n  '/__proxy__/__karma__/absolute\\\\windows\\\\path\\\\uuu\\\\c.js': 'sha_c'\n};\n")
+      expect(response).to.beServedAs(
+        200,
+        "window.__karma__.files = {\n  '/__proxy__/__karma__/absolute/some/abc/a.js': 'sha_a',\n  '/__proxy__/__karma__/base/b.js': 'sha_b',\n  '/__proxy__/__karma__/absolute\\\\windows\\\\path\\\\uuu\\\\c.js': 'sha_c'\n};\n"
+      )
       done()
     })
 
@@ -421,12 +474,13 @@ describe('middleware.karma', () => {
 
   it('should inline mappings without using special patterns', (done) => {
     fsMock._touchFile('/karma/static/context.html', 0, '%MAPPINGS%')
-    servedFiles([
-      new MockFile('/.yarn/$$virtual/abc/a.js', 'sha_a')
-    ])
+    servedFiles([new MockFile('/.yarn/$$virtual/abc/a.js', 'sha_a')])
 
     response.once('end', () => {
-      expect(response).to.beServedAs(200, "window.__karma__.files = {\n  '/__proxy__/__karma__/absolute/.yarn/$$virtual/abc/a.js': 'sha_a'\n};\n")
+      expect(response).to.beServedAs(
+        200,
+        "window.__karma__.files = {\n  '/__proxy__/__karma__/absolute/.yarn/$$virtual/abc/a.js': 'sha_a'\n};\n"
+      )
       done()
     })
 
@@ -441,7 +495,10 @@ describe('middleware.karma', () => {
     ])
 
     response.once('end', () => {
-      expect(response).to.beServedAs(200, 'window.__karma__.files = {\n  \'/__proxy__/__karma__/absolute/some/abc/a\\\'b.js\': \'sha_a\',\n  \'/__proxy__/__karma__/base/ba.js\': \'sha_b\'\n};\n')
+      expect(response).to.beServedAs(
+        200,
+        "window.__karma__.files = {\n  '/__proxy__/__karma__/absolute/some/abc/a\\'b.js': 'sha_a',\n  '/__proxy__/__karma__/base/ba.js': 'sha_b'\n};\n"
+      )
       done()
     })
 
@@ -449,14 +506,14 @@ describe('middleware.karma', () => {
   })
 
   it('should serve debug.html with replaced script tags without timestamps', (done) => {
-    includedFiles([
-      new MockFile('/first.js'),
-      new MockFile('/base/path/b.js')
-    ])
+    includedFiles([new MockFile('/first.js'), new MockFile('/base/path/b.js')])
 
     response.once('end', () => {
       expect(nextSpy).not.to.have.been.called
-      expect(response).to.beServedAs(200, 'DEBUG\n<script type="text/javascript" src="/__proxy__/__karma__/absolute/first.js" crossorigin="anonymous"></script>\n<script type="text/javascript" src="/__proxy__/__karma__/base/b.js" crossorigin="anonymous"></script>')
+      expect(response).to.beServedAs(
+        200,
+        'DEBUG\n<script type="text/javascript" src="/__proxy__/__karma__/absolute/first.js" crossorigin="anonymous"></script>\n<script type="text/javascript" src="/__proxy__/__karma__/base/b.js" crossorigin="anonymous"></script>'
+      )
       done()
     })
 
@@ -477,7 +534,10 @@ describe('middleware.karma', () => {
 
     response.once('end', () => {
       expect(nextSpy).not.to.have.been.called
-      expect(response).to.beServedAs(200, 'DEBUG\n<link type="text/css" href="/__proxy__/__karma__/absolute/first.css" rel="stylesheet" crossorigin="anonymous">\n<link type="text/css" href="/__proxy__/__karma__/base/b.css" rel="stylesheet" crossorigin="anonymous">\n<link href="/__proxy__/__karma__/absolute/second.html" rel="import" crossorigin="anonymous">\n<link href="/__proxy__/__karma__/base/d.html" rel="import" crossorigin="anonymous">\n<link type="text/css" href="/__proxy__/__karma__/absolute/third" rel="stylesheet" crossorigin="anonymous">\n<link type="text/css" href="/__proxy__/__karma__/base/f" rel="stylesheet" crossorigin="anonymous">\n<link href="/__proxy__/__karma__/absolute/fourth" rel="import" crossorigin="anonymous">\n<link href="/__proxy__/__karma__/base/g" rel="import" crossorigin="anonymous">')
+      expect(response).to.beServedAs(
+        200,
+        'DEBUG\n<link type="text/css" href="/__proxy__/__karma__/absolute/first.css" rel="stylesheet" crossorigin="anonymous">\n<link type="text/css" href="/__proxy__/__karma__/base/b.css" rel="stylesheet" crossorigin="anonymous">\n<link href="/__proxy__/__karma__/absolute/second.html" rel="import" crossorigin="anonymous">\n<link href="/__proxy__/__karma__/base/d.html" rel="import" crossorigin="anonymous">\n<link type="text/css" href="/__proxy__/__karma__/absolute/third" rel="stylesheet" crossorigin="anonymous">\n<link type="text/css" href="/__proxy__/__karma__/base/f" rel="stylesheet" crossorigin="anonymous">\n<link href="/__proxy__/__karma__/absolute/fourth" rel="import" crossorigin="anonymous">\n<link href="/__proxy__/__karma__/base/g" rel="import" crossorigin="anonymous">'
+      )
       done()
     })
 
@@ -485,13 +545,14 @@ describe('middleware.karma', () => {
   })
 
   it('should inline client config to debug.html', (done) => {
-    includedFiles([
-      new MockFile('/first.js')
-    ])
+    includedFiles([new MockFile('/first.js')])
     fsMock._touchFile('/karma/static/debug.html', 1, '%CLIENT_CONFIG%')
 
     response.once('end', () => {
-      expect(response).to.beServedAs(200, 'window.__karma__.config = {"foo":"bar"};\n')
+      expect(response).to.beServedAs(
+        200,
+        'window.__karma__.config = {"foo":"bar"};\n'
+      )
       done()
     })
 
@@ -514,7 +575,7 @@ describe('middleware.karma', () => {
       serveFile,
       null,
       {
-        get (val) {
+        get(val) {
           if (val === 'config.client') {
             i++
             if (i === 1) {
@@ -532,18 +593,22 @@ describe('middleware.karma', () => {
       { path: '/__proxy__/' }
     )
 
-    includedFiles([
-      new MockFile('/first.js')
-    ])
+    includedFiles([new MockFile('/first.js')])
     fsMock._touchFile('/karma/static/debug.html', 1, '%CLIENT_CONFIG%')
 
     response.once('end', () => {
-      expect(response).to.beServedAs(200, 'window.__karma__.config = {"foo":"bar"};\n')
+      expect(response).to.beServedAs(
+        200,
+        'window.__karma__.config = {"foo":"bar"};\n'
+      )
 
       response = new HttpResponseMock()
       callHandlerWith('/__karma__/debug.html')
       response.once('end', () => {
-        expect(response).to.beServedAs(200, 'window.__karma__.config = {"foo":"baz"};\n')
+        expect(response).to.beServedAs(
+          200,
+          'window.__karma__.config = {"foo":"baz"};\n'
+        )
         done()
       })
     })
@@ -559,7 +624,10 @@ describe('middleware.karma', () => {
 
     response.once('end', () => {
       expect(nextSpy).not.to.have.been.called
-      expect(response).to.beServedAs(200, 'CLIENT_WITH_CONTEXT\nwindow.__karma__.scriptUrls = ["\\\\x3Cscript type=\\"text/javascript\\" src=\\"/__proxy__/__karma__/absolute/.yarn/$$virtual/first.js\\" crossorigin=\\"anonymous\\"\\\\x3E\\\\x3C/script\\\\x3E","\\\\x3Cscript type=\\"text/javascript\\" src=\\"/__proxy__/__karma__/absolute/.yarn/$$virtual/second.dart\\" crossorigin=\\"anonymous\\"\\\\x3E\\\\x3C/script\\\\x3E"];\n')
+      expect(response).to.beServedAs(
+        200,
+        'CLIENT_WITH_CONTEXT\nwindow.__karma__.scriptUrls = ["\\\\x3Cscript type=\\"text/javascript\\" src=\\"/__proxy__/__karma__/absolute/.yarn/$$virtual/first.js\\" crossorigin=\\"anonymous\\"\\\\x3E\\\\x3C/script\\\\x3E","\\\\x3Cscript type=\\"text/javascript\\" src=\\"/__proxy__/__karma__/absolute/.yarn/$$virtual/second.dart\\" crossorigin=\\"anonymous\\"\\\\x3E\\\\x3C/script\\\\x3E"];\n'
+      )
       done()
     })
 

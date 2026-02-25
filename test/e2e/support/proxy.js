@@ -3,7 +3,7 @@ const httpProxy = require('http-proxy')
 const { promisify } = require('util')
 
 module.exports = class Proxy {
-  constructor () {
+  constructor() {
     this.running = false
     this.proxyPathRegExp = null
     this.target = 'http://127.0.0.1:9876'
@@ -32,14 +32,14 @@ module.exports = class Proxy {
     })
   }
 
-  async start (port, proxyPath, targetPort = 9876) {
+  async start(port, proxyPath, targetPort = 9876) {
     this.proxyPathRegExp = new RegExp('^' + proxyPath + '(.*)')
     this.target = `http://127.0.0.1:${targetPort}`
     await promisify(this.server.listen.bind(this.server))(port)
     this.running = true
   }
 
-  async stopIfRunning () {
+  async stopIfRunning() {
     if (this.running) {
       this.running = false
       await promisify(this.server.close.bind(this.server))()

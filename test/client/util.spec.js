@@ -1,4 +1,5 @@
-var assert = require('assert')
+/* global chai */
+var assert = chai.assert
 
 var util = require('../../common/util')
 

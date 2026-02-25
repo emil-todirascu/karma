@@ -1,5 +1,5 @@
-var sinon = require('sinon')
-var assert = require('assert')
+/* global chai, sinon */
+var assert = chai.assert
 
 var ClientKarma = require('../../client/karma')
 var ContextKarma = require('../../context/karma')

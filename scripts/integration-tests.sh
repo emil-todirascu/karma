@@ -12,4 +12,8 @@ if [ -d coffee ]; then
     karma-coffee-preprocessor \
     karma-firefox-launcher
 fi
+NPM_CONFIG_PRODUCTION=false \
+npm_config_production=false \
+npm_config_include=dev \
+npm_config_omit= \
 ./run.sh $PKG_FILE

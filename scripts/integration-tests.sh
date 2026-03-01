@@ -4,7 +4,7 @@ cd integration-tests
 # Ensure the CoffeeScript fixture has all runtime dependencies expected by
 # karma.conf.coffee.
 if [ -d coffee ]; then
-  node -e "const fs=require('fs');const p='coffee/package.json';const pkg=JSON.parse(fs.readFileSync(p,'utf8'));pkg.dependencies=pkg.dependencies||{};const req=['coffeescript','jasmine-core','karma-jasmine','karma-coffee-preprocessor','karma-firefox-launcher'];for(const name of req){const version=(pkg.dependencies&&pkg.dependencies[name])||(pkg.devDependencies&&pkg.devDependencies[name])||'latest';pkg.dependencies[name]=version;}fs.writeFileSync(p,JSON.stringify(pkg,null,2)+'\n')"
+  node -e "const fs=require('fs');const p='coffee/package.json';const pkg=JSON.parse(fs.readFileSync(p,'utf8'));pkg.dependencies=pkg.dependencies||{};pkg.scripts=pkg.scripts||{};const req=['coffeescript','jasmine-core','karma-jasmine','karma-coffee-preprocessor','karma-firefox-launcher'];for(const name of req){const version=(pkg.dependencies&&pkg.dependencies[name])||(pkg.devDependencies&&pkg.devDependencies[name])||'latest';pkg.dependencies[name]=version;}pkg.scripts.pretest='npm install --no-save coffeescript jasmine-core karma-jasmine karma-coffee-preprocessor karma-firefox-launcher';fs.writeFileSync(p,JSON.stringify(pkg,null,2)+'\n')"
   npm install --prefix coffee --no-save \
     coffeescript \
     jasmine-core \

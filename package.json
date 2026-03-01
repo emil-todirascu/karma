@@ -465,7 +465,6 @@
     "chai": "^4.5.0",
     "chai-as-promised": "^7.1.2",
     "chai-subset": "^1.6.0",
-    "coffeescript": "^2.7.0",
     "esbuild": "^0.27.3",
     "eslint": "^10.0.2",
     "eslint-config-prettier": "^10.1.8",

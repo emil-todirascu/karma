@@ -30,8 +30,12 @@ describe('web-server', () => {
 
   // NOTE(vojta): only loading once, to speed things up
   // this relies on the fact that none of these tests mutate fs
-  const m = mocks.loadFile(path.join(__dirname, '/../../lib/web-server.js'), _mocks, _globals)
-  let customFileHandlers = server = emitter = null
+  const m = mocks.loadFile(
+    path.join(__dirname, '/../../lib/web-server.js'),
+    _mocks,
+    _globals
+  )
+  let customFileHandlers = (server = emitter = null)
   let beforeMiddlewareActive = false
   let middlewareActive = false
   const servedFiles = (files) => {
@@ -55,37 +59,45 @@ describe('web-server', () => {
         }
       }
 
-      const injector = new di.Injector([{
-        config: ['value', config],
-        customFileHandlers: ['value', customFileHandlers],
-        emitter: ['value', emitter],
-        fileList: ['value', { files: { served: [], included: [] } }],
-        filesPromise: ['factory', m.createFilesPromise],
-        serveStaticFile: ['factory', m.createServeStaticFile],
-        serveFile: ['factory', m.createServeFile],
-        capturedBrowsers: ['value', null],
-        reporter: ['value', null],
-        executor: ['value', null],
-        proxies: ['value', null],
-        'middleware:beforeCustom': ['factory', function (config) {
-          return function (request, response, next) {
-            if (beforeMiddlewareActive) {
-              response.writeHead(223)
-              return response.end('hello from before middleware!')
+      const injector = new di.Injector([
+        {
+          config: ['value', config],
+          customFileHandlers: ['value', customFileHandlers],
+          emitter: ['value', emitter],
+          fileList: ['value', { files: { served: [], included: [] } }],
+          filesPromise: ['factory', m.createFilesPromise],
+          serveStaticFile: ['factory', m.createServeStaticFile],
+          serveFile: ['factory', m.createServeFile],
+          capturedBrowsers: ['value', null],
+          reporter: ['value', null],
+          executor: ['value', null],
+          proxies: ['value', null],
+          'middleware:beforeCustom': [
+            'factory',
+            function (config) {
+              return function (request, response, next) {
+                if (beforeMiddlewareActive) {
+                  response.writeHead(223)
+                  return response.end('hello from before middleware!')
+                }
+                next()
+              }
             }
-            next()
-          }
-        }],
-        'middleware:custom': ['factory', function (config) {
-          return function (request, response, next) {
-            if (middlewareActive) {
-              response.writeHead(222)
-              return response.end(config.middlewareResponse)
+          ],
+          'middleware:custom': [
+            'factory',
+            function (config) {
+              return function (request, response, next) {
+                if (middlewareActive) {
+                  response.writeHead(222)
+                  return response.end(config.middlewareResponse)
+                }
+                next()
+              }
             }
-            next()
-          }
-        }]
-      }])
+          ]
+        }
+      ])
       server = injector.invoke(m.createWebServer)
     })
 
@@ -100,26 +112,20 @@ describe('web-server', () => {
     it('should serve client.html', () => {
       servedFiles(new Set())
 
-      return request(server)
-        .get('/')
-        .expect(200, 'CLIENT HTML')
+      return request(server).get('/').expect(200, 'CLIENT HTML')
     })
 
     it('should serve source files', () => {
       servedFiles(new Set([new File('/base/path/one.js')]))
 
-      return request(server)
-        .get('/base/one.js')
-        .expect(200, 'js-source')
+      return request(server).get('/base/one.js').expect(200, 'js-source')
     })
 
     it('should serve updated source files on file_list_modified', () => {
       servedFiles(new Set([new File('/base/path/one.js')]))
       servedFiles(new Set([new File('/base/path/new.js')]))
 
-      return request(server)
-        .get('/base/new.js')
-        .expect(200, 'new-js-source')
+      return request(server).get('/base/new.js').expect(200, 'new-js-source')
     })
 
     describe('beforeMiddleware', () => {
@@ -162,9 +168,7 @@ describe('web-server', () => {
       })
 
       it('should inject middleware behind served files', () => {
-        return request(server)
-          .get('/base/one.js')
-          .expect(200, 'js-source')
+        return request(server).get('/base/one.js').expect(200, 'js-source')
       })
     })
 
@@ -187,23 +191,26 @@ describe('web-server', () => {
 
       customFileHandlers.push({
         urlRegex: /\/some\/weird/,
-        handler (request, response, staticFolder, adapterFolder, baseFolder, urlRoot) {
+        handler(
+          request,
+          response,
+          staticFolder,
+          adapterFolder,
+          baseFolder,
+          urlRoot
+        ) {
           response.writeHead(222)
           response.end('CONTENT')
         }
       })
 
-      return request(server)
-        .get('/some/weird/url')
-        .expect(222, 'CONTENT')
+      return request(server).get('/some/weird/url').expect(222, 'CONTENT')
     })
 
     it('should serve 404 for non-existing files', () => {
       servedFiles(new Set())
 
-      return request(server)
-        .get('/non/existing.html')
-        .expect(404)
+      return request(server).get('/non/existing.html').expect(404)
     })
   })
 
@@ -217,25 +224,30 @@ describe('web-server', () => {
       customFileHandlers = []
       emitter = new EventEmitter()
 
-      const injector = new di.Injector([{
-        config: ['value', {
-          basePath: '/base/path',
-          urlRoot: '/',
-          protocol: 'https:',
-          httpsServerOptions: credentials,
-          client: { useIframe: true, useSingleWindow: false }
-        }],
-        customFileHandlers: ['value', customFileHandlers],
-        emitter: ['value', emitter],
-        fileList: ['value', { files: { served: [], included: [] } }],
-        filesPromise: ['factory', m.createFilesPromise],
-        serveStaticFile: ['factory', m.createServeStaticFile],
-        serveFile: ['factory', m.createServeFile],
-        capturedBrowsers: ['value', null],
-        reporter: ['value', null],
-        executor: ['value', null],
-        proxies: ['value', null]
-      }])
+      const injector = new di.Injector([
+        {
+          config: [
+            'value',
+            {
+              basePath: '/base/path',
+              urlRoot: '/',
+              protocol: 'https:',
+              httpsServerOptions: credentials,
+              client: { useIframe: true, useSingleWindow: false }
+            }
+          ],
+          customFileHandlers: ['value', customFileHandlers],
+          emitter: ['value', emitter],
+          fileList: ['value', { files: { served: [], included: [] } }],
+          filesPromise: ['factory', m.createFilesPromise],
+          serveStaticFile: ['factory', m.createServeStaticFile],
+          serveFile: ['factory', m.createServeFile],
+          capturedBrowsers: ['value', null],
+          reporter: ['value', null],
+          executor: ['value', null],
+          proxies: ['value', null]
+        }
+      ])
 
       server = injector.invoke(m.createWebServer)
     })
@@ -249,9 +261,7 @@ describe('web-server', () => {
 
       process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
-      return request(server)
-        .get('/')
-        .expect(200, 'CLIENT HTML')
+      return request(server).get('/').expect(200, 'CLIENT HTML')
     })
   })
 
@@ -267,19 +277,30 @@ describe('web-server', () => {
       customFileHandlers = []
       emitter = new EventEmitter()
 
-      const injector = new di.Injector([{
-        config: ['value', { basePath: '/base/path', urlRoot: '/', httpModule: http2, protocol: 'https:', httpsServerOptions: credentials }],
-        customFileHandlers: ['value', customFileHandlers],
-        emitter: ['value', emitter],
-        fileList: ['value', { files: { served: [], included: [] } }],
-        filesPromise: ['factory', m.createFilesPromise],
-        serveStaticFile: ['factory', m.createServeStaticFile],
-        serveFile: ['factory', m.createServeFile],
-        capturedBrowsers: ['value', null],
-        reporter: ['value', null],
-        executor: ['value', null],
-        proxies: ['value', null]
-      }])
+      const injector = new di.Injector([
+        {
+          config: [
+            'value',
+            {
+              basePath: '/base/path',
+              urlRoot: '/',
+              httpModule: http2,
+              protocol: 'https:',
+              httpsServerOptions: credentials
+            }
+          ],
+          customFileHandlers: ['value', customFileHandlers],
+          emitter: ['value', emitter],
+          fileList: ['value', { files: { served: [], included: [] } }],
+          filesPromise: ['factory', m.createFilesPromise],
+          serveStaticFile: ['factory', m.createServeStaticFile],
+          serveFile: ['factory', m.createServeFile],
+          capturedBrowsers: ['value', null],
+          reporter: ['value', null],
+          executor: ['value', null],
+          proxies: ['value', null]
+        }
+      ])
 
       server = injector.invoke(m.createWebServer)
     })

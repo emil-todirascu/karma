@@ -1,7 +1,8 @@
 // When running pre-release tests we want tests to fail if BrowserStack is not
 // configured instead of falling back to the headless browser. That's what
 // KARMA_TEST_NO_FALLBACK variable controls.
-const useBrowserStack = (process.env.BROWSERSTACK_USERNAME && process.env.BROWSERSTACK_ACCESS_KEY) ||
+const useBrowserStack =
+  (process.env.BROWSERSTACK_USERNAME && process.env.BROWSERSTACK_ACCESS_KEY) ||
   process.env.KARMA_TEST_NO_FALLBACK
 
 const launchers = {
@@ -59,8 +60,7 @@ module.exports = function (config) {
     ],
 
     // list of files to exclude
-    exclude: [
-    ],
+    exclude: [],
 
     preprocessors: {
       'common/stringify.js': ['commonjs'],

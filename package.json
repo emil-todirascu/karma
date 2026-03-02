@@ -500,7 +500,7 @@
     "karma": "./bin/karma"
   },
   "engines": {
-    "node": ">= 20"
+    "node": ">= 20.19.0"
   },
   "version": "6.4.4",
   "license": "MIT",

@@ -42,7 +42,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [20, 22]
+        node: ["20.19.0", "22"]
     steps:
       - uses: actions/checkout@v4
 
@@ -61,7 +61,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [20, 22]
+        node: ["20.19.0", "22"]
     steps:
       - uses: actions/checkout@v4
 

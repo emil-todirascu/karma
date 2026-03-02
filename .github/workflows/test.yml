@@ -37,12 +37,12 @@ jobs:
       - run: npm run test:integration
 
   linux:
-    name: "Node ${{ matrix.node }} on Linux: Server Unit and E2E"
+    name: 'Node ${{ matrix.node }} on Linux: Server Unit and E2E'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        node: ["20.19.0", "22"]
+        node: ['20.19.0', '22']
     steps:
       - uses: actions/checkout@v4
 
@@ -56,12 +56,12 @@ jobs:
       - run: npm run test:e2e
 
   windows:
-    name: "Node ${{ matrix.node }} on Windows: Server Unit"
+    name: 'Node ${{ matrix.node }} on Windows: Server Unit'
     runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
-        node: ["20.19.0", "22"]
+        node: ['20.19.0', '22']
     steps:
       - uses: actions/checkout@v4
 

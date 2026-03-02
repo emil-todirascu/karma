@@ -38,3 +38,4 @@ jobs:
           npm run commitlint -- --verbose --from "$BASE_SHA" --to "$GITHUB_SHA"
 
       - run: npm run lint
+      - run: npm run format:check

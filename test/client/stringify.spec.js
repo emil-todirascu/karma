@@ -27,8 +27,12 @@ describe('stringify', function () {
   })
 
   it('should serialize functions', function () {
-    function abc (a, b, c) { return 'whatever' }
-    function def (d, e, f) { return 'whatever' }
+    function abc(a, b, c) {
+      return 'whatever'
+    }
+    function def(d, e, f) {
+      return 'whatever'
+    }
 
     var abcString = stringify(abc)
     var partsAbc = ['function', 'abc', '(a, b, c)', '{ ... }']
@@ -48,24 +52,35 @@ describe('stringify', function () {
   //   https://caniuse.com/proxy
   if (window.Proxy) {
     it('should serialize proxied functions', function () {
-      var defProxy = new Proxy(function (d, e, f) { return 'whatever' }, {})
+      var defProxy = new Proxy(function (d, e, f) {
+        return 'whatever'
+      }, {})
       // In Safari stringified Proxy object has ProxyObject as a name, but
       // in other browsers it does not.
-      assert.deepStrictEqual(/^function (ProxyObject)?\(\) { ... }$/.test(stringify(defProxy)), true)
+      assert.deepStrictEqual(
+        /^function (ProxyObject)?\(\) { ... }$/.test(stringify(defProxy)),
+        true
+      )
     })
   }
 
   it('should serialize arrays', function () {
-    assert.deepStrictEqual(stringify(['a', 'b', null, true, false]), "['a', 'b', null, true, false]")
+    assert.deepStrictEqual(
+      stringify(['a', 'b', null, true, false]),
+      "['a', 'b', null, true, false]"
+    )
   })
 
   it('should serialize objects', function () {
     var obj
 
     obj = { a: 'a', b: 'b', c: null, d: true, e: false }
-    assert(stringify(obj).indexOf("{a: 'a', b: 'b', c: null, d: true, e: false}") > -1)
+    assert(
+      stringify(obj).indexOf("{a: 'a', b: 'b', c: null, d: true, e: false}") >
+        -1
+    )
 
-    function MyObj () {
+    function MyObj() {
       this.a = 'a'
     }
 
@@ -90,7 +105,10 @@ describe('stringify', function () {
     assert.deepStrictEqual(stringify(div).trim().toLowerCase(), '<div></div>')
 
     div.innerHTML = 'some <span>text</span>'
-    assert.deepStrictEqual(stringify(div).trim().toLowerCase(), '<div>some <span>text</span></div>')
+    assert.deepStrictEqual(
+      stringify(div).trim().toLowerCase(),
+      '<div>some <span>text</span></div>'
+    )
   })
 
   it('should serialize error', function () {
@@ -106,14 +124,19 @@ describe('stringify', function () {
       var serialized = stringify(doc)
       assert(
         serialized === '<test></test>' ||
-          serialized.indexOf('Skipping stringify, no support for dom-serialize') === 0
+          serialized.indexOf(
+            'Skipping stringify, no support for dom-serialize'
+          ) === 0
       )
     }
   })
 
   it('should serialize across iframes', function () {
     var div = document.createElement('div')
-    assert.deepStrictEqual(__karma__.stringify(div).trim().toLowerCase(), '<div></div>')
+    assert.deepStrictEqual(
+      __karma__.stringify(div).trim().toLowerCase(),
+      '<div></div>'
+    )
 
     assert.deepStrictEqual(__karma__.stringify([1, 2]), '[1, 2]')
   })

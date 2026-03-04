@@ -4,7 +4,7 @@
   "homepage": "https://github.com/emil-todirascu/karma",
   "repository": {
     "type": "git",
-    "url": "git://github.com/emil-todirascu/karma.git"
+    "url": "git+https://github.com/emil-todirascu/karma.git"
   },
   "bugs": {
     "url": "https://github.com/emil-todirascu/karma/issues"

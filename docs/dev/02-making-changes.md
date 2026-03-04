@@ -92,5 +92,5 @@ No separate CLA is currently required for contributions to this fork.
 - [General GitHub documentation](https://docs.github.com/)
 - [GitHub pull request documentation](https://docs.github.com/github/collaborating-with-issues-and-pull-requests/about-pull-requests#about-pull-requests)
 
-[commit message conventions]: git-commit-msg.html
+[commit message conventions]: ./06-git-commit-msg.md
 [Fork the repository]: https://github.com/emil-todirascu/karma/fork

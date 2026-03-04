@@ -5,10 +5,15 @@ If you are thinking about making Karma better, or you just want to hack on it, t
 > Check out the docs on how to [get started][docs_contributing] and please follow
 > the [code of conduct](CODE_OF_CONDUCT.md).
 
+## Project scope
+
+This repository is a maintenance-mode fork of the original Karma project.
+
+Large new features are usually out of scope.
+
 ## Got a Question or Problem?
 
-If you have questions about how to use Karma, please direct these to the [Gitter][gitter]
-discussion list or [Stack Overflow][stackoverflow].
+If you have questions about how to use this fork, please use [issues][github_newissue].
 
 ## Found an Issue?
 
@@ -16,11 +21,5 @@ If you find a bug in the source code or a mistake in the documentation, you can 
 submitting an issue to our [GitHub Repository][github_newissue]. Even better you can submit a Pull Request
 with a fix.
 
-**Working on your first Pull Request?** You can learn how from this _free_ series
-[How to Contribute to an Open Source Project on GitHub][egghead_series]
-
-[docs_contributing]: https://karma-runner.github.io/latest/dev/contributing.html
-[gitter]: https://gitter.im/karma-runner/karma
-[stackoverflow]: https://stackoverflow.com/questions/tagged/karma-runner
-[github_newissue]: https://github.com/karma-runner/karma/issues/new
-[egghead_series]: https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github
+[docs_contributing]: ./docs/dev/01-contributing.md
+[github_newissue]: https://github.com/emil-todirascu/karma/issues/new

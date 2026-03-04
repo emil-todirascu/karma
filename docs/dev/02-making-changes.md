@@ -1,14 +1,7 @@
-<!---
-TODO:
-- add more info about updating PR
-  - rebasing/squashing changes
-  - making sure CI is green
-- how to run tests on sauce labs
-- how to set up plugins
--->
+## Scope
 
-If you are thinking about making Karma better, or you just want to hack on it, that’s great!
-Here are some tips on how to set up a Karma workspace and how to send a good pull request.
+This repository tracks the deprecated upstream project in maintenance mode.
+Please focus changes on dependency updates, security fixes, compatibility work, and conservative bug fixes.
 
 ## Setting up the Workspace
 
@@ -91,20 +84,13 @@ your changes in.
 
 ## Contributor License Agreement
 
-Please sign our Contributor License Agreement (CLA) before sending pull requests.
-For any code changes to be accepted, the CLA must be signed. It's a quick process, we promise!
-
-- For individuals, we have a [simple click-through form].
-- For corporations we'll need you to print, sign and one of scan+email, fax or mail [the form].
+No separate CLA is currently required for contributions to this fork.
 
 ## Additional Resources
 
-- [Mailing List](https://groups.google.com/forum/#!forum/karma-users)
-- [Issue tracker](https://github.com/karma-runner/karma/issues)
+- [Issue tracker](https://github.com/emil-todirascu/karma/issues)
 - [General GitHub documentation](https://docs.github.com/)
 - [GitHub pull request documentation](https://docs.github.com/github/collaborating-with-issues-and-pull-requests/about-pull-requests#about-pull-requests)
 
 [commit message conventions]: git-commit-msg.html
-[simple click-through form]: https://code.google.com/legal/individual-cla-v1.0.html
-[the form]: https://code.google.com/legal/corporate-cla-v1.0.html
-[Fork the repository]: https://github.com/karma-runner/karma/fork
+[Fork the repository]: https://github.com/emil-todirascu/karma/fork

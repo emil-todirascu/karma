@@ -28,7 +28,6 @@ All the major browsers are supported, if you want to know more see the
 
 See [FAQ](https://karma-runner.github.io/latest/intro/faq.html).
 
-
 ### Installation.
 
 See [installation](./docs/intro/01-installation.md).

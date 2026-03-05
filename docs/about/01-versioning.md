@@ -1,15 +1,15 @@
 Karma uses [Semantic Versioning].
 
-It is recommended that you add Karma by running:
+It is recommended that you add this fork by running:
 
 ```bash
-$ yarn add --dev karma
+$ yarn add --dev karma-maintained
 ```
 
 or:
 
 ```bash
-$ npm --save-dev install karma
+$ npm install --save-dev karma-maintained
 ```
 
 [Semantic Versioning]: https://semver.org/

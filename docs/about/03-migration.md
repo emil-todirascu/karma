@@ -10,16 +10,16 @@ Anyway, this migration should be easy ;-) so let's get started...
 
 ```bash
 cd <path-to-your-project>
-npm install karma --save-dev
+npm install karma-maintained --save-dev
 ```
 
-This will install the latest version of Karma and also update `package.json` of your project.
+This will install the latest version of this fork and also update `package.json` of your project.
 
 ## Install missing plugins
 
 Karma does not ship with any "default" plugins anymore.
 For existing projects, this should not cause any problems as npm (when updating Karma to 0.10 using
-`npm install karma --save-dev`) added these "default" plugins into `package.json` as regular dependencies.
+`npm install karma-maintained --save-dev`) added these "default" plugins into `package.json` as regular dependencies.
 For new projects, just remember you have to install all the plugins you need. These are the "default" plugins that were removed:
 
 - karma-jasmine

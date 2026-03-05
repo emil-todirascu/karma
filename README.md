@@ -6,6 +6,8 @@ The upstream project was deprecated. The goal of this fork is to keep Karma usab
 
 This fork is intended to remain a drop-in replacement for existing Karma-based projects as much as possible.
 
+To switch an existing project, run `npm uninstall karma && npm install --save-dev karma-maintained`.
+
 ## Scope
 
 This fork is in maintenance mode. We prioritize stability and compatibility and avoid new features or ecosystem redesign.

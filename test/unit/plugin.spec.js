@@ -84,6 +84,7 @@ describe('plugin', () => {
         'karma-fancy-plugin',
         'other-package',
         'karma-powerful-plugin',
+        'karma-maintained',
         'yet-another-package',
         '@scope'
       ],
@@ -139,6 +140,12 @@ describe('plugin', () => {
         'karma-fancy-plugin',
         'karma-powerful-plugin'
       ])
+    })
+
+    it('does not auto-load the core package itself from globs', () => {
+      const modules = resolve(['karma-*'], null)
+
+      expect(modules.map((m) => m.name)).to.not.include('karma-maintained')
     })
 
     it('loads scoped plugins with globs', () => {

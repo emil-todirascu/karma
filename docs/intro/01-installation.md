@@ -7,41 +7,41 @@ from [the official site](https://nodejs.org/) or use the [NVM PowerShell Module]
 
 Karma works on all [LTS releases](https://nodejs.org/en/about/releases/) of Node.js.
 
-## Installing Karma and plugins
+## Installing the fork package and plugins
 
-The recommended approach is to install Karma (and all the plugins your project needs) locally in
+The recommended approach is to install this fork (and all the plugins your project needs) locally in
 the project's directory.
 
 ```bash
-# Install Karma:
-$ npm install karma --save-dev
+# Install this fork:
+$ npm install karma-maintained --save-dev
 
 # Install plugins that your project needs:
 $ npm install karma-jasmine karma-chrome-launcher jasmine-core --save-dev
 
 ```
 
-This will install `karma`, `karma-jasmine`, `karma-chrome-launcher` and `jasmine-core` packages into `node_modules` in your current
+This will install `karma-maintained`, `karma-jasmine`, `karma-chrome-launcher` and `jasmine-core` packages into `node_modules` in your current
 working directory and also save these as `devDependencies` in `package.json`, so that any
 other developer working on the project will only have to do `npm install` in order to get all these
 dependencies installed.
 
 ```bash
 # Run Karma:
-$ ./node_modules/karma/bin/karma start
+$ npx karma start
 ```
 
 ## Commandline Interface
 
-Typing `./node_modules/karma/bin/karma start` sucks and so you might find it useful to install `karma-cli` globally. You will need to do this if you want to run Karma on Windows from the command line.
+You can run the local binary with `npx karma` from your project directory.
 
 ```bash
-$ npm install -g karma-cli
+$ npx karma --version
 ```
 
-Then, you can run Karma simply by `karma` from anywhere and it will always run the local version.
+This always uses the project-local version installed in your `devDependencies`.
 
 [Node.js]: https://nodejs.org/
-[npm]: https://www.npmjs.com/package/karma
+[npm]: https://www.npmjs.com/package/karma-maintained
 [NVM]: https://github.com/creationix/nvm
 [FAQ]: ./faq.html

@@ -1,6 +1,6 @@
 {
-  "name": "karma",
-  "description": "Maintenance-mode fork of Karma",
+  "name": "karma-maintained",
+  "description": "Maintenance-mode fork of Karma.",
   "homepage": "https://github.com/emil-todirascu/karma",
   "repository": {
     "type": "git",
@@ -8,6 +8,10 @@
   },
   "bugs": {
     "url": "https://github.com/emil-todirascu/karma/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "keywords": [
     "karma",
@@ -472,7 +476,7 @@
     "globals": "^17.4.0",
     "husky": "^9.1.7",
     "jasmine-core": "^6.1.0",
-    "karma": ".",
+    "karma-maintained": ".",
     "karma-browserstack-launcher": "^1.6.0",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^3.2.0",

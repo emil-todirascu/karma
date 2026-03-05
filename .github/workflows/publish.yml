@@ -36,7 +36,7 @@ jobs:
 
       - name: Verify package name
         run: |
-          NAME="$(node -p "require('./package.json').name")"
+          NAME="$(node -p 'require("./package.json").name')"
           if [ "$NAME" != "karma-maintained" ]; then
             echo "Expected package name 'karma-maintained', got '$NAME'."
             exit 1

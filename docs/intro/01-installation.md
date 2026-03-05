@@ -42,6 +42,6 @@ $ npx karma --version
 This always uses the project-local version installed in your `devDependencies`.
 
 [Node.js]: https://nodejs.org/
-[npm]: https://www.npmjs.com/
+[npm]: https://www.npmjs.com/package/karma-maintained
 [NVM]: https://github.com/creationix/nvm
 [FAQ]: ./faq.html

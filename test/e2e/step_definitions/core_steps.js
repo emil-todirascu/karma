@@ -4,6 +4,31 @@ const path = require('path')
 const { waitForCondition } = require('./utils')
 const stopper = require('../../../lib/stopper')
 
+const stripIgnorableLauncherNoise = (output) => {
+  if (!output.includes('/sys/devices/system/cpu/cpu0/cpufreq/')) {
+    return output
+  }
+
+  return output
+    .replace(
+      /^\d{2} \d{2} \d{4} .*:ERROR \[launcher\]: Cannot start \S+\n/gm,
+      ''
+    )
+    .replace(
+      /^\d{2} \d{2} \d{4} .*:ERROR \[launcher\]: \S+ stdout:\s*\n/gm,
+      ''
+    )
+    .replace(
+      /^\d{2} \d{2} \d{4} .*:ERROR \[launcher\]: \S+ stderr: .*\n/gm,
+      ''
+    )
+    .replace(
+      /^\t?\[\d{4}\/\d{6}\.\d+:ERROR:third_party\/crashpad\/crashpad\/util\/file\/file_io_posix\.cc:145\] open \/sys\/devices\/system\/cpu\/cpu0\/cpufreq\/scaling_(?:cur|max)_freq: No such file or directory \(2\)\n/gm,
+      ''
+    )
+    .replace(/\n{3,}/g, '\n\n')
+}
+
 Given('a default configuration', function () {
   this.writeConfigFile()
 })
@@ -87,7 +112,7 @@ Then(
   function (mode, expectedOutput, callback) {
     const like = mode === 'like'
     const regexp = mode === 'regexp'
-    const actualOutput = this.lastRun.stdout
+    const actualOutput = stripIgnorableLauncherNoise(this.lastRun.stdout)
 
     if (like && actualOutput.indexOf(expectedOutput) >= 0) {
       return callback()

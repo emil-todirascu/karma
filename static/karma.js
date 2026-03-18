@@ -2064,6 +2064,13 @@
             return s;
           }
         };
+        function isUnsafeReturnUrl(url) {
+          var start = 0;
+          while (start < url.length && url.charCodeAt(start) <= 32) {
+            start++;
+          }
+          return /^(?:javascript|data|vbscript):/i.test(url.slice(start));
+        }
         var trustedTypes = window.trustedTypes || window.TrustedTypes;
         if (trustedTypes) {
           policy = trustedTypes.createPolicy("karma", policy);
@@ -2231,7 +2238,7 @@
                 break;
               }
             }
-            if (!isReturnUrlAllowed) {
+            if (!isReturnUrlAllowed || isUnsafeReturnUrl(returnUrl)) {
               throw new Error(
                 "Security: Navigation to ".concat(
                   returnUrl,

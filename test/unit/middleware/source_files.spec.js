@@ -44,7 +44,7 @@ describe('middleware.source_files', function () {
           return res.end(err.message)
         } else {
           res.statusCode = 200
-          return res.end(JSON.stringify(req.body))
+          return res.end('')
         }
       })
 

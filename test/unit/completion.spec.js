@@ -41,6 +41,11 @@ describe('completion', () => {
       expect(completion).to.deep.equal(['init'])
     })
 
+    it('should treat regex metacharacters in the partial as literal text', () => {
+      c.sendCompletion(['[abc]', 'abc', '[ab'], mockEnv('[a'))
+      expect(completion).to.deep.equal(['[abc]', '[ab'])
+    })
+
     it('should filter out already used words/args', () => {
       c.sendCompletion(
         ['--single-run', '--port', '--xxx'],

@@ -28,6 +28,14 @@ function Karma(updater, socket, iframe, opener, navigator, location, document) {
       return s
     }
   }
+
+  function isUnsafeReturnUrl(url) {
+    var start = 0
+    while (start < url.length && url.charCodeAt(start) <= 0x20) {
+      start++
+    }
+    return /^(?:javascript|data|vbscript):/i.test(url.slice(start))
+  }
   var trustedTypes = window.trustedTypes || window.TrustedTypes
   if (trustedTypes) {
     policy = trustedTypes.createPolicy('karma', policy)
@@ -267,7 +275,7 @@ function Karma(updater, socket, iframe, opener, navigator, location, document) {
           break
         }
       }
-      if (!isReturnUrlAllowed) {
+      if (!isReturnUrlAllowed || isUnsafeReturnUrl(returnUrl)) {
         throw new Error(
           'Security: Navigation to '.concat(
             returnUrl,

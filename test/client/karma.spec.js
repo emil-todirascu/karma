@@ -546,6 +546,40 @@ describe('Karma', function () {
       }
     })
 
+    it('should not navigate the client to unsafe return_url schemes even if allowed by pattern', function () {
+      var config = {
+        allowedReturnUrlPatterns: ['.*']
+      }
+
+      windowLocation.search =
+        '?id=567&return_url=javascript:alert(document.domain)'
+      socket = new MockSocket()
+      k = new ClientKarma(
+        updater,
+        socket,
+        iframe,
+        windowStub,
+        windowNavigator,
+        windowLocation
+      )
+      clientWindow = { karma: k }
+      ck = new ContextKarma(
+        ContextKarma.getDirectCallParentKarmaMethod(clientWindow)
+      )
+      socket.emit('execute', config)
+
+      try {
+        ck.complete()
+        throw new Error('An error should have been caught.')
+      } catch (error) {
+        assert(
+          /Error: Security: Navigation to .* was blocked to prevent malicious exploits./.test(
+            error
+          )
+        )
+      }
+    })
+
     it('should clear context window upon complete when clearContext config is true', function () {
       var config = (ck.config = {
         clearContext: true

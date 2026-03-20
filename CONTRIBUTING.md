@@ -38,7 +38,7 @@ Example:
 
 ```bash
 npm version 6.4.6
-git push origin main --follow-tags
+git push origin master --follow-tags
 ```
 
 Pushing the tag triggers the publish workflow.

@@ -26,3 +26,12 @@ fi
 rm -rf "$install_dir"
 mkdir -p "$install_dir"
 tar -xzf "$package_tarball" --strip-components=1 -C "$install_dir" package
+
+# Install the fork's own runtime dependencies inside the replaced package.
+# Without this, module resolution can fall back to the host project's older
+# transitive dependencies that were installed for upstream Karma.
+npm install \
+  --prefix "$install_dir" \
+  --omit=dev \
+  --ignore-scripts \
+  --no-package-lock

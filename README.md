@@ -1,14 +1,18 @@
-# Karma Maintenance Fork
+# karma-maintained: Drop-in Maintenance Fork for Karma
 
-This repository is a maintenance-focused fork of the original [karma-runner/karma][upstream_repo] project.
+[![npm version](https://img.shields.io/npm/v/karma-maintained)](https://www.npmjs.com/package/karma-maintained)
+[![Test](https://github.com/emil-todirascu/karma/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/emil-todirascu/karma/actions/workflows/test.yml)
+[![Lint](https://github.com/emil-todirascu/karma/actions/workflows/lint.yml/badge.svg?branch=master)](https://github.com/emil-todirascu/karma/actions/workflows/lint.yml)
+[![Node.js >= 20.19.0](https://img.shields.io/badge/node-%3E%3D%2020.19.0-339933?logo=node.js&logoColor=white)](https://github.com/emil-todirascu/karma/blob/master/package.json)
+[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](./LICENSE)
 
-The upstream project was deprecated. The goal of this fork is to keep Karma usable for teams that still rely on it.
+karma-maintained is a maintained, drop-in replacement for Karma, intended for projects that still depend on the Karma test runner.
 
-This fork is intended to remain a drop-in replacement for existing Karma-based projects as much as possible.
+It preserves the Karma package interface while keeping the project usable on modern Node.js versions.
 
 ## Getting Started
 
-For the best compatibility, alias `karma` to `karma-maintained` so tools that call `require('karma')` keep working.
+Install as an alias to keep `require('karma')` working:
 
 npm: `npm install --save-dev karma@npm:karma-maintained@^6.4.5`
 

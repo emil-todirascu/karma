@@ -1,6 +1,6 @@
 {
   "name": "karma-maintained",
-  "description": "Maintenance-mode fork of Karma.",
+  "description": "Drop-in maintenance fork of Karma for projects that still rely on the Karma test runner.",
   "homepage": "https://github.com/emil-todirascu/karma",
   "repository": {
     "type": "git",
@@ -15,15 +15,13 @@
   },
   "keywords": [
     "karma",
-    "spectacular",
-    "runner",
-    "karma",
-    "js",
+    "karma-runner",
+    "test-runner",
+    "browser-testing",
+    "maintained",
     "javascript",
-    "testing",
-    "test",
-    "remote",
-    "execution"
+    "legacy",
+    "testing"
   ],
   "author": "Emil Todirascu <contact@emiltodirascu.com>",
   "contributors": [

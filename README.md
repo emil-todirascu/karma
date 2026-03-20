@@ -26,27 +26,7 @@ If you are starting a new project, you should probably evaluate modern alternati
 
 ## Help and Support
 
-Please use this repository's issue tracker for bug reports and maintenance requests.
-
-- Obligatory [documentation]
-- Bug reports [Issue Tracker]
-
-## Which browsers can I use?
-
-All the major browsers are supported, if you want to know more see the
-[browsers] page.
-
-## Troubleshooting
-
-See [FAQ](./docs/intro/04-faq.md).
-
-### Installation.
-
-See [installation](./docs/intro/01-installation.md).
-
-### Using it.
-
-See [configuration](./docs/intro/02-configuration.md).
+Please use this repository's [Issue Tracker] for bug reports and maintenance requests.
 
 ## This is so great. I want to help.
 
@@ -54,6 +34,4 @@ Please, see
 [contributing](./CONTRIBUTING.md).
 
 [Issue Tracker]: https://github.com/emil-todirascu/karma/issues
-[browsers]: ./docs/config/03-browsers.md
-[documentation]: ./docs/index.md
 [upstream_repo]: https://github.com/karma-runner/karma

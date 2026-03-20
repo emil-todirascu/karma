@@ -33,5 +33,11 @@ Please use this repository's [Issue Tracker] for bug reports and maintenance req
 Please, see
 [contributing](./CONTRIBUTING.md).
 
+## Documentation
+
+The old in-repository documentation was removed from this maintenance fork because it was largely outdated and is not actively maintained here.
+
+If you need the historical Karma documentation, please refer to the [upstream project][upstream_repo] repository and documentation site.
+
 [Issue Tracker]: https://github.com/emil-todirascu/karma/issues
 [upstream_repo]: https://github.com/karma-runner/karma

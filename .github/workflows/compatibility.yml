@@ -40,7 +40,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
           check-latest: true
           cache: npm
           cache-dependency-path: |
@@ -59,6 +59,10 @@ jobs:
       - name: Install Leaflet dependencies
         working-directory: leaflet
         run: npm ci
+
+      - name: Build Leaflet
+        working-directory: leaflet
+        run: npm run build
 
       - name: Replace Leaflet's installed karma
         run: |

@@ -1,5 +1,11 @@
 # Karma Maintenance Fork
 
+[![npm version](https://img.shields.io/npm/v/karma-maintained)](https://www.npmjs.com/package/karma-maintained)
+[![Test](https://github.com/emil-todirascu/karma/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/emil-todirascu/karma/actions/workflows/test.yml)
+[![Lint](https://github.com/emil-todirascu/karma/actions/workflows/lint.yml/badge.svg?branch=master)](https://github.com/emil-todirascu/karma/actions/workflows/lint.yml)
+[![Node.js >= 20.19.0](https://img.shields.io/badge/node-%3E%3D%2020.19.0-339933?logo=node.js&logoColor=white)](https://github.com/emil-todirascu/karma/blob/master/package.json)
+[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](./LICENSE)
+
 This repository is a maintenance-focused fork of the original [karma-runner/karma][upstream_repo] project.
 
 The upstream project was deprecated. The goal of this fork is to keep Karma usable for teams that still rely on it.

@@ -66,12 +66,14 @@ jobs:
 
       - name: Replace Leaflet's installed karma
         run: |
-          package_tarball="$(find "$RUNNER_TEMP/karma-pack" -maxdepth 1 -name '*.tgz' -print -quit)"
+          mapfile -t package_tarballs < <(find "$RUNNER_TEMP/karma-pack" -maxdepth 1 -name '*.tgz' -type f | sort)
 
-          if [[ -z "$package_tarball" ]]; then
-            echo "Expected npm pack to create a tarball in $RUNNER_TEMP/karma-pack" >&2
+          if [[ "${#package_tarballs[@]}" -ne 1 ]]; then
+            echo "Expected exactly one tarball in $RUNNER_TEMP/karma-pack, found ${#package_tarballs[@]}" >&2
             exit 1
           fi
+
+          package_tarball="${package_tarballs[0]}"
 
           chmod +x karma-maintained/scripts/replace-installed-karma.sh
           karma-maintained/scripts/replace-installed-karma.sh "$GITHUB_WORKSPACE/leaflet" "$package_tarball"

@@ -6,7 +6,7 @@
 [![Node.js >= 20.19.0](https://img.shields.io/badge/node-%3E%3D%2020.19.0-339933?logo=node.js&logoColor=white)](https://github.com/emil-todirascu/karma/blob/master/package.json)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](./LICENSE)
 
-karma-maintained is a maintained, drop-in replacement for Karma for projects that still depend on the Karma test runner.
+karma-maintained is a maintained, drop-in replacement for Karma, intended for projects that still depend on the Karma test runner.
 
 It preserves the Karma package interface while keeping the project usable on modern Node.js versions.
 

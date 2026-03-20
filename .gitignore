@@ -2,7 +2,6 @@ node_modules
 npm-debug.log
 .idea/*
 *.iml
-docs/_build
 *.swp
 *.swo
 test/e2e/support/sandbox

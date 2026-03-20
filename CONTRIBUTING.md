@@ -2,8 +2,7 @@
 
 If you are thinking about making Karma better, or you just want to hack on it, that’s great!
 
-> Check out the docs on how to [get started][docs_contributing] and please follow
-> the [code of conduct](CODE_OF_CONDUCT.md).
+> Please follow the [code of conduct](CODE_OF_CONDUCT.md).
 
 ## Project scope
 
@@ -21,5 +20,30 @@ If you find a bug in the source code or a mistake in the documentation, you can 
 submitting an issue to our [GitHub Repository][github_newissue]. Even better you can submit a Pull Request
 with a fix.
 
-[docs_contributing]: ./docs/dev/01-contributing.md
+## Maintainers
+
+Please use the [issue tracker][github_issue_tracker] for coordination around pull requests and issues.
+
+### Releasing
+
+Releases are published by the GitHub Actions workflow at [`publish.yml`](./.github/workflows/publish.yml).
+
+Minimal release flow:
+
+1. Update the package version.
+2. Commit the version bump.
+3. Create and push a matching tag in the form `vX.Y.Z`.
+
+Example:
+
+```bash
+npm version 6.4.6
+git push origin main --follow-tags
+```
+
+Pushing the tag triggers the publish workflow.
+
+The workflow also supports manual `workflow_dispatch`, but the normal release path is pushing a version tag.
+
 [github_newissue]: https://github.com/emil-todirascu/karma/issues/new
+[github_issue_tracker]: https://github.com/emil-todirascu/karma/issues

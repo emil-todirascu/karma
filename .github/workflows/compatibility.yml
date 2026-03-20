@@ -142,3 +142,62 @@ jobs:
         run: npm test -- --single-run
         env:
           NODE_OPTIONS: --openssl-legacy-provider
+
+  bootstrap:
+    name: Bootstrap compatibility
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout karma-maintained
+        uses: actions/checkout@v6
+        with:
+          path: karma-maintained
+
+      - name: Checkout Bootstrap
+        uses: actions/checkout@v6
+        with:
+          repository: twbs/bootstrap
+          path: bootstrap
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          check-latest: true
+          cache: npm
+          cache-dependency-path: |
+            karma-maintained/package-lock.json
+            bootstrap/package-lock.json
+
+      - name: Set up Google Chrome
+        uses: browser-actions/setup-chrome@v2
+
+      - name: Pack karma-maintained
+        working-directory: karma-maintained
+        run: |
+          mkdir -p "$RUNNER_TEMP/karma-pack"
+          npm pack --pack-destination "$RUNNER_TEMP/karma-pack"
+
+      - name: Install Bootstrap dependencies
+        working-directory: bootstrap
+        run: npm ci
+
+      - name: Replace Bootstrap's installed karma
+        run: |
+          mapfile -t package_tarballs < <(find "$RUNNER_TEMP/karma-pack" -maxdepth 1 -name '*.tgz' -type f | sort)
+
+          if [[ "${#package_tarballs[@]}" -ne 1 ]]; then
+            echo "Expected exactly one tarball in $RUNNER_TEMP/karma-pack, found ${#package_tarballs[@]}" >&2
+            exit 1
+          fi
+
+          package_tarball="${package_tarballs[0]}"
+
+          chmod +x karma-maintained/scripts/replace-installed-karma.sh
+          karma-maintained/scripts/replace-installed-karma.sh "$GITHUB_WORKSPACE/bootstrap" "$package_tarball"
+
+      - name: Run Bootstrap Karma specs
+        working-directory: bootstrap
+        run: npm run js-test-karma

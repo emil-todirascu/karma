@@ -81,3 +81,62 @@ jobs:
       - name: Run Leaflet Karma specs
         working-directory: leaflet
         run: npm test -- --single-run --browsers Chrome
+
+  react-modal:
+    name: react-modal compatibility
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout karma-maintained
+        uses: actions/checkout@v6
+        with:
+          path: karma-maintained
+
+      - name: Checkout react-modal
+        uses: actions/checkout@v6
+        with:
+          repository: reactjs/react-modal
+          path: react-modal
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          check-latest: true
+          cache: npm
+          cache-dependency-path: |
+            karma-maintained/package-lock.json
+            react-modal/package-lock.json
+
+      - name: Set up Google Chrome
+        uses: browser-actions/setup-chrome@v2
+
+      - name: Pack karma-maintained
+        working-directory: karma-maintained
+        run: |
+          mkdir -p "$RUNNER_TEMP/karma-pack"
+          npm pack --pack-destination "$RUNNER_TEMP/karma-pack"
+
+      - name: Install react-modal dependencies
+        working-directory: react-modal
+        run: npm ci
+
+      - name: Replace react-modal's installed karma
+        run: |
+          mapfile -t package_tarballs < <(find "$RUNNER_TEMP/karma-pack" -maxdepth 1 -name '*.tgz' -type f | sort)
+
+          if [[ "${#package_tarballs[@]}" -ne 1 ]]; then
+            echo "Expected exactly one tarball in $RUNNER_TEMP/karma-pack, found ${#package_tarballs[@]}" >&2
+            exit 1
+          fi
+
+          package_tarball="${package_tarballs[0]}"
+
+          chmod +x karma-maintained/scripts/replace-installed-karma.sh
+          karma-maintained/scripts/replace-installed-karma.sh "$GITHUB_WORKSPACE/react-modal" "$package_tarball"
+
+      - name: Run react-modal Karma specs
+        working-directory: react-modal
+        run: npm test -- --single-run

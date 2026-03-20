@@ -6,7 +6,17 @@ The upstream project was deprecated. The goal of this fork is to keep Karma usab
 
 This fork is intended to remain a drop-in replacement for existing Karma-based projects as much as possible.
 
-To switch an existing project, run `npm uninstall karma && npm install --save-dev karma-maintained`.
+## Getting Started
+
+For the best compatibility, alias `karma` to `karma-maintained` so tools that call `require('karma')` keep working.
+
+npm: `npm install --save-dev karma@npm:karma-maintained@^6.4.5`
+
+yarn: `yarn add --dev karma@npm:karma-maintained@^6.4.5`
+
+pnpm: `pnpm add --save-dev karma@npm:karma-maintained@^6.4.5`
+
+Alternatively if your project (including dependencies) does not import `karma` by package name, installing `karma-maintained` directly may also work.
 
 ## Scope
 
@@ -16,7 +26,7 @@ If you are starting a new project, you should probably evaluate modern alternati
 
 ## Help and Support
 
-> Please use this repository's issue tracker for bug reports and maintenance requests.
+Please use this repository's issue tracker for bug reports and maintenance requests.
 
 - Obligatory [documentation]
 - Bug reports [Issue Tracker]

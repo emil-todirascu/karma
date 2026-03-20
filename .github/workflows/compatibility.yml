@@ -140,3 +140,5 @@ jobs:
       - name: Run react-modal Karma specs
         working-directory: react-modal
         run: npm test -- --single-run
+        env:
+          NODE_OPTIONS: --openssl-legacy-provider

@@ -515,7 +515,7 @@
     "format:check": "prettier . --check --ignore-unknown",
     "commit:check": "commitlint --from HEAD~1",
     "test:unit": "mocha --require test/unit/mocha-globals.js \"test/unit/**/*.spec.js\"",
-    "test:e2e": "cucumber-js test/e2e/*.feature",
+    "test:e2e": "cucumber-js",
     "test:client": "node bin/karma start test/client/karma.conf.js",
     "test": "npm run test:unit && npm run test:e2e && npm run test:client",
     "build": "node scripts/client.js build",

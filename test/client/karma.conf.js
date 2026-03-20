@@ -71,6 +71,12 @@ module.exports = function (config) {
       'test/client/*.js': ['commonjs']
     },
 
+    client: {
+      mocha: {
+        retries: process.env.CI ? 1 : 0
+      }
+    },
+
     // use dots reporter, as travis terminal does not support escaping sequences
     // possible values: 'dots', 'progress'
     // CLI --reporters progress

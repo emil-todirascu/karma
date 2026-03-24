@@ -13,6 +13,24 @@
     "access": "public",
     "provenance": true
   },
+  "files": [
+    "bin/",
+    "common/",
+    "context/",
+    "lib/",
+    "scripts/karma-completion.sh",
+    "static/",
+    "config.tpl.coffee",
+    "config.tpl.js",
+    "config.tpl.ls",
+    "config.tpl.ts",
+    "requirejs.config.tpl.coffee",
+    "requirejs.config.tpl.js",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md",
+    "SECURITY.md"
+  ],
   "keywords": [
     "karma",
     "karma-runner",

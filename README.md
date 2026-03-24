@@ -22,6 +22,16 @@ pnpm: `pnpm add --save-dev karma@npm:karma-maintained@^6.4.5`
 
 Alternatively if your project (including dependencies) does not import `karma` by package name, installing `karma-maintained` directly may also work.
 
+## Does This Actually Work
+
+[![Compatibility](https://github.com/emil-todirascu/karma/actions/workflows/compatibility.yml/badge.svg)](https://github.com/emil-todirascu/karma/actions/workflows/compatibility.yml)
+
+Apparently yes.
+
+Every week, this fork is packed, swapped into a few real projects that still use Karma, and their browser specs are run against it.
+
+[More on what this does and does not prove](./COMPATIBILITY.md).
+
 ## Scope
 
 This fork is in maintenance mode. We prioritize stability and compatibility and avoid new features or ecosystem redesign.

@@ -53,10 +53,7 @@ module.exports = function (wallaby) {
     },
 
     env: {
-      type: 'node',
-      params: {
-        runner: '--harmony --harmony_arrow_functions'
-      }
+      type: 'node'
     }
   }
 }

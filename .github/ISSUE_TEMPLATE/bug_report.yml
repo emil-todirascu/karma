@@ -1,6 +1,6 @@
 name: Bug report
 description: Create an actionable bug report
-title: "[Bug]: "
+title: '[Bug]: '
 labels: []
 assignees: []
 body:

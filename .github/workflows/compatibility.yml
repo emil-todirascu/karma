@@ -52,11 +52,13 @@ jobs:
       - name: Checkout karma-maintained
         uses: actions/checkout@v6
         with:
+          persist-credentials: false
           path: karma-maintained
 
       - name: Checkout target project
         uses: actions/checkout@v6
         with:
+          persist-credentials: false
           repository: ${{ matrix.repository }}
           path: ${{ matrix.project_path }}
 

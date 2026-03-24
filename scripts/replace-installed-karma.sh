@@ -12,9 +12,19 @@ package_tarball=$2
 install_dir="$project_dir/node_modules/karma"
 staging_dir="$project_dir/node_modules/.karma-maintained-staging-$$"
 backup_dir="$project_dir/node_modules/.karma-maintained-backup-$$"
+swap_completed=false
 
 cleanup() {
-  rm -rf "$staging_dir" "$backup_dir"
+  rm -rf "$staging_dir"
+
+  if [ "$swap_completed" = true ]; then
+    rm -rf "$backup_dir"
+    return
+  fi
+
+  if [ -d "$backup_dir" ] && [ ! -d "$install_dir" ]; then
+    mv "$backup_dir" "$install_dir"
+  fi
 }
 
 trap cleanup EXIT
@@ -51,4 +61,4 @@ if [ -d "$install_dir" ]; then
 fi
 
 mv "$staging_dir" "$install_dir"
-rm -rf "$backup_dir"
+swap_completed=true

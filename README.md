@@ -26,11 +26,11 @@ Alternatively if your project (including dependencies) does not import `karma` b
 
 [![Compatibility](https://github.com/emil-todirascu/karma/actions/workflows/compatibility.yml/badge.svg)](https://github.com/emil-todirascu/karma/actions/workflows/compatibility.yml)
 
-Apparently yes.
+Hopefully yes.
 
 Every week, this fork is packed, swapped into a few real projects that still use Karma, and their browser specs are run against it.
 
-[More on what this does and does not prove](./COMPATIBILITY.md).
+[Read more on how this works](./COMPATIBILITY.md).
 
 ## Scope
 

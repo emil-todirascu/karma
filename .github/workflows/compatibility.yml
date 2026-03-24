@@ -34,13 +34,13 @@ jobs:
             install_cmd: npm ci
             pre_test_cmd: npm run build
             test_cmd: npm test -- --single-run --browsers Chrome
-            node_options: ""
+            node_options: ''
           - name: react-modal compatibility
             repository: reactjs/react-modal
             project_path: react-modal
             node: 22
             install_cmd: npm ci
-            pre_test_cmd: ""
+            pre_test_cmd: ''
             test_cmd: npm test -- --single-run
             node_options: --openssl-legacy-provider
           - name: Bootstrap compatibility
@@ -48,9 +48,9 @@ jobs:
             project_path: bootstrap
             node: 22
             install_cmd: npm ci
-            pre_test_cmd: ""
+            pre_test_cmd: ''
             test_cmd: npm run js-test-karma
-            node_options: ""
+            node_options: ''
     defaults:
       run:
         shell: bash

@@ -1,0 +1,111 @@
+name: Compatibility
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 9 * * 1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  compatibility:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Leaflet compatibility
+            repository: Leaflet/Leaflet
+            project_path: leaflet
+            node: 24
+            install_cmd: npm ci
+            pre_test_cmd: npm run build
+            test_cmd: npm test -- --single-run --browsers Chrome
+            node_options: ''
+          - name: react-modal compatibility
+            repository: reactjs/react-modal
+            project_path: react-modal
+            node: 22
+            install_cmd: npm ci
+            pre_test_cmd: ''
+            test_cmd: npm test -- --single-run
+            node_options: --openssl-legacy-provider
+          - name: Bootstrap compatibility
+            repository: twbs/bootstrap
+            project_path: bootstrap
+            node: 22
+            install_cmd: npm ci
+            pre_test_cmd: ''
+            test_cmd: npm run js-test-karma
+            node_options: ''
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout karma-maintained
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          path: karma-maintained
+
+      - name: Checkout target project
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          repository: ${{ matrix.repository }}
+          path: ${{ matrix.project_path }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node }}
+          check-latest: true
+          cache: npm
+          cache-dependency-path: |
+            karma-maintained/package-lock.json
+            ${{ matrix.project_path }}/package-lock.json
+
+      - name: Set up Google Chrome
+        uses: browser-actions/setup-chrome@v2
+
+      - name: Pack karma-maintained
+        working-directory: karma-maintained
+        run: |
+          mkdir -p "$RUNNER_TEMP/karma-pack"
+          npm pack --pack-destination "$RUNNER_TEMP/karma-pack"
+
+      - name: Install target project dependencies
+        working-directory: ${{ matrix.project_path }}
+        run: ${{ matrix.install_cmd }}
+
+      - name: Run target project pre-test command
+        if: ${{ matrix.pre_test_cmd != '' }}
+        working-directory: ${{ matrix.project_path }}
+        run: ${{ matrix.pre_test_cmd }}
+
+      - name: Replace target project's installed karma
+        run: |
+          mapfile -t package_tarballs < <(find "$RUNNER_TEMP/karma-pack" -maxdepth 1 -name '*.tgz' -type f | sort)
+
+          if [[ "${#package_tarballs[@]}" -ne 1 ]]; then
+            echo "Expected exactly one tarball in $RUNNER_TEMP/karma-pack, found ${#package_tarballs[@]}" >&2
+            exit 1
+          fi
+
+          package_tarball="${package_tarballs[0]}"
+
+          chmod +x karma-maintained/scripts/replace-installed-karma.sh
+          karma-maintained/scripts/replace-installed-karma.sh "$GITHUB_WORKSPACE/${{ matrix.project_path }}" "$package_tarball"
+
+      - name: Run target project Karma specs
+        working-directory: ${{ matrix.project_path }}
+        run: ${{ matrix.test_cmd }}
+        env:
+          NODE_OPTIONS: ${{ matrix.node_options }}

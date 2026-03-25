@@ -31,7 +31,6 @@ jobs:
           cache: npm
           token: ''
 
-      - run: npm install -g npm@^11.5.1
       - run: npm ci
       - run: npm run build:check
       - run: npm run test:unit

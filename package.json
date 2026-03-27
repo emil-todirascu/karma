@@ -34,6 +34,9 @@
   "keywords": [
     "karma",
     "karma-runner",
+    "karma-replacement",
+    "karma-fork",
+    "maintained-fork",
     "test-runner",
     "browser-testing",
     "maintained",

@@ -26,9 +26,15 @@ Alternatively if your project (including dependencies) does not import `karma` b
 
 [![Compatibility](https://github.com/emil-todirascu/karma/actions/workflows/compatibility.yml/badge.svg)](https://github.com/emil-todirascu/karma/actions/workflows/compatibility.yml)
 
-Hopefully yes.
+Yes, it does! Every week this fork is packed, swapped into real third-party projects that still use Karma and their browser specs are run against it.
 
-Every week, this fork is packed, swapped into a few real projects that still use Karma, and their browser specs are run against it.
+Current compatibility checks cover:
+
+| Project                                               | Node.js |
+| ----------------------------------------------------- | ------- |
+| [Leaflet](https://github.com/Leaflet/Leaflet)         | 24      |
+| [react-modal](https://github.com/reactjs/react-modal) | 22      |
+| [Bootstrap](https://github.com/twbs/bootstrap)        | 22      |
 
 [Read more on how this works](./COMPATIBILITY.md).
 

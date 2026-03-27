@@ -36,7 +36,6 @@ Current compatibility checks cover:
 | [react-modal](https://github.com/reactjs/react-modal) | 22      |
 | [Bootstrap](https://github.com/twbs/bootstrap)        | 22      |
 
-
 [Read more on how this works](./COMPATIBILITY.md).
 
 ## Scope

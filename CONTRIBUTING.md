@@ -32,18 +32,18 @@ Minimal release flow:
 
 1. Update the package version.
 2. Commit the version bump.
-3. Create and push a matching tag in the form `vX.Y.Z`.
+3. Push to `master`.
+4. Create and push a matching tag in the form `vX.Y.Z`.
 
 Example:
 
 ```bash
 npm version 6.4.6
-git push origin master --follow-tags
+git push origin master
+git push origin v6.4.6
 ```
 
-Pushing the tag triggers the publish workflow.
-
-The workflow also supports manual `workflow_dispatch`, but the normal release path is pushing a version tag.
+Pushing the tag triggers the publish workflow. You can create the GitHub Release separately from the same tag.
 
 [github_newissue]: https://github.com/emil-todirascu/karma/issues/new
 [github_issue_tracker]: https://github.com/emil-todirascu/karma/issues

@@ -525,7 +525,7 @@
   "engines": {
     "node": ">= 20.19.0"
   },
-  "version": "6.4.6",
+  "version": "6.4.7",
   "license": "MIT",
   "scripts": {
     "lint": "eslint . --ext js --ignore-pattern *.tpl.js --no-warn-ignored",

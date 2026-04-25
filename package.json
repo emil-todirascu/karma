@@ -528,10 +528,8 @@
   "version": "6.4.7",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint . --ext js --ignore-pattern *.tpl.js --no-warn-ignored",
-    "lint:fix": "eslint . --ext js --ignore-pattern *.tpl.js --no-warn-ignored --fix",
-    "format": "prettier . --write --ignore-unknown",
-    "format:check": "prettier . --check --ignore-unknown",
+    "format": "eslint . --ext js --ignore-pattern *.tpl.js --no-warn-ignored && prettier . --check --ignore-unknown",
+    "format:fix": "eslint . --ext js --ignore-pattern *.tpl.js --no-warn-ignored --fix && prettier . --write --ignore-unknown",
     "commit:check": "commitlint --from HEAD~1",
     "test:unit": "mocha --require test/unit/mocha-globals.js \"test/unit/**/*.spec.js\"",
     "test:e2e": "cucumber-js",

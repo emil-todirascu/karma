@@ -3,6 +3,17 @@ const eslintConfigPrettier = require('eslint-config-prettier')
 const globals = require('globals')
 const nodePlugin = require('eslint-plugin-n')
 
+const sharedLanguageOptions = {
+  ecmaVersion: 2021,
+  globals: globals.node
+}
+
+const sharedRules = {
+  'no-empty': 'warn',
+  'no-unused-vars': ['warn', { args: 'none', caughtErrors: 'none' }],
+  'no-useless-assignment': 'warn'
+}
+
 module.exports = [
   {
     ignores: [
@@ -18,32 +29,22 @@ module.exports = [
   {
     files: ['**/*.js'],
     languageOptions: {
-      ecmaVersion: 2021,
-      sourceType: 'commonjs',
-      globals: globals.node
+      ...sharedLanguageOptions,
+      sourceType: 'commonjs'
     },
     plugins: {
       n: nodePlugin,
       node: nodePlugin
     },
-    rules: {
-      'no-empty': 'warn',
-      'no-unused-vars': ['warn', { args: 'none', caughtErrors: 'none' }],
-      'no-useless-assignment': 'warn'
-    }
+    rules: sharedRules
   },
   {
     files: ['**/*.mjs'],
     languageOptions: {
-      ecmaVersion: 2021,
-      sourceType: 'module',
-      globals: globals.node
+      ...sharedLanguageOptions,
+      sourceType: 'module'
     },
-    rules: {
-      'no-empty': 'warn',
-      'no-unused-vars': ['warn', { args: 'none', caughtErrors: 'none' }],
-      'no-useless-assignment': 'warn'
-    }
+    rules: sharedRules
   },
   {
     files: [

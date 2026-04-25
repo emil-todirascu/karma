@@ -34,9 +34,8 @@ module.exports = function (wallaby) {
       var mocha = w.testFramework
 
       await import(
-        pathToFileURL(
-          path.join(process.cwd(), 'test/unit/mocha-globals.mjs')
-        ).href
+        pathToFileURL(path.join(process.cwd(), 'test/unit/mocha-globals.mjs'))
+          .href
       )
 
       mocha.suite.on('pre-require', function () {

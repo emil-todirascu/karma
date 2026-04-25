@@ -1,6 +1,8 @@
 'use strict'
 
-const path = require('path')
+const {
+  getChaiBrowserGlobals
+} = require('../../../support/chai-browser-globals')
 
 const pattern = (file, included, type) => ({
   pattern: file,
@@ -11,9 +13,8 @@ const pattern = (file, included, type) => ({
 })
 
 const framework = (files) => {
-  // Use the browser bundle and expose globals from `window.chai`.
-  files.unshift(pattern(path.join(__dirname, 'globals.js'), true))
-  files.unshift(pattern(require.resolve('chai/chai.js'), true))
+  // Chai 6 no longer ships a browser bundle, so generate one for Karma.
+  files.unshift(pattern(getChaiBrowserGlobals(), true))
 }
 
 framework.$inject = ['config.files']

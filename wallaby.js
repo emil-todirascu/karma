@@ -23,7 +23,7 @@ module.exports = function (wallaby) {
       },
       'lib/**/*.js',
       'test/unit/**/*.js',
-      'test/unit/mocha-globals.js'
+      'test/unit/**/*.mjs'
     ],
 
     tests: ['test/unit/**/*.spec.js'],
@@ -48,7 +48,7 @@ module.exports = function (wallaby) {
         }
 
         // loading mocha-globals for each run
-        require(path.join(process.cwd(), 'test/unit/mocha-globals'))
+        require(path.join(process.cwd(), 'test/unit/mocha-globals.mjs'))
       })
     },
 

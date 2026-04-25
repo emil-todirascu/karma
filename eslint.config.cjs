@@ -33,6 +33,19 @@ module.exports = [
     }
   },
   {
+    files: ['**/*.mjs'],
+    languageOptions: {
+      ecmaVersion: 2021,
+      sourceType: 'module',
+      globals: globals.node
+    },
+    rules: {
+      'no-empty': 'warn',
+      'no-unused-vars': ['warn', { args: 'none', caughtErrors: 'none' }],
+      'no-useless-assignment': 'warn'
+    }
+  },
+  {
     files: [
       'common/**/*.js',
       'context/**/*.js',
@@ -66,7 +79,11 @@ module.exports = [
     }
   },
   {
-    files: ['test/client/**/*.js', 'test/e2e/support/modules/**/*.mjs'],
+    files: [
+      'test/client/**/*.js',
+      'test/client/**/*.mjs',
+      'test/e2e/support/**/*.mjs'
+    ],
     languageOptions: {
       globals: {
         ...globals.mocha,

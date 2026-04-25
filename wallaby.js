@@ -23,14 +23,20 @@ module.exports = function (wallaby) {
       },
       'lib/**/*.js',
       'test/unit/**/*.js',
-      'test/unit/mocha-globals.js'
+      'test/unit/**/*.mjs'
     ],
 
     tests: ['test/unit/**/*.spec.js'],
 
-    bootstrap: function (w) {
+    bootstrap: async function (w) {
       var path = require('path')
+      var pathToFileURL = require('url').pathToFileURL
       var mocha = w.testFramework
+
+      await import(
+        pathToFileURL(path.join(process.cwd(), 'test/unit/mocha-globals.mjs'))
+          .href
+      )
 
       mocha.suite.on('pre-require', function () {
         // always passing wallaby.js globals to mocks.loadFile
@@ -46,9 +52,6 @@ module.exports = function (wallaby) {
           globals.$_$tracer = global.$_$tracer || {}
           return loadFile(filePath, mocks, globals, mockNested)
         }
-
-        // loading mocha-globals for each run
-        require(path.join(process.cwd(), 'test/unit/mocha-globals'))
       })
     },
 

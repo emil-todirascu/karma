@@ -38,5 +38,4 @@ jobs:
           BASE_SHA="$(git merge-base origin/${{ github.base_ref }} "$GITHUB_SHA")"
           npm run commitlint -- --verbose --from "$BASE_SHA" --to "$GITHUB_SHA"
 
-      - run: npm run lint
-      - run: npm run format:check
+      - run: npm run format

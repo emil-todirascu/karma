@@ -14,11 +14,11 @@ It preserves the Karma package interface while keeping the project usable on mod
 
 Install as an alias to keep `require('karma')` working:
 
-npm: `npm install --save-dev karma@npm:karma-maintained@^6.4.5`
+npm: `npm install --save-dev karma@npm:karma-maintained@^6.4.7`
 
-yarn: `yarn add --dev karma@npm:karma-maintained@^6.4.5`
+yarn: `yarn add --dev karma@npm:karma-maintained@^6.4.7`
 
-pnpm: `pnpm add --save-dev karma@npm:karma-maintained@^6.4.5`
+pnpm: `pnpm add --save-dev karma@npm:karma-maintained@^6.4.7`
 
 Alternatively if your project (including dependencies) does not import `karma` by package name, installing `karma-maintained` directly may also work.
 

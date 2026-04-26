@@ -1,33 +1,15 @@
-const sinon = require('sinon')
-const chai = require('chai')
+import { createRequire } from 'node:module'
+import sinon from 'sinon'
+import * as chai from 'chai'
+import chaiAsPromised from 'chai-as-promised'
+import sinonChai from 'sinon-chai'
+
+const require = createRequire(import.meta.url)
 const logger = require('../../lib/logger')
 const recording = require('log4js/lib/appenders/recording')
-const resolvePlugin = (plugin) => (plugin && plugin.default) || plugin
-
-// publish globals that all specs can use
-global.expect = chai.expect
-global.should = chai.should()
-global.sinon = sinon
 
 // chai plugins
-chai.use(resolvePlugin(require('chai-as-promised')))
-chai.use(resolvePlugin(require('sinon-chai')))
-chai.use(resolvePlugin(require('chai-subset')))
-
-exports.mochaHooks = {
-  beforeEach() {
-    global.sinon = sinon.createSandbox()
-
-    // Use https://log4js-node.github.io/log4js-node/recording.html to verify logs
-    const vcr = { vcr: { type: 'recording' } }
-    logger.setup('INFO', false, vcr)
-  },
-
-  afterEach() {
-    global.sinon.restore()
-    recording.erase()
-  }
-}
+chai.use(sinonChai)
 
 // TODO(vojta): move to helpers or something
 chai.use((chai, utils) => {
@@ -60,3 +42,25 @@ chai.use((chai, utils) => {
     )
   })
 })
+
+chai.use(chaiAsPromised)
+
+// publish globals that all specs can use
+global.expect = chai.expect
+global.should = chai.should()
+global.sinon = sinon
+
+export const mochaHooks = {
+  beforeEach() {
+    global.sinon = sinon.createSandbox()
+
+    // Use https://log4js-node.github.io/log4js-node/recording.html to verify logs
+    const vcr = { vcr: { type: 'recording' } }
+    logger.setup('INFO', false, vcr)
+  },
+
+  afterEach() {
+    global.sinon.restore()
+    recording.erase()
+  }
+}

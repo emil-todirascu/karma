@@ -1,9 +1,13 @@
 /* global __karma__, chai */
-var assert = chai.assert
+var assert
 
 var stringify = require('../../common/stringify')
 
 describe('stringify', function () {
+  before(function () {
+    assert = chai.assert
+  })
+
   if (window && window.Symbol) {
     // IE does not support Symbol
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol

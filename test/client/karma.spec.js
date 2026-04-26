@@ -1,5 +1,5 @@
 /* global chai, sinon */
-var assert = chai.assert
+var assert
 
 var ClientKarma = require('../../client/karma')
 var ContextKarma = require('../../context/karma')
@@ -17,6 +17,10 @@ describe('Karma', function () {
     iframe,
     clientWindow
   var windowDocument, elements, mockTestStatus
+
+  before(function () {
+    assert = chai.assert
+  })
 
   function setTransportTo(transportName) {
     socket._setTransportNameTo(transportName)

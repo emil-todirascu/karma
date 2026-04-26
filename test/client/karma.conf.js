@@ -4,6 +4,7 @@
 const useBrowserStack =
   (process.env.BROWSERSTACK_USERNAME && process.env.BROWSERSTACK_ACCESS_KEY) ||
   process.env.KARMA_TEST_NO_FALLBACK
+const { getChaiBrowserGlobals } = require('../support/chai-browser-globals')
 
 const launchers = {
   bs_chrome: {
@@ -49,7 +50,7 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'node_modules/chai/chai.js',
+      getChaiBrowserGlobals(),
       'node_modules/sinon/pkg/sinon.js',
       'common/stringify.js',
       'common/util.js',

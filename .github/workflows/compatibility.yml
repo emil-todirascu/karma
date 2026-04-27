@@ -21,9 +21,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: Preact 10.26.5
+          - name: Preact 10.25.0
             repository: preactjs/preact
-            ref: 10.26.5
+            ref: 10.25.0
             project_path: preact
             node: 22
             install_cmd: npm ci

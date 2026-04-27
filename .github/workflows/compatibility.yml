@@ -25,7 +25,7 @@ jobs:
             repository: axios/axios
             ref: v0.27.0
             project_path: axios
-            node: 20
+            node: 16
             install_cmd: npm ci
             pre_test_cmd: ''
             test_cmd: npm test

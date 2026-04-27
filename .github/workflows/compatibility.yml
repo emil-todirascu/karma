@@ -21,6 +21,15 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - name: Axios 0.27.0
+            repository: axios/axios
+            ref: v0.27.0
+            project_path: axios
+            node: 20
+            install_cmd: npm ci
+            pre_test_cmd: ''
+            test_cmd: npm test
+            node_options: ''
           - name: Preact 10.25.0
             repository: preactjs/preact
             ref: 10.25.0

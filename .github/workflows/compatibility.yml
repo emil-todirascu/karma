@@ -21,24 +21,36 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: Leaflet compatibility
+          - name: Preact 10.26.5
+            repository: preactjs/preact
+            ref: 10.26.5
+            project_path: preact
+            node: 22
+            install_cmd: npm ci
+            pre_test_cmd: ''
+            test_cmd: npm run test:karma:minify
+            node_options: ''
+          - name: Leaflet
             repository: Leaflet/Leaflet
+            ref: ''
             project_path: leaflet
             node: 24
             install_cmd: npm ci
             pre_test_cmd: npm run build
             test_cmd: npm test -- --single-run --browsers Chrome
             node_options: ''
-          - name: react-modal compatibility
+          - name: react-modal
             repository: reactjs/react-modal
+            ref: ''
             project_path: react-modal
             node: 22
             install_cmd: npm ci
             pre_test_cmd: ''
             test_cmd: npm test -- --single-run
             node_options: --openssl-legacy-provider
-          - name: Bootstrap compatibility
+          - name: Bootstrap
             repository: twbs/bootstrap
+            ref: ''
             project_path: bootstrap
             node: 22
             install_cmd: npm ci
@@ -61,6 +73,13 @@ jobs:
           persist-credentials: false
           repository: ${{ matrix.repository }}
           path: ${{ matrix.project_path }}
+
+      - name: Checkout target project ref
+        if: ${{ matrix.ref != '' }}
+        working-directory: ${{ matrix.project_path }}
+        run: |
+          git fetch --depth 1 origin "refs/tags/${{ matrix.ref }}"
+          git checkout FETCH_HEAD
 
       - name: Set up Node
         uses: actions/setup-node@v6

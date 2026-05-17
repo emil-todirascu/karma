@@ -44,7 +44,7 @@ jobs:
             ref: v3.16.3
             project_path: react-modal
             node: 22
-            install_cmd: npm install
+            install_cmd: npm ci
             pre_test_cmd: ''
             test_cmd: npm test -- --single-run
             node_options: --openssl-legacy-provider

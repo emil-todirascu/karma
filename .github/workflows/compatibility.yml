@@ -21,9 +21,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: Preact 10.25.0
+          - name: Preact
             repository: preactjs/preact
-            ref: 10.25.0
+            ref: 10.29.2
             project_path: preact
             node: 22
             install_cmd: npm ci
@@ -32,7 +32,7 @@ jobs:
             node_options: ''
           - name: Leaflet
             repository: Leaflet/Leaflet
-            ref: ''
+            ref: v1.9.4
             project_path: leaflet
             node: 24
             install_cmd: npm ci
@@ -41,7 +41,7 @@ jobs:
             node_options: ''
           - name: react-modal
             repository: reactjs/react-modal
-            ref: ''
+            ref: v3.16.1
             project_path: react-modal
             node: 22
             install_cmd: npm ci
@@ -50,7 +50,7 @@ jobs:
             node_options: --openssl-legacy-provider
           - name: Bootstrap
             repository: twbs/bootstrap
-            ref: ''
+            ref: v5.3.8
             project_path: bootstrap
             node: 22
             install_cmd: npm ci
@@ -75,7 +75,6 @@ jobs:
           path: ${{ matrix.project_path }}
 
       - name: Checkout target project ref
-        if: ${{ matrix.ref != '' }}
         working-directory: ${{ matrix.project_path }}
         run: |
           git fetch --depth 1 origin "refs/tags/${{ matrix.ref }}"

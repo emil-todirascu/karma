@@ -41,7 +41,7 @@ jobs:
             node_options: ''
           - name: react-modal
             repository: reactjs/react-modal
-            ref: v3.16.1
+            ref: v3.16.3
             project_path: react-modal
             node: 22
             install_cmd: npm install

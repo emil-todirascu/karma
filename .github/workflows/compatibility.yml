@@ -37,14 +37,14 @@ jobs:
             node: 24
             install_cmd: npm ci
             pre_test_cmd: npm run build
-            test_cmd: npm test -- --single-run --browsers Chrome
+            test_cmd: npm test
             node_options: ''
           - name: react-modal
             repository: reactjs/react-modal
             ref: v3.16.1
             project_path: react-modal
             node: 22
-            install_cmd: npm ci
+            install_cmd: npm install
             pre_test_cmd: ''
             test_cmd: npm test -- --single-run
             node_options: --openssl-legacy-provider

@@ -23,7 +23,7 @@ jobs:
         include:
           - name: Preact
             repository: preactjs/preact
-            ref: 10.29.2
+            ref: 10.26.5
             project_path: preact
             node: 22
             install_cmd: npm ci

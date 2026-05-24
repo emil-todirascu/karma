@@ -7,6 +7,9 @@ on:
 permissions:
   contents: read
 
+env:
+  NPM_VERSION: 11.15.0
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -24,6 +27,8 @@ jobs:
           check-latest: true
           cache: npm
 
+      - name: Install pinned npm
+        run: npm install --global npm@${{ env.NPM_VERSION }}
       - run: npm ci
       - run: npm audit --omit=dev
 

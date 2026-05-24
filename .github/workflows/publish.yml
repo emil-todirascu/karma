@@ -53,4 +53,4 @@ jobs:
         run: |
           unset NODE_AUTH_TOKEN
           unset NPM_TOKEN
-          npx --yes npm@${{ env.NPM_VERSION }} publish --provenance --access public
+          npm publish --provenance --access public

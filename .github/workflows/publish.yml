@@ -10,6 +10,9 @@ permissions:
   contents: read
   id-token: write
 
+env:
+  NPM_VERSION: 11.15.0
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
@@ -31,6 +34,7 @@ jobs:
           cache: npm
           token: ''
 
+      - run: npm install --global npm@${{ env.NPM_VERSION }}
       - run: npm ci
       - run: npm run build:check
       - run: npm run test:unit
@@ -48,4 +52,4 @@ jobs:
         run: |
           unset NODE_AUTH_TOKEN
           unset NPM_TOKEN
-          npx --yes npm@11.5.1 publish --provenance --access public
+          npx --yes npm@${{ env.NPM_VERSION }} publish --provenance --access public

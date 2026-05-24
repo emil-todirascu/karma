@@ -8,6 +8,9 @@ on:
 permissions:
   contents: read
 
+env:
+  NPM_VERSION: 11.15.0
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -89,6 +92,9 @@ jobs:
           cache-dependency-path: |
             karma-maintained/package-lock.json
             ${{ matrix.project_path }}/package-lock.json
+
+      - name: Install pinned npm
+        run: npm install --global npm@${{ env.NPM_VERSION }}
 
       - name: Set up Google Chrome
         uses: browser-actions/setup-chrome@v2

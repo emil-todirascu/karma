@@ -523,7 +523,7 @@
   "engines": {
     "node": ">= 20.19.0"
   },
-  "version": "6.4.7",
+  "version": "6.4.8",
   "license": "MIT",
   "scripts": {
     "format": "eslint . --ext js,mjs --ignore-pattern *.tpl.js --no-warn-ignored && prettier . --check --ignore-unknown",

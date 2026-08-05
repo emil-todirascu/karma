@@ -38,7 +38,7 @@ jobs:
       - run: npm ci
 
       - name: Validate commit messages
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && github.event.pull_request.user.login != 'dependabot[bot]'
         run: |
           BASE_SHA="$(git merge-base origin/${{ github.base_ref }} "$GITHUB_SHA")"
           npm run commitlint -- --verbose --from "$BASE_SHA" --to "$GITHUB_SHA"

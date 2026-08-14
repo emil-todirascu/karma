@@ -455,7 +455,6 @@
     "weiran.zsd@outlook.com>"
   ],
   "dependencies": {
-    "@colors/colors": "1.6.0",
     "body-parser": "2.3.0",
     "braces": "3.0.3",
     "chokidar": "5.0.0",
@@ -507,8 +506,7 @@
     "puppeteer": "24.43.1",
     "sinon": "21.1.2",
     "sinon-chai": "4.0.1",
-    "supertest": "7.2.2",
-    "timer-shim": "0.3.0"
+    "supertest": "7.2.2"
   },
   "main": "./lib/index",
   "bin": {

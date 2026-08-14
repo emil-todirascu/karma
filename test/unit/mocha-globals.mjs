@@ -1,7 +1,6 @@
 import { createRequire } from 'node:module'
 import sinon from 'sinon'
 import * as chai from 'chai'
-import chaiAsPromised from 'chai-as-promised'
 import sinonChai from 'sinon-chai'
 
 const require = createRequire(import.meta.url)
@@ -42,8 +41,6 @@ chai.use((chai, utils) => {
     )
   })
 })
-
-chai.use(chaiAsPromised)
 
 // publish globals that all specs can use
 global.expect = chai.expect

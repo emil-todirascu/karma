@@ -1,7 +1,6 @@
 const js = require('@eslint/js')
 const eslintConfigPrettier = require('eslint-config-prettier')
 const globals = require('globals')
-const nodePlugin = require('eslint-plugin-n')
 
 const sharedLanguageOptions = {
   ecmaVersion: 2021,
@@ -31,10 +30,6 @@ module.exports = [
     languageOptions: {
       ...sharedLanguageOptions,
       sourceType: 'commonjs'
-    },
-    plugins: {
-      n: nodePlugin,
-      node: nodePlugin
     },
     rules: sharedRules
   },

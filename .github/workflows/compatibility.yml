@@ -87,6 +87,15 @@ jobs:
             pre_test_cmd: ''
             test_cmd: npm test -- --watch=false --browsers ChromeHeadless
             node_options: ''
+          - name: bpmn-js-properties-panel
+            repository: bpmn-io/bpmn-js-properties-panel
+            ref: v5.65.0
+            project_path: bpmn-js-properties-panel
+            node: 22
+            install_cmd: npm ci
+            pre_test_cmd: ''
+            test_cmd: npm test -- --single-run --browsers ChromeHeadless
+            node_options: ''
     defaults:
       run:
         shell: bash

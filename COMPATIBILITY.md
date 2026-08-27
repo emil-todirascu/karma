@@ -11,12 +11,17 @@ To keep that claim grounded, the repository includes a scheduled compatibility w
 
 Current compatibility checks cover:
 
-| Project                                               | Node.js |
-| ----------------------------------------------------- | ------- |
-| [Preact](https://github.com/preactjs/preact)          | 22      |
-| [Leaflet](https://github.com/Leaflet/Leaflet)         | 24      |
-| [react-modal](https://github.com/reactjs/react-modal) | 22      |
-| [Bootstrap](https://github.com/twbs/bootstrap)        | 22      |
+| Project                                                                         | Node.js |
+| ------------------------------------------------------------------------------- | ------- |
+| [Preact](https://github.com/preactjs/preact)                                    | 22      |
+| [Leaflet](https://github.com/Leaflet/Leaflet)                                   | 24      |
+| [react-modal](https://github.com/reactjs/react-modal)                           | 22      |
+| [Bootstrap](https://github.com/twbs/bootstrap)                                  | 22      |
+| [pusher-js](https://github.com/pusher/pusher-js)                                | 22      |
+| [postman-collection](https://github.com/postmanlabs/postman-collection)         | 22      |
+| [ng-apexcharts](https://github.com/apexcharts/ng-apexcharts)                    | 22      |
+| [bpmn-js-properties-panel](https://github.com/bpmn-io/bpmn-js-properties-panel) | 22      |
+| [jsSHA](https://github.com/Caligatio/jsSHA)                                     | 22      |
 
 You can see the current status in the [Compatibility workflow](https://github.com/emil-todirascu/karma/actions/workflows/compatibility.yml).
 

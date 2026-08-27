@@ -69,6 +69,15 @@ jobs:
             pre_test_cmd: ''
             test_cmd: node_modules/karma/bin/karma start spec/config/karma/unit.js --browsers ChromeHeadless
             node_options: ''
+          - name: postman-collection
+            repository: postmanlabs/postman-collection
+            ref: v5.3.1
+            project_path: postman-collection
+            node: 22
+            install_cmd: npm ci
+            pre_test_cmd: ''
+            test_cmd: npm run test-browser
+            node_options: ''
     defaults:
       run:
         shell: bash

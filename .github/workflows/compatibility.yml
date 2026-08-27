@@ -60,6 +60,15 @@ jobs:
             pre_test_cmd: ''
             test_cmd: npm run js-test-karma
             node_options: ''
+          - name: pusher-js
+            repository: pusher/pusher-js
+            ref: v8.6.0
+            project_path: pusher-js
+            node: 22
+            install_cmd: npm ci
+            pre_test_cmd: ''
+            test_cmd: make web_unit
+            node_options: ''
     defaults:
       run:
         shell: bash

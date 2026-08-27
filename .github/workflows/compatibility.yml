@@ -67,7 +67,7 @@ jobs:
             node: 22
             install_cmd: npm ci
             pre_test_cmd: ''
-            test_cmd: make web_unit
+            test_cmd: node_modules/karma/bin/karma start spec/config/karma/unit.js --browsers ChromeHeadless
             node_options: ''
     defaults:
       run:

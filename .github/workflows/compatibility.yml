@@ -60,6 +60,51 @@ jobs:
             pre_test_cmd: ''
             test_cmd: npm run js-test-karma
             node_options: ''
+          - name: pusher-js
+            repository: pusher/pusher-js
+            ref: v8.6.0
+            project_path: pusher-js
+            node: 22
+            install_cmd: npm ci
+            pre_test_cmd: ''
+            test_cmd: node_modules/karma/bin/karma start spec/config/karma/unit.js --browsers ChromeHeadless
+            node_options: ''
+          - name: postman-collection
+            repository: postmanlabs/postman-collection
+            ref: v5.3.1
+            project_path: postman-collection
+            node: 22
+            install_cmd: npm ci
+            pre_test_cmd: ''
+            test_cmd: npm run test-browser
+            node_options: ''
+          - name: ng-apexcharts
+            repository: apexcharts/ng-apexcharts
+            ref: v3.1.0
+            project_path: ng-apexcharts
+            node: 22
+            install_cmd: npm ci
+            pre_test_cmd: ''
+            test_cmd: npm test -- --watch=false --browsers ChromeHeadless
+            node_options: ''
+          - name: bpmn-js-properties-panel
+            repository: bpmn-io/bpmn-js-properties-panel
+            ref: v5.65.0
+            project_path: bpmn-js-properties-panel
+            node: 22
+            install_cmd: npm ci
+            pre_test_cmd: ''
+            test_cmd: npm test -- --single-run --browsers ChromeHeadless
+            node_options: ''
+          - name: jsSHA
+            repository: Caligatio/jsSHA
+            ref: v3.3.2
+            project_path: jssha
+            node: 22
+            install_cmd: npm ci
+            pre_test_cmd: npm run build
+            test_cmd: for variant in sha sha1 sha256 sha512 sha3; do node_modules/karma/bin/karma start karma.conf.js --file-variant "$variant" --single-run --browsers ChromeHeadless || exit 1; done
+            node_options: ''
     defaults:
       run:
         shell: bash

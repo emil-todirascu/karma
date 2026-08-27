@@ -96,6 +96,15 @@ jobs:
             pre_test_cmd: ''
             test_cmd: npm test -- --single-run --browsers ChromeHeadless
             node_options: ''
+          - name: jsSHA
+            repository: Caligatio/jsSHA
+            ref: v3.3.2
+            project_path: jssha
+            node: 22
+            install_cmd: npm ci
+            pre_test_cmd: npm run build
+            test_cmd: for variant in sha sha1 sha256 sha512 sha3; do node_modules/karma/bin/karma start karma.conf.js --file-variant "$variant" --single-run --browsers ChromeHeadless || exit 1; done
+            node_options: ''
     defaults:
       run:
         shell: bash

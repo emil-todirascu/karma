@@ -455,7 +455,7 @@
     "weiran.zsd@outlook.com>"
   ],
   "dependencies": {
-    "body-parser": "2.3.0",
+    "body-parser": "2.4.0",
     "braces": "3.0.3",
     "chokidar": "5.0.0",
     "connect": "3.7.0",

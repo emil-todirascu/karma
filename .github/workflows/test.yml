@@ -60,7 +60,7 @@ jobs:
 
       - name: Install pinned npm
         run: npm install --global npm@${{ env.NPM_VERSION }}
-      - run: npm ci
+      - run: RUNNER_DEBUG=1 npm ci --foreground-scripts
       - run: npm run test:unit
       - run: npm run test:e2e
 
